@@ -47,4 +47,4 @@ application (probably, font viewer).
 
 * Not all programs can update font list on the fly, so it's better to setup
   your fonts *before* running program that will use them. For example,
-  GIMP and LibreOffise can rescan fonts, but Inkscape and Scribus are not.
+  GIMP and LibreOffice can rescan fonts, but Inkscape and Scribus are not.
