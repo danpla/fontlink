@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FontLink\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-13 18:06+0300\n"
+"PO-Revision-Date: 2015-05-12 23:54+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: fontlink/app.py:28
+msgid "Show version number and exit"
+msgstr "Показати номер версії та вийти"
+
+#: fontlink/app.py:31
+msgid "Start minimized to the notification area"
+msgstr "Запускати згорнутим до області сповіщень"
+
+#: fontlink/dialogs.py:25 fontlink.desktop.in.h:1
+msgid "Install fonts temporarily"
+msgstr "Встановлюйте шрифти тимчасово"
+
+#: fontlink/dialogs.py:41
+msgid "_Cancel"
+msgstr "_Скасувати"
+
+#: fontlink/dialogs.py:42
+msgid "_Open"
+msgstr "_Відкрити"
+
+#: fontlink/dialogs.py:70 fontlink/fontlib.py:239
+msgid "Fonts"
+msgstr "Шрифти"
+
+#: fontlink/dialogs.py:75
+msgid "Choose fonts"
+msgstr "Виберіть шрифти"
+
+#: fontlink/fontlib.py:89
+msgid "Already installed in:"
+msgstr "Вже встановлений в:"
+
+#: fontlink/fontlib.py:188
+msgid "New set"
+msgstr "Новий набір"
+
+#: fontlink/fontlib.py:250
+msgid "Add fonts…"
+msgstr "Додати шрифти…"
+
+#: fontlink/fontlib.py:257
+msgid "Remove selected fonts"
+msgstr "Вилучити вибрані шрифти"
+
+#: fontlink/fontlib.py:280
+msgid "Remove selected fonts from the set?"
+msgstr "Вилучити вибрані шрифти з набору?"
+
+#: fontlink/fontlib.py:356
+msgid "Font sets"
+msgstr "Набори шрифтів"
+
+#: fontlink/fontlib.py:365
+msgid "Create new set"
+msgstr "Створити новий набір"
+
+#: fontlink/fontlib.py:372
+msgid "Delete set"
+msgstr "Видалити набір"
+
+#: fontlink/fontlib.py:432
+msgid "Delete “{}”?"
+msgstr "Видалити «{}»?"
+
+#: fontlink/tray.py:23
+msgid "Show FontLink"
+msgstr "Показати FontLink"
+
+#: fontlink/tray.py:30 fontlink/window.py:98
+msgid "About"
+msgstr "Про програму"
+
+#: fontlink/tray.py:35 fontlink/window.py:83
+msgid "Quit"
+msgstr "Вийти"
+
+#: fontlink/window.py:77
+msgid "_File"
+msgstr "_Файл"
+
+#: fontlink/window.py:92
+msgid "_Help"
+msgstr "_Довідка"

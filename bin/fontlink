@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+# Copyright (c) 2015 Daniel Plachotich
+#
+# This software is provided 'as-is', without any express or implied
+# warranty. In no event will the authors be held liable for any damages
+# arising from the use of this software.
+#
+# Permission is granted to anyone to use this software for any purpose,
+# including commercial applications, and to alter it and redistribute it
+# freely, subject to the following restrictions:
+#
+# 1. The origin of this software must not be misrepresented; you must not
+# claim that you wrote the original software. If you use this software
+# in a product, an acknowledgement in the product documentation would be
+# appreciated but is not required.
+# 2. Altered source versions must be plainly marked as such, and must not be
+# misrepresented as being the original software.
+# 3. This notice may not be removed or altered from any source distribution.
+
+import os
+import sys
+
+from gi.repository import Gtk
+
+sys.path.insert(0, os.path.join(os.sep, 'usr', 'share'))
+
+# Support running uninstalled.
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+uninstalled = os.path.isdir(os.path.join(path, 'fontlink'))
+if uninstalled:
+    sys.path.insert(0, path)
+
+from fontlink.app import FontLink
+
+if uninstalled:
+    # Setup custom icon path.
+    from fontlink import conf
+    conf.ICON_DIR = os.path.join(path, 'data', 'icons')
+    Gtk.IconTheme.get_default().prepend_search_path(conf.ICON_DIR)
+
+app = FontLink()
+app.run(sys.argv)

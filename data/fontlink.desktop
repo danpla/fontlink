@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=FontLink
+Exec=fontlink
+Icon=fontlink
+Categories=Utility;
+Terminal=false
+Comment=Install fonts temporarily
+Comment[ru]=Устанавливайте шрифты временно
+Comment[uk]=Встановлюйте шрифти тимчасово
