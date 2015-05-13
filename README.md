@@ -7,7 +7,7 @@ As you might guess from the name, it uses mechanism of symbolic links
 to perform fast "fake" installation without actual copying/deleting font files.
 
 FontLink allows you to:
-* Quickly install certain fonts only when you really need them, so you don't
+* Quickly install certain fonts only when you really need them. You don't
   need to copy, symlink or delete fonts by hand anymore.
 * Group fonts into sets (for example, one set per project).
 * Enable and disable certain fonts or whole sets in a single click.
@@ -21,7 +21,7 @@ FontLink's interface is pretty simple: list of font sets on the left side and
 font list of selected set on the right. Each list has toolbar to manipulate
 it's items.
 
-Sets can be renamed by double click and reordered by mouse drag with Shift
+Sets can be renamed by double click and reordered by dragging with Shift
 pressed. Toggling checkbox will change state of all fonts in the set.
 
 Besides using toolbar button, fonts can be added by drag-and-drop. You can drop
