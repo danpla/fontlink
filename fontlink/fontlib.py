@@ -217,7 +217,6 @@ class FontList(Gtk.Box):
 
         self._selection = self._font_list.get_selection()
         self._selection.set_mode(Gtk.SelectionMode.MULTIPLE)
-        #self._selection.connect('changed', self._on_selection_changed)
 
         scrolled = Gtk.ScrolledWindow(shadow_type=Gtk.ShadowType.IN)
         scrolled.set_size_request(250, -1)
