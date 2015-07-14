@@ -61,7 +61,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.paned.set_position(
             settings.get('splitter_position', self.paned.get_position()))
-        self.sets.selected_set = settings.get('selected_set', 0)
+        self.sets.selected_set = max(0, settings.get('selected_set', 1) - 1)
 
         if not minimized:
             self.show()
@@ -128,7 +128,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_window_destroy(self, window):
         self.sets.save_sets()
-        settings['selected_set'] = self.sets.selected_set
+        settings['selected_set'] = self.sets.selected_set + 1
         settings['splitter_position'] = self.paned.get_position()
         settings['window_x'], settings['window_y'] = self.get_position()
         settings['window_width'], settings['window_height'] = self.get_size()
