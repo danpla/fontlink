@@ -17,7 +17,7 @@ class MainWindow(Gtk.ApplicationWindow):
         super().__init__(title=app_info.TITLE, application=app)
 
         self.connect('window-state-event', self._on_window_state_event)
-        self.connect('delete-event', self._on_window_delete)
+        self.connect('destroy', self._on_window_destroy)
 
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
@@ -126,7 +126,7 @@ class MainWindow(Gtk.ApplicationWindow):
         settings['window_maximized'] = bool(
             event.new_window_state & Gdk.WindowState.MAXIMIZED)
 
-    def _on_window_delete(self, window, event):
+    def _on_window_destroy(self, window):
         self.sets.save_sets()
         settings['selected_set'] = self.sets.selected_set
         settings['splitter_position'] = self.paned.get_position()

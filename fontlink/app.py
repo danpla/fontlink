@@ -1,4 +1,6 @@
 
+import signal
+
 from gi.repository import Gio, Gtk, GLib
 
 from . import app_info
@@ -34,6 +36,8 @@ class FontLink(Gtk.Application):
         self.window = None
         self.minimized = False
         self.first_activation = True
+
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.quit)
 
     def _make_option(self, long_name, short_name, description, flags=0,
                      arg=GLib.OptionArg.NONE, arg_data=None,
@@ -76,6 +80,7 @@ class FontLink(Gtk.Application):
         self.first_activation = False
 
     def do_shutdown(self):
+        self.window.destroy() # Force 'destroy' event to save options
         settings.save()
         Gtk.Application.do_shutdown(self)
 
