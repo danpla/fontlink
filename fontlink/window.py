@@ -16,8 +16,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, app, minimized=False):
         super().__init__(title=app_info.TITLE, application=app)
 
+        self._app = app
         self.connect('window-state-event', self._on_window_state_event)
-        self.connect('destroy', self._on_window_destroy)
+        self.connect('delete-event', self._on_delete_event)
 
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
@@ -34,7 +35,6 @@ class MainWindow(Gtk.ApplicationWindow):
         box.pack_start(self.paned, True, True, 0)
 
         self.sets = fontlib.SetList()
-        self.sets.load_sets()
         self.fonts = fontlib.FontList(self.sets)
         self.paned.pack1(self.sets, False, False)
         self.paned.pack2(self.fonts, True, False)
@@ -48,20 +48,6 @@ class MainWindow(Gtk.ApplicationWindow):
         action.connect('activate', self._visibility_cb)
         action.connect('change_state', self._toggle_visibility_cb)
         self.add_action(action)
-
-        try:
-            if settings['window_maximized']:
-                self.maximize()
-            else:
-                self.move(settings['window_x'], settings['window_y'])
-                self.resize(
-                    settings['window_width'], settings['window_height'])
-        except (KeyError, TypeError):
-            pass
-
-        self.paned.set_position(
-            settings.get('splitter_position', self.paned.get_position()))
-        self.sets.selected_set = max(0, settings.get('selected_set', 1) - 1)
 
         if not minimized:
             self.show()
@@ -126,9 +112,32 @@ class MainWindow(Gtk.ApplicationWindow):
         settings['window_maximized'] = bool(
             event.new_window_state & Gdk.WindowState.MAXIMIZED)
 
-    def _on_window_destroy(self, window):
+    def _on_delete_event(self, window, event):
+        self._app.quit()
         self.sets.save_sets()
         settings['selected_set'] = self.sets.selected_set + 1
         settings['splitter_position'] = self.paned.get_position()
+
+    def save_state(self):
+        self.sets.save_sets()
+        settings['selected_set'] = self.sets.selected_set + 1
+
+        settings['splitter_position'] = self.paned.get_position()
         settings['window_x'], settings['window_y'] = self.get_position()
         settings['window_width'], settings['window_height'] = self.get_size()
+
+    def load_state(self):
+        try:
+            if settings['window_maximized']:
+                self.maximize()
+            else:
+                self.move(settings['window_x'], settings['window_y'])
+                self.resize(
+                    settings['window_width'], settings['window_height'])
+        except (KeyError, TypeError):
+            pass
+        self.paned.set_position(
+            settings.get('splitter_position', self.paned.get_position()))
+
+        self.sets.load_sets()
+        self.sets.selected_set = max(0, settings.get('selected_set', 1) - 1)

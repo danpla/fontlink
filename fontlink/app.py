@@ -72,6 +72,7 @@ class FontLink(Gtk.Application):
 
         Gtk.Window.set_default_icon_name(app_info.ICON)
         self.window = window.MainWindow(self, self.minimized)
+        self.window.load_state()
 
     def do_activate(self):
         if self.window and not self.first_activation:
@@ -79,10 +80,10 @@ class FontLink(Gtk.Application):
                 'minimized', GLib.Variant.new_boolean(True))
         self.first_activation = False
 
-    def do_shutdown(self):
-        self.window.destroy() # Force 'destroy' event to save options
+    def quit(self):
+        self.window.save_state()
         settings.save()
-        Gtk.Application.do_shutdown(self)
+        super().quit()
 
     # Action callbacks.
 
