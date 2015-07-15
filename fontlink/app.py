@@ -7,6 +7,7 @@ from . import app_info
 from .conf import _
 from . import dialogs
 from . import window
+from . import tray
 from .settings import settings
 
 
@@ -71,13 +72,16 @@ class FontLink(Gtk.Application):
             self.add_action(action)
 
         Gtk.Window.set_default_icon_name(app_info.ICON)
-        self.window = window.MainWindow(self, self.minimized)
+        self.window = window.MainWindow(self)
         self.window.load_state()
+        if not self.minimized:
+            self.window.show()
+
+        self.tray = tray.Tray(self.window)
 
     def do_activate(self):
-        if self.window and not self.first_activation:
-            self.window.change_action_state(
-                'minimized', GLib.Variant.new_boolean(True))
+        if not self.first_activation and self.window:
+            self.window.present()
         self.first_activation = False
 
     def quit(self):

@@ -16,13 +16,21 @@ class Tray:
             self._indicator.set_icon_theme_path(conf.ICON_DIR)
         self._indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
-        menu = Gtk.Menu()
-        menu.attach_to_widget(window)
+        self._window = window
 
-        mi_visibility = Gtk.CheckMenuItem(
-            label=_('Show FontLink'),
-            action_name='win.minimized')
-        menu.append(mi_visibility)
+        menu = Gtk.Menu()
+        self._indicator.set_menu(menu)
+        menu.attach_to_widget(self._window)
+
+        mi_visible = Gtk.CheckMenuItem(
+            label=_('Show FontLink'))
+        mi_visible.set_active(self._window.get_visible())
+        self._window.connect(
+            'hide', lambda w: mi_visible.set_active(False))
+        self._window.connect(
+            'show', lambda w: mi_visible.set_active(True))
+        mi_visible.connect('toggled', self._on_toggle_visibility)
+        menu.append(mi_visible)
 
         menu.append(Gtk.SeparatorMenuItem())
 
@@ -38,4 +46,10 @@ class Tray:
 
         menu.show_all()
 
-        self._indicator.set_menu(menu)
+    def _on_toggle_visibility(self, menu_item):
+        if menu_item.get_active():
+            self._window.deiconify()
+            self._window.present()
+        else:
+            self._window.hide()
+

@@ -5,7 +5,6 @@ from .conf import _
 from .settings import settings
 from . import app_info
 from . import fontlib
-from . import tray
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -13,7 +12,7 @@ class MainWindow(Gtk.ApplicationWindow):
     _DND_URI = 0
     _DND_LIST = [Gtk.TargetEntry.new('text/uri-list', 0, _DND_URI),]
 
-    def __init__(self, app, minimized=False):
+    def __init__(self, app):
         super().__init__(title=app_info.TITLE, application=app)
 
         self._app = app
@@ -40,17 +39,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.paned.pack2(self.fonts, True, False)
 
         box.show_all()
-
-        self.tray = tray.Tray(self)
-
-        action = Gio.SimpleAction.new_stateful(
-            'minimized', None, GLib.Variant.new_boolean(not minimized))
-        action.connect('activate', self._visibility_cb)
-        action.connect('change_state', self._toggle_visibility_cb)
-        self.add_action(action)
-
-        if not minimized:
-            self.show()
 
     def _create_menubar(self):
         ag = Gtk.AccelGroup()
@@ -86,17 +74,6 @@ class MainWindow(Gtk.ApplicationWindow):
         help_menu.append(mi_about)
 
         return menubar
-
-    def _visibility_cb(self, action, parameter):
-        action.change_state(GLib.Variant.new_boolean(not action.get_state()))
-
-    def _toggle_visibility_cb(self, action, state):
-        if state:
-            self.set_visible(True)
-            self.present()
-        else:
-            self.set_visible(False)
-        action.set_state(state)
 
     def _on_drag_data_received(self, widget, context, x, y, selection,
                                target, time):
