@@ -44,7 +44,7 @@ class FontSet(Gtk.ListStore):
         self._fonts = set()
 
         self.set_sort_column_id(self.COL_NAME, Gtk.SortType.ASCENDING)
-        self.connect('row_deleted', self._on_row_deleted)
+        self.connect('row-deleted', self._on_row_deleted)
 
     @GObject.property
     def nactive(self):
@@ -206,7 +206,7 @@ class FontList(Gtk.Box):
     def __init__(self, set_list):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._create_ui()
-        set_list.connect('set_selected', self._on_set_selected)
+        set_list.connect('set-selected', self._on_set_selected)
 
     def _create_ui(self):
         self._font_list = Gtk.TreeView(
@@ -315,7 +315,7 @@ class SetList(Gtk.Box):
 
     __gsignals__ = {
         # Tell FontList to change the set.
-        'set_selected': (
+        'set-selected': (
             GObject.SIGNAL_RUN_FIRST, None, (FontSet,)),
     }
 
@@ -390,7 +390,7 @@ class SetList(Gtk.Box):
         model, tree_iter = selection.get_selected()
         if not tree_iter:
             return
-        self.emit('set_selected', model[tree_iter][SetStore.COL_FONTSTORE])
+        self.emit('set-selected', model[tree_iter][SetStore.COL_FONTSTORE])
 
     def _on_toggled(self, widget, path):
         row = self._set_store[path]

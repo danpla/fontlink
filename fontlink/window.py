@@ -21,7 +21,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
-        self.connect('drag_data_received', self._on_drag_data_received)
+        self.connect('drag-data-received', self._on_drag_data_received)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.add(box)
