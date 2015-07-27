@@ -31,13 +31,13 @@ uninstalled = os.path.isdir(os.path.join(path, 'fontlink'))
 if uninstalled:
     sys.path.insert(0, path)
 
-from fontlink.app import FontLink
-
-if uninstalled:
     # Setup custom icon path.
     from fontlink import conf
     conf.ICON_DIR = os.path.join(path, 'data', 'icons')
     Gtk.IconTheme.get_default().prepend_search_path(conf.ICON_DIR)
+
+
+from fontlink.app import FontLink
 
 app = FontLink()
 app.run(sys.argv)
