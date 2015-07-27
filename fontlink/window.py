@@ -91,9 +91,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_delete_event(self, window, event):
         self._app.quit()
-        self.sets.save_sets()
-        settings['selected_set'] = self.sets.selected_set + 1
-        settings['splitter_position'] = self.paned.get_position()
 
     def save_state(self):
         self.sets.save_sets()
