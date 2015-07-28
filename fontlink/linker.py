@@ -1,7 +1,10 @@
 
-from collections import Counter
+from collections import namedtuple, Counter
 import os
 import atexit
+
+
+Link = namedtuple('Link', 'source target')
 
 
 _refcounter = Counter()
@@ -24,10 +27,9 @@ def unlink(links):
     _refcounter[links] -= 1
     if _refcounter[links] == 0:
         for link in links:
-            link_path = link[1]
-            if os.path.islink(link_path):
+            if os.path.islink(link.target):
                 try:
-                    os.unlink(link_path)
+                    os.unlink(link.target)
                 except OSError:
                     pass
 
@@ -38,9 +40,8 @@ def _remove_links():
         if refcount == 0:
             continue
         for link in links:
-            link_path = link[1]
-            if os.path.islink(link_path):
+            if os.path.islink(link.target):
                 try:
-                    os.unlink(link_path)
+                    os.unlink(link.target)
                 except OSError:
                     pass

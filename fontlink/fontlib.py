@@ -16,8 +16,8 @@ from . import utils
 
 class FontSet(Gtk.ListStore):
 
-    # COL_LINKS is a tuple containing pairs (file_path, link_path).
-    # First pair is always present and describes main font.
+    # COL_LINKS is a tuple of linker.Link.
+    # First pair is always present and describes the main font file.
     # Others (if any) are additional files, like .afm and so on.
     COL_LINKS = 0
     COL_ENABLED = 1
@@ -80,7 +80,7 @@ class FontSet(Gtk.ListStore):
                     font_name in self._fonts):
                 continue
 
-            links = [(path, os.path.join(conf.FONTS_DIR, font_name)),]
+            links = [linker.Link(path, os.path.join(conf.FONTS_DIR, font_name)),]
 
             installed = font_name in conf.INSTALLED_FONTS
             if installed:
@@ -99,8 +99,9 @@ class FontSet(Gtk.ListStore):
                         if (file_root_name == font_root_name and
                                 file_ext.lower() == '.afm'):
                             links.append(
-                                (os.path.join(font_dir, file_name),
-                                 os.path.join(conf.FONTS_DIR, file_name)))
+                                linker.Link(
+                                    os.path.join(font_dir, file_name),
+                                    os.path.join(conf.FONTS_DIR, file_name)))
 
             links = tuple(links)
 
@@ -290,7 +291,8 @@ class FontList(Gtk.Box):
             font_set = font_list.get_model()
             Gtk.show_uri(
                 None,
-                GLib.filename_to_uri(font_set[path][FontSet.COL_LINKS][0][0]),
+                GLib.filename_to_uri(
+                    font_set[path][FontSet.COL_LINKS][0].source),
                 Gdk.CURRENT_TIME)
 
     @property
@@ -442,7 +444,7 @@ class FontLib(Gtk.Paned):
             for font_row in set_row[SetStore.COL_FONTSET]:
                 font = {}
                 font['enabled'] = font_row[FontSet.COL_ENABLED]
-                font['path'] = font_row[FontSet.COL_LINKS][0][0]
+                font['path'] = font_row[FontSet.COL_LINKS][0].source
                 fonts.append(font)
             font_set['fonts'] = fonts
 
