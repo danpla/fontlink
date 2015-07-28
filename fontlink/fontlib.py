@@ -185,6 +185,11 @@ class SetStore(Gtk.ListStore):
             object,
             )
 
+    def _notify_nactive(self, font_set, gproperty):
+        for row in self:
+            if row[self.COL_FONTSTORE] == font_set:
+                row[self.COL_NACTIVE] = row[self.COL_FONTSTORE].nactive
+
     def add_set(self, name=_('New set'), insert_after=None):
         all_names = [row[self.COL_NAME] for row in self]
         name = utils.unique_name(name, all_names)
@@ -194,10 +199,6 @@ class SetStore(Gtk.ListStore):
 
         tree_iter = self.insert_after(insert_after, (0, name, font_set))
         return tree_iter
-
-    def _notify_nactive(self, gobject, gproperty):
-        for row in self:
-            row[self.COL_NACTIVE] = row[self.COL_FONTSTORE].nactive
 
 
 class FontList(Gtk.Box):
