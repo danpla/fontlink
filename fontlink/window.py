@@ -29,14 +29,8 @@ class MainWindow(Gtk.ApplicationWindow):
         main_menu = self._create_menubar()
         box.pack_start(main_menu, False, True, 0)
 
-        self.paned = Gtk.Paned()
-        self.paned.set_size_request(500, 250)
-        box.pack_start(self.paned, True, True, 0)
-
-        self.sets = fontlib.SetList()
-        self.fonts = fontlib.FontList(self.sets)
-        self.paned.pack1(self.sets, False, False)
-        self.paned.pack2(self.fonts, True, False)
+        self.library = fontlib.FontLib()
+        box.pack_start(self.library, True, True, 0)
 
         box.show_all()
 
@@ -78,12 +72,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def _on_drag_data_received(self, widget, context, x, y, selection,
                                target, time):
         if target == self._DND_URI:
-            font_set = self.fonts.font_set
-            if not font_set:
-                return
             paths = (GLib.filename_from_uri(uri)[0] for uri in
                      selection.get_uris() if uri.startswith('file://'))
-            font_set.add_fonts(paths)
+            self.library.add_fonts(paths)
 
     def _on_window_state_event(self, widget, event):
         settings['window_maximized'] = bool(
@@ -93,10 +84,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._app.quit()
 
     def save_state(self):
-        self.sets.save_sets()
-        settings['selected_set'] = self.sets.selected_set + 1
+        self.library.save_state()
 
-        settings['splitter_position'] = self.paned.get_position()
         settings['window_x'], settings['window_y'] = self.get_position()
         settings['window_width'], settings['window_height'] = self.get_size()
 
@@ -110,8 +99,5 @@ class MainWindow(Gtk.ApplicationWindow):
                     settings['window_width'], settings['window_height'])
         except (KeyError, TypeError):
             pass
-        self.paned.set_position(
-            settings.get('splitter_position', self.paned.get_position()))
 
-        self.sets.load_sets()
-        self.sets.selected_set = max(0, settings.get('selected_set', 1) - 1)
+        self.library.load_state()

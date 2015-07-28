@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk, GObject, GLib
 from .conf import _
 from . import conf
 from . import common
+from .settings import settings
 from . import dialogs
 from . import linker
 from . import utils
@@ -61,7 +62,7 @@ class FontSet(Gtk.ListStore):
         self.notify('nactive')
 
     def add_fonts(self, items):
-        '''Add fonts in the set.
+        '''Add fonts to the set.
 
         items - list containing paths and/or pairs (state, path).
         '''
@@ -202,12 +203,11 @@ class SetStore(Gtk.ListStore):
 
 
 class FontList(Gtk.Box):
-    '''FontList shows and manages currently selected FontSet.'''
+    '''FontList shows and manages fonts of the selected FontSet.'''
 
-    def __init__(self, set_list):
+    def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._create_ui()
-        set_list.connect('set-selected', self._on_set_selected)
 
     def _create_ui(self):
         self._font_list = Gtk.TreeView(
@@ -294,12 +294,8 @@ class FontList(Gtk.Box):
                 GLib.filename_to_uri(model[path][FontSet.COL_LINKS][0][0]),
                 Gdk.CURRENT_TIME)
 
-    def _on_set_selected(self, gobject, font_set):
-        self.font_set = font_set
-
     @property
     def font_set(self):
-        '''Assigned FontSet.'''
         return self._font_list.get_model()
 
     @font_set.setter
@@ -308,24 +304,19 @@ class FontList(Gtk.Box):
         self._font_list.set_search_column(FontSet.COL_NAME)
 
 
-class SetList(Gtk.Box):
-    '''SetList shows and manages SetStore.
-
-    It will be associated with FontList that will show currently selected set.
-    '''
-
-    __gsignals__ = {
-        # Tell FontList to change the set.
-        'set-selected': (
-            GObject.SIGNAL_RUN_FIRST, None, (FontSet,)),
-    }
+class FontLib(Gtk.Paned):
 
     def __init__(self):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+        super().__init__()
+        self.set_size_request(500, 250)
+
         self._set_store = SetStore()
+        self._font_list = FontList()
         self._create_ui()
 
     def _create_ui(self):
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
         self._set_list = Gtk.TreeView(
             model=self._set_store,
             headers_visible=False,
@@ -339,7 +330,7 @@ class SetList(Gtk.Box):
         scrolled = Gtk.ScrolledWindow(shadow_type=Gtk.ShadowType.IN)
         scrolled.set_size_request(150, -1)
         scrolled.add(self._set_list)
-        self.pack_start(scrolled, True, True, 0)
+        box.pack_start(scrolled, True, True, 0)
 
         # Columns.
 
@@ -359,7 +350,7 @@ class SetList(Gtk.Box):
         # Toolbar.
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.MENU)
-        self.pack_start(toolbar, False, True, 0)
+        box.pack_start(toolbar, False, True, 0)
 
         btn_new = Gtk.ToolButton(
             label=_('Create new set'),
@@ -374,6 +365,9 @@ class SetList(Gtk.Box):
         btn_delete.set_tooltip_text(btn_delete.get_label())
         btn_delete.connect('clicked', self._on_delete)
         toolbar.add(btn_delete)
+
+        self.pack1(box, False, False)
+        self.pack2(self._font_list, True, False)
 
     def _toggle_cell_data_func(self, column, cell, model, tree_iter, data):
         active_fonts = model[tree_iter][SetStore.COL_NACTIVE]
@@ -391,7 +385,7 @@ class SetList(Gtk.Box):
         model, tree_iter = selection.get_selected()
         if not tree_iter:
             return
-        self.emit('set-selected', model[tree_iter][SetStore.COL_FONTSTORE])
+        self._font_list.font_set = model[tree_iter][SetStore.COL_FONTSTORE]
 
     def _on_toggled(self, widget, path):
         row = self._set_store[path]
@@ -439,16 +433,7 @@ class SetList(Gtk.Box):
             model.add_set()
             self.selected_set = 0
 
-    @property
-    def selected_set(self):
-        '''Currently selected set.'''
-        return self._set_list.get_cursor()[0][0]
-
-    @selected_set.setter
-    def selected_set(self, num):
-        self._set_list.set_cursor(num)
-
-    def save_sets(self):
+    def _save_sets(self):
         font_sets = []
         for set_row in self._set_store:
             font_set = OrderedDict()
@@ -470,7 +455,7 @@ class SetList(Gtk.Box):
         except OSError:
             pass
 
-    def load_sets(self):
+    def _load_sets(self):
         try:
             with open(conf.SETS_FILE, 'r', encoding='utf-8') as f:
                 user_sets = json.load(f)
@@ -486,3 +471,23 @@ class SetList(Gtk.Box):
 
         if len(self._set_store) == 0:
             self._set_store.add_set()
+
+    def add_fonts(self, paths):
+        '''Add fonts to the currently selected set.'''
+        font_set = self._font_list.font_set
+        if not font_set:
+            return
+        font_set.add_fonts(paths)
+
+    def save_state(self):
+        settings['splitter_position'] = self.get_position()
+
+        settings['selected_set'] = self._set_list.get_cursor()[0][0] + 1
+        self._save_sets()
+
+    def load_state(self):
+        self.set_position(
+            settings.get('splitter_position', self.get_position()))
+
+        self._load_sets()
+        self._set_list.set_cursor(max(0, settings.get('selected_set', 1) - 1))
