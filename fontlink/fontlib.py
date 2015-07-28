@@ -57,7 +57,7 @@ class FontSet(Gtk.ListStore):
             if row[self.COL_ENABLED]:
                 self._nactive += 1
 
-    def _on_row_deleted(self, model, path):
+    def _on_row_deleted(self, font_set, path):
         self._count_active()
         self.notify('nactive')
 
@@ -121,7 +121,7 @@ class FontSet(Gtk.ListStore):
         '''
         if not tree_paths:
             for row in self:
-                if row[self.COL_ENABLED] and row[self.COL_LINKED]:
+                if row[self.COL_LINKED] and row[self.COL_ENABLED]:
                     linker.unlink(row[self.COL_LINKS])
             self._fonts.clear()
             self.clear()
@@ -139,9 +139,9 @@ class FontSet(Gtk.ListStore):
         row = self[tree_path]
         if not row[self.COL_LINKED]:
             return
+
         new_state = not row[self.COL_ENABLED]
         row[self.COL_ENABLED] = new_state
-
         if new_state:
             linker.link(row[self.COL_LINKS])
             self._nactive += 1
@@ -178,7 +178,7 @@ class SetStore(Gtk.ListStore):
 
     COL_NACTIVE = 0
     COL_NAME = 1
-    COL_FONTSTORE = 2
+    COL_FONTSET = 2
 
     def __init__(self):
         super().__init__(
@@ -189,8 +189,8 @@ class SetStore(Gtk.ListStore):
 
     def _notify_nactive(self, font_set, gproperty):
         for row in self:
-            if row[self.COL_FONTSTORE] == font_set:
-                row[self.COL_NACTIVE] = row[self.COL_FONTSTORE].nactive
+            if row[self.COL_FONTSET] == font_set:
+                row[self.COL_NACTIVE] = row[self.COL_FONTSET].nactive
 
     def add_set(self, name=_('New set'), insert_after=None):
         all_names = [row[self.COL_NAME] for row in self]
@@ -239,7 +239,6 @@ class FontList(Gtk.Box):
         col_name = Gtk.TreeViewColumn(
             _('Fonts'), name, text=FontSet.COL_NAME)
         col_name.set_sort_column_id(FontSet.COL_NAME)
-        self._col_name = col_name
         self._font_list.append_column(col_name)
 
         # Toolbar.
@@ -265,34 +264,33 @@ class FontList(Gtk.Box):
         toolbar.add(btn_remove)
 
     def _on_add(self, button):
-        model = self._font_list.get_model()
-        if not model:
+        font_set = self._font_list.get_model()
+        if not font_set:
             return
 
-        fonts = dialogs.open_fonts()
-        if not fonts:
+        paths = dialogs.open_fonts()
+        if not paths:
             return
-        model.add_fonts(fonts)
+        font_set.add_fonts(paths)
 
     def _on_remove(self, button):
-        model, paths = self._selection.get_selected_rows()
-        if (not paths or
-                not dialogs.yesno(
+        font_set, tree_paths = self._selection.get_selected_rows()
+        if (tree_paths and
+                dialogs.yesno(
                     _('Remove selected fonts from the set?'),
                     self.get_toplevel())):
-            return
-        model.remove_fonts(paths)
+            font_set.remove_fonts(tree_paths)
 
-    def _on_toggled(self, widget, path):
-        model = self._font_list.get_model()
-        model.toggle_state(path)
+    def _on_toggled(self, cell_toggle, path):
+        font_set = self._font_list.get_model()
+        font_set.toggle_state(path)
 
-    def _on_row_activated(self, treeview, path, column):
-        if column == self._col_name:
-            model = treeview.get_model()
+    def _on_row_activated(self, font_list, path, column):
+        if column == font_list.get_column(SetStore.COL_NAME):
+            font_set = font_list.get_model()
             Gtk.show_uri(
                 None,
-                GLib.filename_to_uri(model[path][FontSet.COL_LINKS][0][0]),
+                GLib.filename_to_uri(font_set[path][FontSet.COL_LINKS][0][0]),
                 Gdk.CURRENT_TIME)
 
     @property
@@ -370,31 +368,31 @@ class FontLib(Gtk.Paned):
         self.pack1(box, False, False)
         self.pack2(self._font_list, True, False)
 
-    def _toggle_cell_data_func(self, column, cell, model, tree_iter, data):
-        active_fonts = model[tree_iter][SetStore.COL_NACTIVE]
+    def _toggle_cell_data_func(self, column, cell, set_store, tree_iter, data):
+        active_fonts = set_store[tree_iter][SetStore.COL_NACTIVE]
 
         if active_fonts == 0:
             cell.props.inconsistent = False
             cell.props.active = False
-        elif active_fonts == len(model[tree_iter][SetStore.COL_FONTSTORE]):
+        elif active_fonts == len(set_store[tree_iter][SetStore.COL_FONTSET]):
             cell.props.inconsistent = False
             cell.props.active = True
         else:
             cell.props.inconsistent = True
 
     def _on_selection_changed(self, selection):
-        model, tree_iter = selection.get_selected()
+        set_store, tree_iter = selection.get_selected()
         if not tree_iter:
             return
-        self._font_list.font_set = model[tree_iter][SetStore.COL_FONTSTORE]
+        self._font_list.font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
-    def _on_toggled(self, widget, path):
+    def _on_toggled(self, cell_toggle, path):
         row = self._set_store[path]
-        row[SetStore.COL_FONTSTORE].set_state_all(
-            row[SetStore.COL_NACTIVE] < len(row[SetStore.COL_FONTSTORE]))
+        row[SetStore.COL_FONTSET].set_state_all(
+            row[SetStore.COL_NACTIVE] < len(row[SetStore.COL_FONTSET]))
 
-    def _on_name_edited(self, widget, path, text):
-        new_name = text.strip()
+    def _on_name_edited(self, cell_text, path, new_text):
+        new_name = new_text.strip()
         if not new_name:
             return
 
@@ -408,31 +406,31 @@ class FontLib(Gtk.Paned):
         self._set_store[path][SetStore.COL_NAME] = new_name
 
     def _on_new(self, button):
-        model, tree_iter = self._selection.get_selected()
-        tree_iter = self._set_store.add_set(insert_after=tree_iter)
+        set_store, tree_iter = self._selection.get_selected()
+        tree_iter = set_store.add_set(insert_after=tree_iter)
 
         # Start edit name right now.
-        path = self._set_store.get_path(tree_iter)
+        path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(SetStore.COL_NAME)
         self._set_list.set_cursor(path, column, True)
 
     def _on_delete(self, button):
-        model, tree_iter = self._selection.get_selected()
+        set_store, tree_iter = self._selection.get_selected()
         if not tree_iter:
             return
 
-        fonts = model[tree_iter][SetStore.COL_FONTSTORE]
+        fonts = set_store[tree_iter][SetStore.COL_FONTSET]
         if len(fonts) != 0:
-            set_name = model[tree_iter][SetStore.COL_NAME]
+            set_name = set_store[tree_iter][SetStore.COL_NAME]
             if not dialogs.yesno(_('Delete “{}”?').format(set_name),
                                  self.get_toplevel()):
                 return
             fonts.remove_fonts()
 
-        model.remove(tree_iter)
-        if len(model) == 0:
-            model.add_set()
-            self.selected_set = 0
+        set_store.remove(tree_iter)
+        if len(set_store) == 0:
+            set_store.add_set()
+            self._set_list.set_cursor(0)
 
     def _save_sets(self):
         font_sets = []
@@ -441,7 +439,7 @@ class FontLib(Gtk.Paned):
             font_set['name'] = set_row[SetStore.COL_NAME]
 
             fonts = []
-            for font_row in set_row[SetStore.COL_FONTSTORE]:
+            for font_row in set_row[SetStore.COL_FONTSET]:
                 font = {}
                 font['enabled'] = font_row[FontSet.COL_ENABLED]
                 font['path'] = font_row[FontSet.COL_LINKS][0][0]
@@ -464,7 +462,7 @@ class FontLib(Gtk.Paned):
             tree_iter = None
             for user_set in user_sets:
                 tree_iter = self._set_store.add_set(user_set['name'], tree_iter)
-                font_set = self._set_store[tree_iter][SetStore.COL_FONTSTORE]
+                font_set = self._set_store[tree_iter][SetStore.COL_FONTSET]
                 font_set.add_fonts(
                     ((f['enabled'], f['path']) for f in user_set['fonts']))
         except (KeyError, ValueError, OSError):

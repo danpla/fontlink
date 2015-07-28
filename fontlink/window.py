@@ -1,5 +1,5 @@
 
-from gi.repository import Gtk, Gdk, Gio, GLib
+from gi.repository import Gtk, Gdk, GLib
 
 from .conf import _
 from .settings import settings
@@ -69,14 +69,14 @@ class MainWindow(Gtk.ApplicationWindow):
 
         return menubar
 
-    def _on_drag_data_received(self, widget, context, x, y, selection,
+    def _on_drag_data_received(self, window, context, x, y, selection,
                                target, time):
         if target == self._DND_URI:
-            paths = (GLib.filename_from_uri(uri)[0] for uri in
-                     selection.get_uris() if uri.startswith('file://'))
-            self.library.add_fonts(paths)
+            self.library.add_fonts(
+                (GLib.filename_from_uri(uri)[0] for uri in
+                 selection.get_uris() if uri.startswith('file://')))
 
-    def _on_window_state_event(self, widget, event):
+    def _on_window_state_event(self, window, event):
         settings['window_maximized'] = bool(
             event.new_window_state & Gdk.WindowState.MAXIMIZED)
 

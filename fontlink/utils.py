@@ -1,6 +1,6 @@
 
 def ext_to_glob(extension):
-    '''Creates case-insensetive search pattern from file extension.
+    '''Create case-insensetive search pattern from file extension.
 
     Extension can contain leading dot.
 
@@ -14,7 +14,7 @@ def ext_to_glob(extension):
 
 
 def unique_name(name, all_names):
-    '''Makes the name unique by appending "#n" at the end.'''
+    '''Make the name unique by appending "#n" at the end.'''
 
     if name in all_names:
         head, sep, tail = name.rpartition('#')

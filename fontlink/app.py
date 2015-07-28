@@ -63,7 +63,6 @@ class FontLink(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
-
         settings.load()
 
         for name in self.__actions:
