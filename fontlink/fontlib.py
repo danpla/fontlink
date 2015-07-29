@@ -15,6 +15,17 @@ from . import linker
 from . import utils
 
 
+def _watch_nactive(method):
+    '''Automatically notify if FontSet.nactive was changed by method.'''
+    @wraps(method)
+    def wrapper(font_set, *args, **kwargs):
+        nactive_before = font_set.nactive
+        method(font_set, *args, **kwargs)
+        if font_set.nactive != nactive_before:
+            font_set.notify('nactive')
+    return wrapper
+
+
 class FontSet(Gtk.ListStore):
 
     # COL_LINKS is a tuple of linker.Link.
@@ -51,15 +62,6 @@ class FontSet(Gtk.ListStore):
     def nactive(self):
         '''Number of currently active (linked) fonts.'''
         return self._nactive
-
-    def _watch_nactive(method):
-        @wraps(method)
-        def wrapper(self, *args, **kwargs):
-            nactive_before = self._nactive
-            method(self, *args, **kwargs)
-            if self._nactive != nactive_before:
-                self.notify('nactive')
-        return wrapper
 
     @_watch_nactive
     def add_fonts(self, items):
