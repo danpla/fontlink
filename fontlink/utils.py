@@ -27,7 +27,7 @@ def unique_name(name, all_names):
         else:
             i = 1
 
-        similar_names = (n for n in all_names if name in n)
+        similar_names = set(n for n in all_names if name in n)
         while True:
             new_name = '{} #{}'.format(name, i)
             if new_name not in similar_names:
