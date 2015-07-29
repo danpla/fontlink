@@ -1,4 +1,5 @@
 
+from functools import wraps
 from collections import OrderedDict
 import json
 import os
@@ -45,22 +46,22 @@ class FontSet(Gtk.ListStore):
         self._fonts = set()
 
         self.set_sort_column_id(self.COL_NAME, Gtk.SortType.ASCENDING)
-        self.connect('row-deleted', self._on_row_deleted)
 
     @GObject.property
     def nactive(self):
+        '''Number of currently active (linked) fonts.'''
         return self._nactive
 
-    def _count_active(self):
-        self._nactive = 0
-        for row in self:
-            if row[self.COL_ENABLED]:
-                self._nactive += 1
+    def _watch_nactive(method):
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+            nactive_before = self._nactive
+            method(self, *args, **kwargs)
+            if self._nactive != nactive_before:
+                self.notify('nactive')
+        return wrapper
 
-    def _on_row_deleted(self, font_set, path):
-        self._count_active()
-        self.notify('nactive')
-
+    @_watch_nactive
     def add_fonts(self, items):
         '''Add fonts to the set.
 
@@ -113,8 +114,7 @@ class FontSet(Gtk.ListStore):
                 if not installed:
                     linker.link(links)
 
-        self.notify('nactive')
-
+    @_watch_nactive
     def remove_fonts(self, tree_paths=None):
         '''Remove fonts from the set.
 
@@ -126,12 +126,14 @@ class FontSet(Gtk.ListStore):
                     linker.unlink(row[self.COL_LINKS])
             self._fonts.clear()
             self.clear()
+            self._nactive = 0
             return
 
         for tree_path in reversed(tree_paths):
             row = self[tree_path]
             if row[self.COL_ENABLED] and row[self.COL_LINKED]:
                 linker.unlink(row[self.COL_LINKS])
+                self._nactive -= 1
             self._fonts.remove(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
 
@@ -152,6 +154,7 @@ class FontSet(Gtk.ListStore):
 
         self.notify('nactive')
 
+    @_watch_nactive
     def set_state_all(self, state):
         '''Set the state for all fonts in the set.'''
         for row in self:
@@ -166,8 +169,6 @@ class FontSet(Gtk.ListStore):
                     linker.unlink(row[self.COL_LINKS])
                     self._nactive -= 1
                 row[self.COL_ENABLED] = state
-
-        self.notify('nactive')
 
 
 class SetStore(Gtk.ListStore):
