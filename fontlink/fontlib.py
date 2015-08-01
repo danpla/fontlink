@@ -96,7 +96,7 @@ class FontSet(Gtk.ListStore):
                 tooltip = path
 
                 # Search for .afm .
-                if font_ext.lower().endswith(common.FONT_EXTENSIONS_TYPE1):
+                if font_ext.lower().endswith(common.FONT_EXTENSIONS_PS):
                     for file_name in next(os.walk(font_dir))[2]:
                         file_root_name, file_ext = os.path.splitext(file_name)
                         if (file_root_name == font_root_name and

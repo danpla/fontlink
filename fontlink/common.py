@@ -11,5 +11,5 @@ FONT_EXTENSIONS = (
     '.ps',
     )
 
-# MacBinary (supported by Scribus) may also contain Type 1 fonts.
-FONT_EXTENSIONS_TYPE1 = FONT_EXTENSIONS[FONT_EXTENSIONS.index('.bin'):]
+# MacBinary (supported by Scribus) may also contain PostScript fonts.
+FONT_EXTENSIONS_PS = FONT_EXTENSIONS[FONT_EXTENSIONS.index('.bin'):]
