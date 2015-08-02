@@ -46,6 +46,3 @@ INSTALLED_FONTS = _get_installed_fonts()
 
 gettext.bindtextdomain(app_info.NAME, LOCALE_DIR)
 gettext.textdomain(app_info.NAME)
-
-_ = gettext.gettext
-ngettext = gettext.ngettext

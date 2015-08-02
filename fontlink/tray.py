@@ -1,9 +1,10 @@
 
+from gettext import gettext as _
+
 from gi.repository import Gtk, AppIndicator3
 
 from . import app_info
 from . import conf
-from .conf import _
 
 
 class Tray:

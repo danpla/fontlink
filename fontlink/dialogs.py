@@ -1,7 +1,8 @@
 
+from gettext import gettext as _
+
 from gi.repository import Gtk
 
-from .conf import _
 from . import common
 from . import app_info
 from . import utils

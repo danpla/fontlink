@@ -1,7 +1,8 @@
 
+from gettext import gettext as _
+
 from gi.repository import Gtk, Gdk, GLib
 
-from .conf import _
 from .settings import settings
 from . import app_info
 from . import fontlib

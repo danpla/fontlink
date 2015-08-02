@@ -1,4 +1,5 @@
 
+from gettext import gettext as _
 from functools import wraps
 from collections import OrderedDict
 import json
@@ -6,7 +7,6 @@ import os
 
 from gi.repository import Gtk, Gdk, GObject, GLib
 
-from .conf import _
 from . import conf
 from . import common
 from .settings import settings

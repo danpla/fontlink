@@ -1,10 +1,10 @@
 
+from gettext import gettext as _
 import signal
 
 from gi.repository import Gio, Gtk, GLib
 
 from . import app_info
-from .conf import _
 from . import dialogs
 from . import window
 from . import tray
