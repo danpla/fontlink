@@ -264,7 +264,7 @@ class FontList(Gtk.Box):
         btn_remove.connect('clicked', self._on_remove)
         self._selection.connect(
             'changed',
-            lambda s: btn_remove.set_sensitive(bool(s.get_selected_rows()[1])))
+            lambda s: btn_remove.set_sensitive(s.count_selected_rows() > 0))
         toolbar.add(btn_remove)
 
     def _on_add(self, button):
