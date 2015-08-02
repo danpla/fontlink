@@ -10,23 +10,28 @@ Link = namedtuple('Link', 'source target')
 _refcounter = Counter()
 
 
-def link(links):
-    if _refcounter[links] == 0:
-        for link in links:
+def create_links(link_group):
+    '''Create (link) group of linker.Link.
+
+    link_group -- tuple of linker.Link
+    '''
+    if _refcounter[link_group] == 0:
+        for link in link_group:
             try:
                 os.symlink(*link)
             except OSError:
                 pass
-    _refcounter[links] += 1
+    _refcounter[link_group] += 1
 
 
-def unlink(links):
-    if _refcounter[links] == 0:
+def remove_links(link_group):
+    '''Remove (unlink) link group previously linked by create_links.'''
+    if _refcounter[link_group] == 0:
         return
 
-    _refcounter[links] -= 1
-    if _refcounter[links] == 0:
-        for link in links:
+    _refcounter[link_group] -= 1
+    if _refcounter[link_group] == 0:
+        for link in link_group:
             if os.path.islink(link.target):
                 try:
                     os.unlink(link.target)
@@ -35,11 +40,11 @@ def unlink(links):
 
 
 @atexit.register
-def _remove_links():
-    for links, refcount in _refcounter.items():
+def _remove_all_links():
+    for link_group, refcount in _refcounter.items():
         if refcount == 0:
             continue
-        for link in links:
+        for link in link_group:
             if os.path.islink(link.target):
                 try:
                     os.unlink(link.target)

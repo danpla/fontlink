@@ -67,7 +67,7 @@ class FontSet(Gtk.ListStore):
     def add_fonts(self, items):
         '''Add fonts to the set.
 
-        items - list containing paths and/or pairs (state, path).
+        items -- list containing paths and/or pairs (state, path).
         '''
         for item in items:
             if isinstance(item, str):
@@ -114,7 +114,7 @@ class FontSet(Gtk.ListStore):
             if enabled:
                 self._nactive += 1
                 if not installed:
-                    linker.link(links)
+                    linker.create_links(links)
 
     @_watch_nactive
     def remove_fonts(self, tree_paths=None):
@@ -125,7 +125,7 @@ class FontSet(Gtk.ListStore):
         if not tree_paths:
             for row in self:
                 if row[self.COL_LINKED] and row[self.COL_ENABLED]:
-                    linker.unlink(row[self.COL_LINKS])
+                    linker.remove_links(row[self.COL_LINKS])
             self._fonts.clear()
             self.clear()
             self._nactive = 0
@@ -134,7 +134,7 @@ class FontSet(Gtk.ListStore):
         for tree_path in reversed(tree_paths):
             row = self[tree_path]
             if row[self.COL_ENABLED] and row[self.COL_LINKED]:
-                linker.unlink(row[self.COL_LINKS])
+                linker.remove_links(row[self.COL_LINKS])
                 self._nactive -= 1
             self._fonts.remove(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
@@ -148,10 +148,10 @@ class FontSet(Gtk.ListStore):
         new_state = not row[self.COL_ENABLED]
         row[self.COL_ENABLED] = new_state
         if new_state:
-            linker.link(row[self.COL_LINKS])
+            linker.create_links(row[self.COL_LINKS])
             self._nactive += 1
         else:
-            linker.unlink(row[self.COL_LINKS])
+            linker.remove_links(row[self.COL_LINKS])
             self._nactive -= 1
 
         self.notify('nactive')
@@ -165,10 +165,10 @@ class FontSet(Gtk.ListStore):
 
             if row[self.COL_ENABLED] != state:
                 if state:
-                    linker.link(row[self.COL_LINKS])
+                    linker.create_links(row[self.COL_LINKS])
                     self._nactive += 1
                 else:
-                    linker.unlink(row[self.COL_LINKS])
+                    linker.remove_links(row[self.COL_LINKS])
                     self._nactive -= 1
                 row[self.COL_ENABLED] = state
 
