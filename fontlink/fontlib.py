@@ -267,6 +267,15 @@ class FontList(Gtk.Box):
             lambda s: btn_remove.set_sensitive(s.count_selected_rows() > 0))
         toolbar.add(btn_remove)
 
+        btn_clear = Gtk.ToolButton(
+            label=_('Remove all fonts'),
+            icon_name='edit-clear',
+            sensitive=False)
+        btn_clear.set_tooltip_text(btn_clear.get_label())
+        btn_clear.connect('clicked', self._on_clear)
+        self._btn_clear = btn_clear
+        toolbar.add(btn_clear)
+
     def _on_add(self, button):
         font_set = self._font_list.get_model()
         if not font_set:
@@ -276,18 +285,29 @@ class FontList(Gtk.Box):
         if not paths:
             return
         font_set.add_fonts(paths)
+        self._btn_clear.set_sensitive(len(font_set) > 0)
 
     def _on_remove(self, button):
         font_set, tree_paths = self._selection.get_selected_rows()
-        if (tree_paths and
+        if (font_set and tree_paths and
                 dialogs.yesno(
                     _('Remove selected fonts from the set?'),
                     self.get_toplevel())):
             font_set.remove_fonts(tree_paths)
+            self._btn_clear.set_sensitive(len(font_set) > 0)
 
     def _on_toggled(self, cell_toggle, path):
         font_set = self._font_list.get_model()
         font_set.toggle_state(path)
+
+    def _on_clear(self, button):
+        font_set = self._font_list.get_model()
+        if (font_set and
+                dialogs.yesno(
+                    _('Remove all fonts from the set?'),
+                    self.get_toplevel())):
+            font_set.remove_fonts()
+            button.set_sensitive(False)
 
     def _on_row_activated(self, font_list, path, column):
         if column == font_list.get_column(SetStore.COL_NAME):
@@ -305,7 +325,9 @@ class FontList(Gtk.Box):
     @font_set.setter
     def font_set(self, font_set):
         self._font_list.set_model(font_set)
-        self._font_list.set_search_column(FontSet.COL_NAME)
+        if font_set:
+            self._font_list.set_search_column(FontSet.COL_NAME)
+            self._btn_clear.set_sensitive(len(font_set) > 0)
 
 
 class FontLib(Gtk.Paned):
