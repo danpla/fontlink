@@ -17,17 +17,18 @@ FontLink allows you to:
 
 ## Usage
 
-FontLink's interface is pretty simple: list of font sets on the left side and
-font list of selected set on the right. Each list has toolbar to manipulate
+FontLink's interface is pretty simple: font sets on the left side and
+fonts of the selected set on the right. Each list has toolbar to manipulate
 it's items.
 
 Sets can be renamed by double click and reordered by dragging with Shift
 pressed. Toggling checkbox will change state of all fonts in the set.
 
-Besides using toolbar button, fonts can be added by drag-and-drop. You can drop
-fonts anywhere on FontLink window and they will be added in currently
-selected set. Double click on font name will open font in associated
-application (probably, font viewer).
+You can drag-and-drop fonts on the FontLink window to add them in currently
+selected set.
+
+Double click on font will open it in associated application (probably,
+font viewer).
 
 
 ## Tips and tricks
