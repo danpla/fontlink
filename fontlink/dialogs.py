@@ -1,10 +1,12 @@
 
 from gettext import gettext as _
+import os
 
 from gi.repository import Gtk
 
 from . import common
 from . import app_info
+from .settings import settings
 from . import utils
 
 
@@ -37,11 +39,7 @@ def about(parent):
     dialog.destroy()
 
 
-_last_font_folder = None
-
 def open_fonts(parent):
-    global _last_font_folder
-
     font_filter = Gtk.FileFilter()
     font_filter.set_name(_('Fonts'))
     for ext in common.FONT_EXTENSIONS:
@@ -56,15 +54,14 @@ def open_fonts(parent):
         select_multiple=True,
         )
     dialog.add_filter(font_filter)
-    if _last_font_folder:
-        dialog.set_current_folder(_last_font_folder)
+    dialog.set_current_folder(
+        settings.setdefault('last_dir', os.path.expanduser('~')))
 
     if dialog.run() == Gtk.ResponseType.OK:
         font_paths = dialog.get_filenames()
-        _last_font_folder = dialog.get_current_folder()
+        settings['last_dir'] = dialog.get_current_folder()
     else:
         font_paths = []
-        _last_font_folder = None
     dialog.destroy()
 
     return font_paths
