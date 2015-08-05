@@ -281,7 +281,7 @@ class FontList(Gtk.Box):
         if not font_set:
             return
 
-        paths = dialogs.open_fonts()
+        paths = dialogs.open_fonts(self.get_toplevel())
         if not paths:
             return
         font_set.add_fonts(paths)
