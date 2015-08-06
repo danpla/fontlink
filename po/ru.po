@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FontLink\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-03 16:58+0300\n"
-"PO-Revision-Date: 2015-08-03 17:09+0300\n"
+"POT-Creation-Date: 2015-08-06 22:35+0300\n"
+"PO-Revision-Date: 2015-08-06 22:36+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -25,25 +25,25 @@ msgstr "Показать номер версии и выйти"
 msgid "Start minimized to the notification area"
 msgstr "Запустить свернутым в область уведомлений"
 
-#: fontlink/dialogs.py:26 fontlink.desktop.in.h:1
+#: fontlink/dialogs.py:27 fontlink.desktop.in.h:1
 msgid "Install fonts temporarily"
 msgstr "Устанавливайте шрифты временно"
 
-#: fontlink/dialogs.py:42
-msgid "_Cancel"
-msgstr "О_тменить"
-
-#: fontlink/dialogs.py:43
-msgid "_Open"
-msgstr "_Открыть"
-
-#: fontlink/dialogs.py:71 fontlink/fontlib.py:244
+#: fontlink/dialogs.py:44 fontlink/fontlib.py:244
 msgid "Fonts"
 msgstr "Шрифты"
 
-#: fontlink/dialogs.py:76
+#: fontlink/dialogs.py:49
 msgid "Choose fonts"
 msgstr "Выберите шрифты"
+
+#: fontlink/dialogs.py:52
+msgid "_Cancel"
+msgstr "О_тменить"
+
+#: fontlink/dialogs.py:53
+msgid "_Open"
+msgstr "_Открыть"
 
 #: fontlink/fontlib.py:93
 msgid "Already installed in:"
@@ -54,38 +54,58 @@ msgid "New set"
 msgstr "Новый набор"
 
 #: fontlink/fontlib.py:254
+msgid "Add…"
+msgstr "Добавить…"
+
+#: fontlink/fontlib.py:256
 msgid "Add fonts…"
 msgstr "Добавить шрифты…"
 
 #: fontlink/fontlib.py:261
+msgid "Remove"
+msgstr "Удалить"
+
+#: fontlink/fontlib.py:263
 msgid "Remove selected fonts"
 msgstr "Удалить выбранные шрифты"
 
 #: fontlink/fontlib.py:271
+msgid "Remove all"
+msgstr "Удалить все"
+
+#: fontlink/fontlib.py:273
 msgid "Remove all fonts"
 msgstr "Удалить все шрифты"
 
-#: fontlink/fontlib.py:295
+#: fontlink/fontlib.py:294
 msgid "Remove selected fonts from the set?"
 msgstr "Удалить выбранные шрифты из набора?"
 
-#: fontlink/fontlib.py:308
+#: fontlink/fontlib.py:307
 msgid "Remove all fonts from the set?"
 msgstr "Удалить все шрифты из набора?"
 
-#: fontlink/fontlib.py:374
+#: fontlink/fontlib.py:373
 msgid "Font sets"
 msgstr "Наборы шрифтов"
 
-#: fontlink/fontlib.py:383
+#: fontlink/fontlib.py:382
+msgid "Create"
+msgstr "Создать"
+
+#: fontlink/fontlib.py:384
 msgid "Create new set"
 msgstr "Создать новый набор"
 
-#: fontlink/fontlib.py:390
+#: fontlink/fontlib.py:389
+msgid "Delete"
+msgstr "Удалить"
+
+#: fontlink/fontlib.py:391
 msgid "Delete set"
 msgstr "Удалить набор"
 
-#: fontlink/fontlib.py:453
+#: fontlink/fontlib.py:452
 msgid "Delete “{}”?"
 msgstr "Удалить «{}»?"
 

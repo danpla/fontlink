@@ -251,16 +251,16 @@ class FontList(Gtk.Box):
         self.pack_start(toolbar, False, True, 0)
 
         btn_add = Gtk.ToolButton(
-            label=_('Add fonts…'),
-            icon_name='list-add')
-        btn_add.set_tooltip_text(btn_add.get_label())
+            label=_('Add…'),
+            icon_name='list-add',
+            tooltip_text=_('Add fonts…'))
         btn_add.connect('clicked', self._on_add)
         toolbar.add(btn_add)
 
         btn_remove = Gtk.ToolButton(
-            label=_('Remove selected fonts'),
-            icon_name='list-remove')
-        btn_remove.set_tooltip_text(btn_remove.get_label())
+            label=_('Remove'),
+            icon_name='list-remove',
+            tooltip_text=_('Remove selected fonts'))
         btn_remove.connect('clicked', self._on_remove)
         self._selection.connect(
             'changed',
@@ -268,10 +268,10 @@ class FontList(Gtk.Box):
         toolbar.add(btn_remove)
 
         btn_clear = Gtk.ToolButton(
-            label=_('Remove all fonts'),
+            label=_('Remove all'),
             icon_name='edit-clear',
+            tooltip_text=_('Remove all fonts'),
             sensitive=False)
-        btn_clear.set_tooltip_text(btn_clear.get_label())
         btn_clear.connect('clicked', self._on_clear)
         self._btn_clear = btn_clear
         toolbar.add(btn_clear)
@@ -379,16 +379,16 @@ class FontLib(Gtk.Paned):
         box.pack_start(toolbar, False, True, 0)
 
         btn_new = Gtk.ToolButton(
-            label=_('Create new set'),
-            icon_name='document-new')
-        btn_new.set_tooltip_text(btn_new.get_label())
+            label=_('Create'),
+            icon_name='document-new',
+            tooltip_text=_('Create new set'))
         btn_new.connect('clicked', self._on_new)
         toolbar.add(btn_new)
 
         btn_delete = Gtk.ToolButton(
-            label=_('Delete set'),
-            icon_name='edit-delete')
-        btn_delete.set_tooltip_text(btn_delete.get_label())
+            label=_('Delete'),
+            icon_name='edit-delete',
+            tooltip_text=_('Delete set'))
         btn_delete.connect('clicked', self._on_delete)
         toolbar.add(btn_delete)
 
