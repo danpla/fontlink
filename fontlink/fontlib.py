@@ -445,14 +445,13 @@ class FontLib(Gtk.Paned):
         if not tree_iter:
             return
 
-        font_set = set_store[tree_iter][SetStore.COL_FONTSET]
-        if len(font_set) != 0:
-            set_name = set_store[tree_iter][SetStore.COL_NAME]
-            if not dialogs.yesno(_('Delete “{}”?').format(set_name),
-                                 self.get_toplevel()):
-                return
-            font_set.remove_fonts()
+        row = set_store[tree_iter]
+        if not dialogs.yesno(
+                _('Delete “{}”?').format(row[SetStore.COL_NAME]),
+                self.get_toplevel()):
+            return
 
+        row[SetStore.COL_FONTSET].remove_fonts()
         set_store.remove(tree_iter)
         if len(set_store) == 0:
             set_store.add_set()
