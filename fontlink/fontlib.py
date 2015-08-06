@@ -414,9 +414,8 @@ class FontLib(Gtk.Paned):
         self._font_list.font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
     def _on_toggled(self, cell_toggle, path):
-        row = self._set_store[path]
-        row[SetStore.COL_FONTSET].set_state_all(
-            row[SetStore.COL_NACTIVE] < len(row[SetStore.COL_FONTSET]))
+        font_set = self._set_store[path][SetStore.COL_FONTSET]
+        font_set.set_state_all(font_set.nactive < len(font_set))
 
     def _on_name_edited(self, cell_text, path, new_text):
         new_name = new_text.strip()
