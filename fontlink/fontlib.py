@@ -247,7 +247,7 @@ class FontList(Gtk.Box):
 
         # Toolbar.
 
-        toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.MENU)
+        toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
         self.pack_start(toolbar, False, True, 0)
 
         btn_add = Gtk.ToolButton(
@@ -375,7 +375,7 @@ class FontLib(Gtk.Paned):
 
         # Toolbar.
 
-        toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.MENU)
+        toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
         box.pack_start(toolbar, False, True, 0)
 
         btn_new = Gtk.ToolButton(
