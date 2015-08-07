@@ -133,9 +133,10 @@ class FontSet(Gtk.ListStore):
 
         for tree_path in reversed(tree_paths):
             row = self[tree_path]
-            if row[self.COL_ENABLED] and row[self.COL_LINKED]:
-                linker.remove_links(row[self.COL_LINKS])
+            if row[self.COL_ENABLED]:
                 self._nactive -= 1
+                if row[self.COL_LINKED]:
+                    linker.remove_links(row[self.COL_LINKS])
             self._fonts.remove(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
 
