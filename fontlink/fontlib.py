@@ -67,14 +67,14 @@ class FontSet(Gtk.ListStore):
     def add_fonts(self, items):
         '''Add fonts to the set.
 
-        items -- list containing paths and/or pairs (state, path).
+        items -- list containing paths and/or pairs (path, state).
         '''
         for item in items:
             if isinstance(item, str):
-                enabled = True
                 path = item
+                enabled = True
             else:
-                enabled, path = item
+                path, enabled = item
 
             font_dir, font_name = os.path.split(path)
             font_root_name, font_ext = os.path.splitext(font_name)
@@ -83,7 +83,8 @@ class FontSet(Gtk.ListStore):
                     font_name in self._fonts):
                 continue
 
-            links = [linker.Link(path, os.path.join(conf.FONTS_DIR, font_name)),]
+            links = [
+                linker.Link(path, os.path.join(conf.FONTS_DIR, font_name))]
 
             installed = font_name in conf.INSTALLED_FONTS
             if installed:
@@ -196,11 +197,10 @@ class SetStore(Gtk.ListStore):
 
     def _create_tooltip_string(self, font_set):
         return '{}; {}'.format(
-            ngettext(
-                '%d font', '%d fonts', len(font_set)) % len(font_set),
+            ngettext('%d font', '%d fonts', len(font_set)) % len(font_set),
             # Translators: Number of active fonts
-            ngettext('%d active', '%d active', font_set.nactive) %
-                font_set.nactive)
+            ngettext('%d active', '%d active',
+                     font_set.nactive) % font_set.nactive)
 
     def _notify_nactive(self, font_set, gproperty):
         for row in self:
@@ -220,6 +220,29 @@ class SetStore(Gtk.ListStore):
             insert_after,
             (0, name, font_set, self._create_tooltip_string(font_set)))
         return tree_iter
+
+    @property
+    def as_json(self):
+        json_sets = []
+        for set_row in self:
+            fonts = []
+            for font_set in set_row[SetStore.COL_FONTSET]:
+                fonts.append(dict(
+                    enabled=font_set[FontSet.COL_ENABLED],
+                    path=font_set[FontSet.COL_LINKS][0].source
+                    ))
+            json_sets.append(OrderedDict((
+                ('name', set_row[SetStore.COL_NAME]),
+                ('fonts', fonts))))
+        return json_sets
+
+    @as_json.setter
+    def as_json(self, json_sets):
+        tree_iter = None
+        for json_set in json_sets:
+            tree_iter = self.add_set(json_set['name'], tree_iter)
+            self[tree_iter][SetStore.COL_FONTSET].add_fonts(
+                ((f['path'], f['enabled']) for f in json_set['fonts']))
 
 
 class FontList(Gtk.Box):
@@ -473,45 +496,6 @@ class FontLib(Gtk.Paned):
             set_store.add_set()
             self._set_list.set_cursor(0)
 
-    def _save_sets(self):
-        font_sets = []
-        for set_row in self._set_store:
-            font_set = OrderedDict()
-            font_set['name'] = set_row[SetStore.COL_NAME]
-
-            fonts = []
-            for font_row in set_row[SetStore.COL_FONTSET]:
-                font = {}
-                font['enabled'] = font_row[FontSet.COL_ENABLED]
-                font['path'] = font_row[FontSet.COL_LINKS][0].source
-                fonts.append(font)
-            font_set['fonts'] = fonts
-
-            font_sets.append(font_set)
-
-        try:
-            with open(conf.SETS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(font_sets, f, ensure_ascii=False, indent=2)
-        except OSError:
-            pass
-
-    def _load_sets(self):
-        try:
-            with open(conf.SETS_FILE, 'r', encoding='utf-8') as f:
-                user_sets = json.load(f)
-
-            tree_iter = None
-            for user_set in user_sets:
-                tree_iter = self._set_store.add_set(user_set['name'], tree_iter)
-                font_set = self._set_store[tree_iter][SetStore.COL_FONTSET]
-                font_set.add_fonts(
-                    ((f['enabled'], f['path']) for f in user_set['fonts']))
-        except (KeyError, ValueError, OSError):
-            pass
-
-        if len(self._set_store) == 0:
-            self._set_store.add_set()
-
     def add_fonts(self, paths):
         '''Add fonts to the currently selected set.'''
         font_set = self._font_list.font_set
@@ -522,11 +506,23 @@ class FontLib(Gtk.Paned):
         settings['splitter_position'] = self.get_position()
 
         settings['selected_set'] = self._set_list.get_cursor()[0][0] + 1
-        self._save_sets()
+        try:
+            with open(conf.SETS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(
+                    self._set_store.as_json, f, ensure_ascii=False, indent=2)
+        except OSError:
+            pass
 
     def load_state(self):
         self.set_position(
             settings.get('splitter_position', self.get_position()))
 
-        self._load_sets()
+        try:
+            with open(conf.SETS_FILE, 'r', encoding='utf-8') as f:
+                self._set_store.as_json = json.load(f)
+        except (KeyError, ValueError, OSError):
+            pass
+        if len(self._set_store) == 0:
+            self._set_store.add_set()
+
         self._set_list.set_cursor(max(0, settings.get('selected_set', 1) - 1))
