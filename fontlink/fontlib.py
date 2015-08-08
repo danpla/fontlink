@@ -1,5 +1,5 @@
 
-from gettext import gettext as _
+from gettext import gettext as _, ngettext
 from functools import wraps
 from collections import OrderedDict
 import json
@@ -184,18 +184,30 @@ class SetStore(Gtk.ListStore):
     COL_NACTIVE = 0
     COL_NAME = 1
     COL_FONTSET = 2
+    COL_TOOLTIP = 3
 
     def __init__(self):
         super().__init__(
             int,
             str,
             object,
+            str
             )
+
+    def _create_tooltip_string(self, font_set):
+        return '{}; {}'.format(
+            ngettext(
+                '%d font', '%d fonts', len(font_set)) % len(font_set),
+            # Translators: Number of active fonts
+            ngettext('%d active', '%d active', font_set.nactive) %
+                font_set.nactive)
 
     def _notify_nactive(self, font_set, gproperty):
         for row in self:
             if row[self.COL_FONTSET] == font_set:
                 row[self.COL_NACTIVE] = font_set.nactive
+                row[self.COL_TOOLTIP] = self._create_tooltip_string(font_set)
+                break
 
     def add_set(self, name=_('New set'), insert_after=None):
         all_names = [row[self.COL_NAME] for row in self]
@@ -204,7 +216,9 @@ class SetStore(Gtk.ListStore):
         font_set = FontSet()
         font_set.connect('notify::nactive', self._notify_nactive)
 
-        tree_iter = self.insert_after(insert_after, (0, name, font_set))
+        tree_iter = self.insert_after(
+            insert_after,
+            (0, name, font_set, self._create_tooltip_string(font_set)))
         return tree_iter
 
 
@@ -348,7 +362,8 @@ class FontLib(Gtk.Paned):
             model=self._set_store,
             headers_visible=False,
             reorderable=True,
-            search_column=SetStore.COL_NAME)
+            search_column=SetStore.COL_NAME,
+            tooltip_column=SetStore.COL_TOOLTIP)
 
         self._selection = self._set_list.get_selection()
         self._selection.set_mode(Gtk.SelectionMode.BROWSE)

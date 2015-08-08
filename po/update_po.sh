@@ -9,7 +9,7 @@ sed -e '/Comment\[/ d' \
 intltool-extract --quiet --type=gettext/ini fontlink.desktop.in
 
 
-xgettext --files-from=POTFILES.in --from-code=UTF-8  \
+xgettext --files-from=POTFILES.in --from-code=UTF-8 -c \
     -D.. -D. --output=fontlink.pot --keyword=N_ fontlink.desktop.in.h
 
 for i in *.po;

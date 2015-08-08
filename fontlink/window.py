@@ -43,10 +43,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # File.
 
-        mi_file = Gtk.MenuItem.new_with_mnemonic(_('_File'))
-        menubar.append(mi_file)
         file_menu = Gtk.Menu()
+        mi_file = Gtk.MenuItem.new_with_mnemonic(_('_File'))
         mi_file.set_submenu(file_menu)
+        menubar.append(mi_file)
 
         mi_quit = Gtk.MenuItem(
             label=_('Quit'),
@@ -58,10 +58,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # Help.
 
-        mi_help = Gtk.MenuItem.new_with_mnemonic(_('_Help'))
-        menubar.append(mi_help)
         help_menu = Gtk.Menu()
+        mi_help = Gtk.MenuItem.new_with_mnemonic(_('_Help'))
         mi_help.set_submenu(help_menu)
+        menubar.append(mi_help)
 
         mi_about = Gtk.MenuItem(
             label=_('About'),
