@@ -1,16 +1,13 @@
 
-def ext_to_glob(extension):
-    '''Create case-insensetive search pattern from file extension.
-
-    Extension can contain leading dot.
+def string_to_glob(string):
+    '''Create case-insensetive search pattern from the string.
 
     For example:
-        '.otf' => '*.[oO][tT][fF]'
+        '.otf' => '.[oO][tT][fF]'
     '''
-    if extension.startswith('.'):
-        extension = extension[1:]
-    return '*.{}'.format(
-        ''.join('[{}{}]'.format(c.lower(), c.upper()) for c in extension))
+    return ''.join(
+        '[{}{}]'.format(c.lower(), c.upper()) if c.isalpha() else c
+        for c in string)
 
 
 def unique_name(name, all_names):

@@ -42,8 +42,8 @@ def about(parent):
 def open_fonts(parent):
     font_filter = Gtk.FileFilter()
     font_filter.set_name(_('Fonts'))
-    for ext in common.FONT_EXTENSIONS:
-        font_filter.add_pattern(utils.ext_to_glob(ext))
+    for pattern in common.FONT_SEARCH_PATTERNS:
+        font_filter.add_pattern(pattern)
 
     dialog = Gtk.FileChooserDialog(
         _('Choose fonts'),
