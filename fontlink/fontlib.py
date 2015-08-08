@@ -195,7 +195,7 @@ class SetStore(Gtk.ListStore):
     def _notify_nactive(self, font_set, gproperty):
         for row in self:
             if row[self.COL_FONTSET] == font_set:
-                row[self.COL_NACTIVE] = row[self.COL_FONTSET].nactive
+                row[self.COL_NACTIVE] = font_set.nactive
 
     def add_set(self, name=_('New set'), insert_after=None):
         all_names = [row[self.COL_NAME] for row in self]
@@ -397,12 +397,12 @@ class FontLib(Gtk.Paned):
         self.pack2(self._font_list, True, False)
 
     def _toggle_cell_data_func(self, column, cell, set_store, tree_iter, data):
-        active_fonts = set_store[tree_iter][SetStore.COL_NACTIVE]
+        font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
-        if active_fonts == 0:
+        if font_set.nactive == 0:
             cell.props.inconsistent = False
             cell.props.active = False
-        elif active_fonts == len(set_store[tree_iter][SetStore.COL_FONTSET]):
+        elif font_set.nactive == len(font_set):
             cell.props.inconsistent = False
             cell.props.active = True
         else:
@@ -500,9 +500,8 @@ class FontLib(Gtk.Paned):
     def add_fonts(self, paths):
         '''Add fonts to the currently selected set.'''
         font_set = self._font_list.font_set
-        if not font_set:
-            return
-        font_set.add_fonts(paths)
+        if font_set:
+            font_set.add_fonts(paths)
 
     def save_state(self):
         settings['splitter_position'] = self.get_position()
