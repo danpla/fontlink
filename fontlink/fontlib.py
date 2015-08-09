@@ -185,28 +185,18 @@ class SetStore(Gtk.ListStore):
     COL_NACTIVE = 0
     COL_NAME = 1
     COL_FONTSET = 2
-    COL_TOOLTIP = 3
 
     def __init__(self):
         super().__init__(
             int,
             str,
             object,
-            str
             )
-
-    def _create_tooltip_string(self, font_set):
-        return '{}; {}'.format(
-            ngettext('%d font', '%d fonts', len(font_set)) % len(font_set),
-            # Translators: Number of active fonts
-            ngettext('%d active', '%d active',
-                     font_set.nactive) % font_set.nactive)
 
     def _notify_nactive(self, font_set, gproperty):
         for row in self:
             if row[self.COL_FONTSET] == font_set:
                 row[self.COL_NACTIVE] = font_set.nactive
-                row[self.COL_TOOLTIP] = self._create_tooltip_string(font_set)
                 break
 
     def add_set(self, name=_('New set'), insert_after=None):
@@ -216,9 +206,7 @@ class SetStore(Gtk.ListStore):
         font_set = FontSet()
         font_set.connect('notify::nactive', self._notify_nactive)
 
-        tree_iter = self.insert_after(
-            insert_after,
-            (0, name, font_set, self._create_tooltip_string(font_set)))
+        tree_iter = self.insert_after(insert_after, (0, name, font_set))
         return tree_iter
 
     @property
@@ -386,7 +374,8 @@ class FontLib(Gtk.Paned):
             headers_visible=False,
             reorderable=True,
             search_column=SetStore.COL_NAME,
-            tooltip_column=SetStore.COL_TOOLTIP)
+            has_tooltip=True)
+        self._set_list.connect('query-tooltip', self._on_query_tooltip)
 
         self._selection = self._set_list.get_selection()
         self._selection.set_mode(Gtk.SelectionMode.BROWSE)
@@ -433,6 +422,24 @@ class FontLib(Gtk.Paned):
 
         self.pack1(box, False, False)
         self.pack2(self._font_list, True, False)
+
+    def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):
+        if keyboard_tip:
+            return False
+        points_to_row, *context = tree_view.get_tooltip_context(
+            x, y, keyboard_tip)
+        if not points_to_row:
+            return False
+
+        set_store, path, tree_iter = context[2:]
+        font_set = set_store[tree_iter][SetStore.COL_FONTSET]
+        tooltip.set_text('{}; {}'.format(
+            ngettext('%d font', '%d fonts', len(font_set)) % len(font_set),
+            # Translators: Number of active fonts
+            ngettext('%d active', '%d active',
+                     font_set.nactive) % font_set.nactive))
+        tree_view.set_tooltip_row(tooltip, path)
+        return True
 
     def _toggle_cell_data_func(self, column, cell, set_store, tree_iter, data):
         font_set = set_store[tree_iter][SetStore.COL_FONTSET]
@@ -524,5 +531,4 @@ class FontLib(Gtk.Paned):
             pass
         if len(self._set_store) == 0:
             self._set_store.add_set()
-
         self._set_list.set_cursor(max(0, settings.get('selected_set', 1) - 1))
