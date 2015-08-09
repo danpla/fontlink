@@ -9,23 +9,14 @@ from . import conf
 
 class Tray:
     def __init__(self, window):
-        self._indicator = AppIndicator3.Indicator.new(
-            app_info.NAME, app_info.ICON,
-            AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
-
-        if conf.ICON_DIR:
-            self._indicator.set_icon_theme_path(conf.ICON_DIR)
-        self._indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-
         self._window = window
 
         menu = Gtk.Menu()
-        self._indicator.set_menu(menu)
         menu.attach_to_widget(self._window)
 
         mi_visible = Gtk.CheckMenuItem(
-            label=_('Show FontLink'))
-        mi_visible.set_active(self._window.get_visible())
+            label=_('Show FontLink'),
+            active=self._window.get_visible())
         self._window.connect(
             'hide', lambda w: mi_visible.set_active(False))
         self._window.connect(
@@ -46,6 +37,16 @@ class Tray:
         menu.append(mi_quit)
 
         menu.show_all()
+
+        self._indicator = AppIndicator3.Indicator.new(
+            app_info.NAME, app_info.ICON,
+            AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
+
+        if conf.ICON_DIR:
+            self._indicator.set_icon_theme_path(conf.ICON_DIR)
+        self._indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        self._indicator.set_menu(menu)
+        self._indicator.set_secondary_activate_target(mi_visible)
 
     def _on_toggle_visibility(self, menu_item):
         if menu_item.get_active():
