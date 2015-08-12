@@ -11,7 +11,7 @@ from . import fontlib
 class MainWindow(Gtk.ApplicationWindow):
 
     _DND_URI = 0
-    _DND_LIST = [Gtk.TargetEntry.new('text/uri-list', 0, _DND_URI),]
+    _DND_LIST = [Gtk.TargetEntry.new('text/uri-list', 0, _DND_URI)]
 
     def __init__(self, app):
         super().__init__(title=app_info.TITLE, application=app)
@@ -76,6 +76,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.library.add_fonts(
                 (GLib.filename_from_uri(uri)[0] for uri in
                  selection.get_uris() if uri.startswith('file://')))
+        context.finish(True, False, time)
 
     def _on_window_state_event(self, window, event):
         settings['window_maximized'] = bool(
