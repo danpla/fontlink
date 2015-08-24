@@ -12,7 +12,6 @@ from . import app_info
 # launched uninstalled. Currently used to setup icon for AppIndicator.
 ICON_DIR = ''
 
-DATA_DIR = os.path.join(sys.prefix, 'share', app_info.NAME)
 LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
 
 CONFIG_DIR = os.path.join(GLib.get_user_config_dir(), app_info.NAME)
