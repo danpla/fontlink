@@ -23,13 +23,13 @@ import sys
 
 from gi.repository import Gtk
 
-sys.path.insert(0, os.path.join(os.sep, 'usr', 'share'))
+sys.path.insert(1, os.path.join(os.sep, 'usr', 'share'))
 
 # Support running uninstalled.
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 uninstalled = os.path.isdir(os.path.join(path, 'fontlink'))
 if uninstalled:
-    sys.path.insert(0, path)
+    sys.path.insert(1, path)
 
     # Setup custom icon path.
     from fontlink import conf
