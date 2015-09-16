@@ -39,5 +39,4 @@ if uninstalled:
 
 from fontlink.app import FontLink
 
-app = FontLink()
-app.run(sys.argv)
+sys.exit(FontLink().run(sys.argv))
