@@ -316,9 +316,11 @@ class FontList(Gtk.Box):
     def _on_remove(self, button):
         font_set, tree_paths = self._selection.get_selected_rows()
         if (font_set and tree_paths and
-                dialogs.yesno(
+                dialogs.confirmation(
+                    self.get_toplevel(),
                     _('Remove selected fonts from the set?'),
-                    self.get_toplevel())):
+                    _('Remove')
+                    )):
             font_set.remove_fonts(tree_paths)
             self._btn_clear.set_sensitive(len(font_set) > 0)
 
@@ -329,9 +331,11 @@ class FontList(Gtk.Box):
     def _on_clear(self, button):
         font_set = self._font_list.get_model()
         if (font_set and
-                dialogs.yesno(
+                dialogs.confirmation(
+                    self.get_toplevel(),
                     _('Remove all fonts from the set?'),
-                    self.get_toplevel())):
+                    _('Remove')
+                    )):
             font_set.remove_fonts()
             button.set_sensitive(False)
 
@@ -492,9 +496,10 @@ class FontLib(Gtk.Paned):
             return
 
         row = set_store[tree_iter]
-        if not dialogs.yesno(
+        if not dialogs.confirmation(
+                self.get_toplevel(),
                 _('Delete “{}”?').format(row[SetStore.COL_NAME]),
-                self.get_toplevel()):
+                _('Delete')):
             return
 
         row[SetStore.COL_FONTSET].remove_fonts()

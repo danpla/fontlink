@@ -7,16 +7,21 @@ from gi.repository import Gtk
 from . import common
 from . import app_info
 from .settings import settings
-from . import utils
 
 
-def yesno(message, parent):
+def confirmation(parent, message, ok_text):
     dialog = Gtk.MessageDialog(
-        parent, 0, Gtk.MessageType.QUESTION,
-        Gtk.ButtonsType.YES_NO, message)
+        parent=parent,
+        message_type=Gtk.MessageType.QUESTION,
+        text=message,
+        )
+    dialog.add_buttons(
+        _('Cancel'), Gtk.ResponseType.CANCEL,
+        ok_text, Gtk.ResponseType.OK,
+        )
     response = dialog.run()
     dialog.destroy()
-    return response == Gtk.ResponseType.YES
+    return response == Gtk.ResponseType.OK
 
 
 def about(parent):
@@ -65,4 +70,3 @@ def open_fonts(parent):
     dialog.destroy()
 
     return font_paths
-
