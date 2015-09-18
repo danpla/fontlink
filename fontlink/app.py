@@ -35,6 +35,7 @@ class FontLink(Gtk.Application):
             ])
 
         self.window = None
+        self.tray = None
         self.minimized = False
         self.first_activation = True
 
@@ -95,4 +96,3 @@ class FontLink(Gtk.Application):
 
     def _quit_cb(self, action, parameter):
         self.quit()
-

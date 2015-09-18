@@ -54,4 +54,3 @@ class Tray:
             self._window.present()
         else:
             self._window.hide()
-

@@ -15,7 +15,8 @@ class Settings(dict):
     def save(self):
         try:
             with open(conf.CONFIG_FILE, 'w', encoding='utf-8') as f:
-                json.dump(self, f, ensure_ascii=False, indent=2, sort_keys=True)
+                json.dump(
+                    self, f, ensure_ascii=False, indent=2, sort_keys=True)
         except OSError:
             pass
 
