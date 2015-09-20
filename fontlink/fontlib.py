@@ -233,7 +233,7 @@ class SetStore(Gtk.ListStore):
                 ((f['path'], f['enabled']) for f in json_set['fonts']))
 
 
-class FontList(Gtk.Box):
+class FontList(Gtk.Grid):
     '''FontList shows and manages fonts of the selected FontSet.'''
 
     def __init__(self):
@@ -250,10 +250,13 @@ class FontList(Gtk.Box):
         self._selection = self._font_list.get_selection()
         self._selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
-        scrolled = Gtk.ScrolledWindow(shadow_type=Gtk.ShadowType.IN)
+        scrolled = Gtk.ScrolledWindow(
+            shadow_type=Gtk.ShadowType.IN,
+            expand=True
+            )
         scrolled.set_size_request(250, -1)
         scrolled.add(self._font_list)
-        self.pack_start(scrolled, True, True, 0)
+        self.add(scrolled)
 
         # Columns.
 
@@ -274,7 +277,7 @@ class FontList(Gtk.Box):
         # Toolbar.
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
-        self.pack_start(toolbar, False, True, 0)
+        self.add(toolbar)
 
         btn_add = Gtk.ToolButton(
             label=_('Add…'),
@@ -371,7 +374,7 @@ class FontLib(Gtk.Paned):
         self._create_ui()
 
     def _create_ui(self):
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
 
         self._set_list = Gtk.TreeView(
             model=self._set_store,
@@ -385,10 +388,13 @@ class FontLib(Gtk.Paned):
         self._selection.set_mode(Gtk.SelectionMode.BROWSE)
         self._selection.connect('changed', self._on_selection_changed)
 
-        scrolled = Gtk.ScrolledWindow(shadow_type=Gtk.ShadowType.IN)
+        scrolled = Gtk.ScrolledWindow(
+            shadow_type=Gtk.ShadowType.IN,
+            expand=True
+            )
         scrolled.set_size_request(150, -1)
         scrolled.add(self._set_list)
-        box.pack_start(scrolled, True, True, 0)
+        grid.add(scrolled)
 
         # Columns.
 
@@ -408,7 +414,7 @@ class FontLib(Gtk.Paned):
         # Toolbar.
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
-        box.pack_start(toolbar, False, True, 0)
+        grid.add(toolbar)
 
         btn_new = Gtk.ToolButton(
             label=_('Create'),
@@ -424,7 +430,7 @@ class FontLib(Gtk.Paned):
         btn_delete.connect('clicked', self._on_delete)
         toolbar.add(btn_delete)
 
-        self.pack1(box, False, False)
+        self.pack1(grid, False, False)
         self.pack2(self._font_list, True, False)
 
     def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):

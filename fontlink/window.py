@@ -24,16 +24,16 @@ class MainWindow(Gtk.ApplicationWindow):
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
         self.connect('drag-data-received', self._on_drag_data_received)
 
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.add(box)
+        grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
+        self.add(grid)
 
         main_menu = self._create_menubar()
-        box.pack_start(main_menu, False, True, 0)
+        grid.add(main_menu)
 
         self.library = fontlib.FontLib()
-        box.pack_start(self.library, True, True, 0)
+        grid.add(self.library)
 
-        box.show_all()
+        grid.show_all()
 
     def _create_menubar(self):
         ag = Gtk.AccelGroup()
