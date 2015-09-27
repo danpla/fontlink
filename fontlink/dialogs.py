@@ -59,8 +59,11 @@ def open_fonts(parent):
         select_multiple=True,
         )
     dialog.add_filter(font_filter)
-    dialog.set_current_folder(
-        settings.setdefault('last_dir', os.path.expanduser('~')))
+
+    path = settings.get('last_dir')
+    if not isinstance(path, str):
+        path = os.path.expanduser('~')
+    dialog.set_current_folder(path)
 
     if dialog.run() == Gtk.ResponseType.OK:
         font_paths = dialog.get_filenames()
