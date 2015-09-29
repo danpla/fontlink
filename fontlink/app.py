@@ -40,6 +40,7 @@ class FontLink(Gtk.Application):
         self.first_activation = True
 
         GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.quit)
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self.quit)
 
     def _make_option(self, long_name, short_name, description, flags=0,
                      arg=GLib.OptionArg.NONE, arg_data=None,
