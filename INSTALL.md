@@ -1,6 +1,6 @@
 # Installing FontLink
 
-By the way, you can use Fontlink uninstalled: simply run `bin/fontlink`.
+You can use Fontlink uninstalled: simply run `bin/fontlink`.
 In this case, however, it will be available only in English.
 
 
@@ -14,7 +14,7 @@ In this case, however, it will be available only in English.
 
 apt (Debian, Ubuntu etc.):
 
-    $ sudo apt-get install python3 python3-gi gir1.2-appindicator3
+    $ sudo apt-get install python3 python3-gi gir1.2-appindicator3-0.1
 
 
 ### Compiling
@@ -27,16 +27,12 @@ to bytecode for faster program startup.
 
 ### Installing
 
-As root:
-
-    $ make install
+    $ sudo make install
 
 
 ### Uninstalling
 
-As root:
-
-    $ make uninstall
+    $ sudo make uninstall
 
 After uninstalling you may delete configuration directory:
 
