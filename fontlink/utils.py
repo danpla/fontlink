@@ -20,9 +20,10 @@ def unique_name(name, all_names):
     if sep:
         try:
             i = int(tail)
-            name = head.rstrip()
         except ValueError:
             pass
+        else:
+            name = head.rstrip()
     else:
         i = 1
 

@@ -215,10 +215,10 @@ class SetStore(Gtk.ListStore):
         for set_row in self:
             fonts = []
             for font_set in set_row[SetStore.COL_FONTSET]:
-                fonts.append(dict(
-                    enabled=font_set[FontSet.COL_ENABLED],
-                    path=font_set[FontSet.COL_LINKS][0].source
-                    ))
+                fonts.append({
+                    'enabled': font_set[FontSet.COL_ENABLED],
+                    'path': font_set[FontSet.COL_LINKS][0].source
+                    })
             json_sets.append(OrderedDict((
                 ('name', set_row[SetStore.COL_NAME]),
                 ('fonts', fonts))))
@@ -307,7 +307,7 @@ class FontList(Gtk.Grid):
 
     def _on_add(self, button):
         font_set = self._font_list.get_model()
-        if not font_set:
+        if font_set is None:
             return
 
         paths = dialogs.open_fonts(self.get_toplevel())
@@ -318,7 +318,7 @@ class FontList(Gtk.Grid):
 
     def _on_remove(self, button):
         font_set, tree_paths = self._selection.get_selected_rows()
-        if (font_set and tree_paths and
+        if (font_set is not None and tree_paths and
                 dialogs.confirmation(
                     self.get_toplevel(),
                     _('Remove selected fonts from the set?'),
@@ -333,7 +333,7 @@ class FontList(Gtk.Grid):
 
     def _on_clear(self, button):
         font_set = self._font_list.get_model()
-        if (font_set and
+        if (font_set is not None and
                 dialogs.confirmation(
                     self.get_toplevel(),
                     _('Remove all fonts from the set?'),
@@ -358,7 +358,7 @@ class FontList(Gtk.Grid):
     @font_set.setter
     def font_set(self, font_set):
         self._font_list.set_model(font_set)
-        if font_set:
+        if font_set is not None:
             self._font_list.set_search_column(FontSet.COL_NAME)
             self._btn_clear.set_sensitive(len(font_set) > 0)
 
@@ -465,7 +465,7 @@ class FontLib(Gtk.Paned):
 
     def _on_selection_changed(self, selection):
         set_store, tree_iter = selection.get_selected()
-        if not tree_iter:
+        if tree_iter is None:
             return
         self._font_list.font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
@@ -498,7 +498,7 @@ class FontLib(Gtk.Paned):
 
     def _on_delete(self, button):
         set_store, tree_iter = self._selection.get_selected()
-        if not tree_iter:
+        if tree_iter is None:
             return
 
         row = set_store[tree_iter]
@@ -517,7 +517,7 @@ class FontLib(Gtk.Paned):
     def add_fonts(self, paths):
         '''Add fonts to the currently selected set.'''
         font_set = self._font_list.font_set
-        if font_set:
+        if font_set is not None:
             font_set.add_fonts(paths)
 
     def save_state(self):

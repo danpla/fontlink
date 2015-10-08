@@ -30,8 +30,8 @@ class MainWindow(Gtk.ApplicationWindow):
         main_menu = self._create_menubar()
         grid.add(main_menu)
 
-        self.library = fontlib.FontLib()
-        grid.add(self.library)
+        self._library = fontlib.FontLib()
+        grid.add(self._library)
 
         grid.show_all()
 
@@ -73,7 +73,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _on_drag_data_received(self, window, context, x, y, selection,
                                target, time):
         if target == self._DND_URI:
-            self.library.add_fonts(
+            self._library.add_fonts(
                 (GLib.filename_from_uri(uri)[0] for uri in
                  selection.get_uris() if uri.startswith('file://')))
         context.finish(True, False, time)
@@ -86,7 +86,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._app.quit()
 
     def save_state(self):
-        self.library.save_state()
+        self._library.save_state()
 
         settings['window_x'], settings['window_y'] = self.get_position()
         settings['window_width'], settings['window_height'] = self.get_size()
@@ -102,4 +102,4 @@ class MainWindow(Gtk.ApplicationWindow):
         except (KeyError, TypeError):
             pass
 
-        self.library.load_state()
+        self._library.load_state()

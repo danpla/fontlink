@@ -9,7 +9,7 @@ from gi.repository import GLib
 from . import app_info
 
 # ICON_DIR will be initialized from the main script in case if FontLink will be
-# launched uninstalled. Currently used to setup icon for AppIndicator.
+# launched uninstalled.
 ICON_DIR = ''
 
 LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
@@ -28,7 +28,7 @@ if not os.path.isdir(FONTS_DIR):
 
 
 def _get_installed_fonts():
-    '''Creates mapping of installed fonts {font_name: font_dir}.'''
+    '''Create mapping of installed fonts {font_name: font_dir}.'''
     fonts = {}
     try:
         for path in subprocess.check_output(
