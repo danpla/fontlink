@@ -322,7 +322,7 @@ class FontList(Gtk.Grid):
                 dialogs.confirmation(
                     self.get_toplevel(),
                     _('Remove selected fonts from the set?'),
-                    _('Remove')
+                    _('_Remove')
                     )):
             font_set.remove_fonts(tree_paths)
             self._btn_clear.set_sensitive(len(font_set) > 0)
@@ -337,7 +337,7 @@ class FontList(Gtk.Grid):
                 dialogs.confirmation(
                     self.get_toplevel(),
                     _('Remove all fonts from the set?'),
-                    _('Remove')
+                    _('_Remove')
                     )):
             font_set.remove_fonts()
             button.set_sensitive(False)
@@ -505,7 +505,7 @@ class FontLib(Gtk.Paned):
         if not dialogs.confirmation(
                 self.get_toplevel(),
                 _('Delete “{}”?').format(row[SetStore.COL_NAME]),
-                _('Delete')):
+                _('_Delete')):
             return
 
         row[SetStore.COL_FONTSET].remove_fonts()

@@ -16,7 +16,7 @@ def confirmation(parent, message, ok_text):
         text=message,
         )
     dialog.add_buttons(
-        _('Cancel'), Gtk.ResponseType.CANCEL,
+        _('_Cancel'), Gtk.ResponseType.CANCEL,
         ok_text, Gtk.ResponseType.OK,
         )
     response = dialog.run()
