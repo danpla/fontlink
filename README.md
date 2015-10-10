@@ -19,7 +19,7 @@ FontLink allows you to:
 
 FontLink's interface is pretty simple: font sets on the left side and
 fonts of the selected set on the right. Each list has toolbar to manipulate
-it's items.
+its items.
 
 Sets can be renamed by double click and reordered by dragging with Shift
 pressed. Toggling checkbox will change state of all fonts in the set.
