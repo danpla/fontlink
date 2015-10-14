@@ -23,7 +23,6 @@ import sys
 
 from gi.repository import Gtk
 
-sys.path.insert(1, os.path.join(os.sep, 'usr', 'share'))
 
 # Support running uninstalled.
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -35,6 +34,8 @@ if uninstalled:
     from fontlink import conf
     conf.ICON_DIR = os.path.join(path, 'data', 'icons')
     Gtk.IconTheme.get_default().prepend_search_path(conf.ICON_DIR)
+else:
+    sys.path.insert(1, os.path.join(os.sep, 'usr', 'share'))
 
 
 from fontlink.app import FontLink
