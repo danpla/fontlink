@@ -365,6 +365,8 @@ class FontList(Gtk.Grid):
 
 class FontLib(Gtk.Paned):
 
+    _FILE = os.path.join(conf.CONFIG_DIR, 'sets.json')
+
     def __init__(self):
         super().__init__()
         self.set_size_request(500, 250)
@@ -525,7 +527,7 @@ class FontLib(Gtk.Paned):
 
         settings['selected_set'] = self._set_list.get_cursor()[0][0] + 1
         try:
-            with open(conf.SETS_FILE, 'w', encoding='utf-8') as f:
+            with open(self._FILE, 'w', encoding='utf-8') as f:
                 json.dump(
                     self._set_store.as_json, f, ensure_ascii=False, indent=2)
         except OSError:
@@ -536,10 +538,11 @@ class FontLib(Gtk.Paned):
             settings.get('splitter_position', self.get_position()))
 
         try:
-            with open(conf.SETS_FILE, 'r', encoding='utf-8') as f:
+            with open(self._FILE, 'r', encoding='utf-8') as f:
                 self._set_store.as_json = json.load(f)
         except (KeyError, ValueError, OSError):
             pass
+
         if len(self._set_store) == 0:
             self._set_store.add_set()
         self._set_list.set_cursor(max(0, settings.get('selected_set', 1) - 1))

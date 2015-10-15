@@ -12,15 +12,9 @@ from . import app_info
 # launched uninstalled.
 ICON_DIR = ''
 
-LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
-
 CONFIG_DIR = os.path.join(GLib.get_user_config_dir(), app_info.NAME)
 if not os.path.isdir(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
-
-SETS_FILE = os.path.join(CONFIG_DIR, 'sets.json')
-CONFIG_FILE = os.path.join(CONFIG_DIR, 'settings.json')
-
 
 FONTS_DIR = os.path.expanduser('~/.local/share/fonts')
 if not os.path.isdir(FONTS_DIR):
@@ -42,6 +36,8 @@ def _get_installed_fonts():
 
 INSTALLED_FONTS = _get_installed_fonts()
 
+
+LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
 
 gettext.bindtextdomain(app_info.NAME, LOCALE_DIR)
 gettext.textdomain(app_info.NAME)
