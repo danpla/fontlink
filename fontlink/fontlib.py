@@ -265,12 +265,16 @@ class FontList(Gtk.Grid):
         col_toggle = Gtk.TreeViewColumn(
             '', toggle,
             active=FontSet.COL_ENABLED,
-            activatable=FontSet.COL_LINKED)
+            activatable=FontSet.COL_LINKED
+            )
         self._font_list.append_column(col_toggle)
 
         name = Gtk.CellRendererText()
         col_name = Gtk.TreeViewColumn(
-            _('Fonts'), name, text=FontSet.COL_NAME)
+            _('Fonts'), name,
+            text=FontSet.COL_NAME,
+            sensitive=FontSet.COL_LINKED
+            )
         col_name.set_sort_column_id(FontSet.COL_NAME)
         self._font_list.append_column(col_name)
 
