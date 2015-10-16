@@ -30,15 +30,13 @@ class FontSet(Gtk.ListStore):
 
     # COL_LINKS is a tuple of linker.Link.
     # First pair is always present and describes the main font file.
-    # Others (if any) are additional files, like .afm and so on.
+    # Others (if any) are additional files, like .afm or etc.
     COL_LINKS = 0
     COL_ENABLED = 1
 
-    # COL_LINKED indicates that font was linked by FontLink and will be False
-    # if it was already installed in system. In such case, COL_ENABLED
-    # will be always True (there is nothing complicated to 'hide' installed
-    # fonts using fonts.conf, but FontLink is not for this).
-    COL_LINKED = 2
+    # COL_LINKABLE is True if font can be linked, i.e. it wasn't installed
+    # in the system at the moment of FontLink launch.
+    COL_LINKABLE = 2
     COL_NAME = 3
     COL_TOOLTIP = 4
 
@@ -125,7 +123,7 @@ class FontSet(Gtk.ListStore):
         '''
         if not tree_paths:
             for row in self:
-                if row[self.COL_LINKED] and row[self.COL_ENABLED]:
+                if row[self.COL_LINKABLE] and row[self.COL_ENABLED]:
                     linker.remove_links(row[self.COL_LINKS])
             self._fonts.clear()
             self.clear()
@@ -136,7 +134,7 @@ class FontSet(Gtk.ListStore):
             row = self[tree_path]
             if row[self.COL_ENABLED]:
                 self._nactive -= 1
-                if row[self.COL_LINKED]:
+                if row[self.COL_LINKABLE]:
                     linker.remove_links(row[self.COL_LINKS])
             self._fonts.remove(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
@@ -144,7 +142,7 @@ class FontSet(Gtk.ListStore):
     def toggle_state(self, tree_path):
         '''Toggle the state of certain font.'''
         row = self[tree_path]
-        if not row[self.COL_LINKED]:
+        if not row[self.COL_LINKABLE]:
             return
 
         new_state = not row[self.COL_ENABLED]
@@ -162,7 +160,7 @@ class FontSet(Gtk.ListStore):
     def set_state_all(self, state):
         '''Set the state for all fonts in the set.'''
         for row in self:
-            if not row[self.COL_LINKED]:
+            if not row[self.COL_LINKABLE]:
                 continue
 
             if row[self.COL_ENABLED] != state:
@@ -265,7 +263,7 @@ class FontList(Gtk.Grid):
         col_toggle = Gtk.TreeViewColumn(
             '', toggle,
             active=FontSet.COL_ENABLED,
-            activatable=FontSet.COL_LINKED
+            activatable=FontSet.COL_LINKABLE
             )
         self._font_list.append_column(col_toggle)
 
@@ -273,7 +271,7 @@ class FontList(Gtk.Grid):
         col_name = Gtk.TreeViewColumn(
             _('Fonts'), name,
             text=FontSet.COL_NAME,
-            sensitive=FontSet.COL_LINKED
+            sensitive=FontSet.COL_LINKABLE
             )
         col_name.set_sort_column_id(FontSet.COL_NAME)
         self._font_list.append_column(col_name)
