@@ -16,6 +16,7 @@ def unique_name(name, all_names):
     if name not in all_names:
         return name
 
+    i = 1
     head, sep, tail = name.rpartition('#')
     if sep:
         try:
@@ -24,8 +25,6 @@ def unique_name(name, all_names):
             pass
         else:
             name = head.rstrip()
-    else:
-        i = 1
 
     similar_names = set(n for n in all_names if n.startswith(name))
     while True:
