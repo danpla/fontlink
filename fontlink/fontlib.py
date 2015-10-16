@@ -198,8 +198,7 @@ class SetStore(Gtk.ListStore):
                 break
 
     def add_set(self, name=_('New set'), insert_after=None):
-        all_names = [row[self.COL_NAME] for row in self]
-        name = utils.unique_name(name, all_names)
+        name = utils.unique_name(name, (row[self.COL_NAME] for row in self))
 
         font_set = FontSet()
         font_set.connect('notify::nactive', self._notify_nactive)
@@ -492,8 +491,8 @@ class FontLib(Gtk.Paned):
         if new_name == old_name:
             return
 
-        all_names = [row[SetStore.COL_NAME] for row in self._set_store]
-        all_names.remove(old_name)
+        all_names = set(row[SetStore.COL_NAME] for row in self._set_store)
+        all_names.discard(old_name)
         new_name = utils.unique_name(new_name, all_names)
         self._set_store[path][SetStore.COL_NAME] = new_name
 

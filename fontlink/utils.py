@@ -13,6 +13,9 @@ def string_to_glob(string):
 def unique_name(name, all_names):
     '''Make the name unique by appending "#n" at the end.'''
 
+    if not isinstance(all_names, set):
+        all_names = set(all_names)
+
     if name not in all_names:
         return name
 
@@ -26,10 +29,9 @@ def unique_name(name, all_names):
         else:
             name = head.rstrip()
 
-    similar_names = set(n for n in all_names if n.startswith(name))
     while True:
         new_name = '{} #{}'.format(name, i)
-        if new_name in similar_names:
+        if new_name in all_names:
             i += 1
         else:
             return new_name
