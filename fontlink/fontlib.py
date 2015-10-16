@@ -447,11 +447,17 @@ class FontLib(Gtk.Paned):
 
         set_store, path, tree_iter = context[2:]
         font_set = set_store[tree_iter][SetStore.COL_FONTSET]
-        tooltip.set_text('{}; {}'.format(
-            ngettext('%d font', '%d fonts', len(font_set)) % len(font_set),
-            # Translators: Number of active fonts
-            ngettext('%d active', '%d active',
-                     font_set.nactive) % font_set.nactive))
+        num_fonts = len(font_set)
+
+        text = ngettext('%d font', '%d fonts', num_fonts) % num_fonts
+        if num_fonts > 0:
+            text = '{} ({})'.format(
+                text,
+                # Translators: Number of active fonts
+                ngettext('%d active', '%d active',
+                         font_set.nactive) % font_set.nactive)
+
+        tooltip.set_text(text)
         tree_view.set_tooltip_row(tooltip, path)
         return True
 
