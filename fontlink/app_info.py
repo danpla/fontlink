@@ -28,4 +28,4 @@ ICON = NAME
 COPYRIGHT = 'Copyright © 2015 Daniel Plachotich'
 LICENSE = __doc__
 
-WEBSITE = 'https://github.com/danpla/fontlink'
+WEBSITE = 'https://danpla.github.io/fontlink/'
