@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FontLink</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <img src="img/fontlink.svg" alt="FontLink logo">
+      <h1>FontLink</h1>
+    </header>
+
+    <nav>
+      <p>
+        <a href="#usage">Usage tips and tricks</a>
+        •
+        <a href="#downloads">Downloads</a>
+        •
+        <a href="#development">Development</a>
+      </p>
+    </nav>
+
+    <p>FontLink is a small GTK+ utility to install fonts temporarily on Unix-like systems.</p>
+
+    <p>It allows you to quickly install certain fonts only when you really need them without copying fonts or creating symlinks to special directories by hand.</p>
+
+    <p>FontLink has a very simple interface with which you can group fonts into sets (for example, one set per project) and quickly enable or disable certain fonts as well as entire sets in a single click.</p>
+
+    <p>As you might guess from the name, it uses mechanism of symbolic links for fast “fake” installation without actual copying and deleting font files.</p>
+
+    <div class="screenshot">
+      <img src="img/screenshot.png" title="FontLink sreenshot" alt="FontLink screenshot">
+    </div>
+
+    <h2 id="usage">Usage tips and tricks</h2>
+
+    <ul>
+      <li><p>You can use drag-and-drop to add fonts. To change its position in the list, drag it with <kbd>Shift</kbd> pressed.</p></li>
+      <li><p>To rename a set, click twice on it.</p></li>
+      <li><p>Double click on font will open it in associated application (probably, font viewer).</p></li>
+      <li><p>The same font can be added to multiple sets. In this case, disabling such font in certain set does not unlink it if it still enabled in other sets.</p></li>
+      <li><p>Fonts added to FontLink will be linked only while it’s running.</p></li>
+      <li><p>It may be useful to add FontLink to autostart. In this case, add <code>--minimized</code> or <code>-m</code> argument to start FontLink minimized to the notification area.</p></li>
+      <li><p>Not all programs can update font list on the fly, so it’s better to set up your fonts <em>before</em> running a program that will use them. For example, GIMP and LibreOffice can rescan fonts, but Inkscape and Scribus are not.</p></li>
+    </ul>
+
+    <h2 id="downloads">Downloads</h2>
+
+    <p>The most recent version of FontLink is 0.9.3.</p>
+
+    <ul id="dllist">
+      <li>
+        <p><a href="https://github.com/danpla/fontlink/releases/download/v0.9.3/fontlink_0.9.3-1_all.deb">fontlink_0.9.3-1_all.deb</a> — Debian/Ubuntu package</p>
+      </li>
+      <li>
+        <p><a href="https://github.com/danpla/fontlink/archive/v0.9.3.tar.gz">fontlink-0.9.3.tar.gz</a> — source code</p>
+      </li>
+    </ul>
+
+    <p>Using package is recommended way to install FontLink. On non-DEB systems, you can use <code>alien</code> to install the .deb package.</p>
+    <p>Another way is to install from the sources using <code>make</code>. Read <code>INSTALL.md</code> for detailed instructions.
+    <p>Also, you can just execute <code>bin/fontlink</code> to use FontLink without installation or to try it before installing.</p>
+
+    <h2 id="development">Development</h2>
+
+    <p>FontLink is developed <a href="https://github.com/danpla/fontlink">on GitHub</a>. There you can also find <a href="https://github.com/danpla/fontlink/issues">the bug tracker</a>.</p>
+
+    <footer>
+      Copyright © 2015 Daniel Plachotich
+    </footer>
+  </body>
+</html>
