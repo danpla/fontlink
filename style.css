@@ -55,14 +55,14 @@ header h1 {
 
 nav {
   text-align: center;
-  border-top: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
+  border-top: 0.1em solid #dddddd;
+  border-bottom: 0.1em solid #dddddd;
 }
 
 footer {
   padding: 1.2em 0;
   margin-top: 3em;
-  border-top: 1px solid #dddddd;
+  border-top: 0.12em solid #dddddd;
   font-size: 0.8em;
   text-align: center;
 }
