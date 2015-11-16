@@ -121,7 +121,7 @@ class FontSet(Gtk.ListStore):
 
         If tree_paths is None, all fonts will be removed.
         '''
-        if not tree_paths:
+        if tree_paths is None:
             for row in self:
                 if row[self.COL_LINKABLE] and row[self.COL_ENABLED]:
                     linker.remove_links(row[self.COL_LINKS])
