@@ -77,8 +77,9 @@ class FontSet(Gtk.ListStore):
             font_dir, font_name = os.path.split(path)
             font_root_name, font_ext = os.path.splitext(font_name)
             if (not font_ext.lower() in common.FONT_EXTENSIONS or
-                    not os.path.isfile(path) or
-                    font_name in self._fonts):
+                    font_name in self._fonts or
+                    font_dir.startswith(conf.FONTS_DIR) or
+                    not os.path.isfile(path)):
                 continue
 
             links = [
