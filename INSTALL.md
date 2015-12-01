@@ -8,7 +8,7 @@ In this case, however, it will be available only in English.
 
 This is recommended way to install FontLink.
 
-DEB package for Debian, Ubuntu and derivative systems is available on
+DEB package for Debian, Ubuntu, and derivatives is available on
 [download page](https://github.com/danpla/fontlink/releases).
 On non-DEB systems, you can install it using `alien`.
 
