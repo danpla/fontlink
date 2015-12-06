@@ -4,8 +4,7 @@ FontLink is a small GTK+ utility to install fonts temporarily on Unix-like
 systems.
 
 It allows you to quickly install certain fonts only when you really
-need them without copying fonts or creating symlinks to special
-directories by hand.
+need them without copying files or creating symlinks by hand.
 
 FontLink has a very simple interface with which you can group fonts into sets
 (for example, one set per project) and quickly enable or disable certain fonts
