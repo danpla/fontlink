@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: FontLink\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-08 16:25+0300\n"
-"PO-Revision-Date: 2015-10-08 16:27+0300\n"
+"PO-Revision-Date: 2015-12-06 14:08+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -65,31 +65,31 @@ msgstr "Добавить шрифты…"
 
 #: fontlink/fontlib.py:290
 msgid "Remove"
-msgstr "Удалить"
+msgstr "Изъять"
 
 #: fontlink/fontlib.py:292
 msgid "Remove selected fonts"
-msgstr "Удалить выбранные шрифты"
+msgstr "Изъять выбранные шрифты"
 
 #: fontlink/fontlib.py:300
 msgid "Remove all"
-msgstr "Удалить все"
+msgstr "Изъять все"
 
 #: fontlink/fontlib.py:302
 msgid "Remove all fonts"
-msgstr "Удалить все шрифты"
+msgstr "Изъять все шрифты"
 
 #: fontlink/fontlib.py:324
 msgid "Remove selected fonts from the set?"
-msgstr "Удалить выбранные шрифты из набора?"
+msgstr "Изъять выбранные шрифты из набора?"
 
 #: fontlink/fontlib.py:325 fontlink/fontlib.py:340
 msgid "_Remove"
-msgstr "_Удалить"
+msgstr "_Изъять"
 
 #: fontlink/fontlib.py:339
 msgid "Remove all fonts from the set?"
-msgstr "Удалить все шрифты из набора?"
+msgstr "Изъять все шрифты из набора?"
 
 #: fontlink/fontlib.py:411
 msgid "Font sets"
