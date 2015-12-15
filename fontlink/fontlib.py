@@ -65,7 +65,7 @@ class FontSet(Gtk.ListStore):
     def add_fonts(self, items):
         '''Add fonts to the set.
 
-        items -- list containing paths and/or pairs (path, state).
+        items -- iterable of paths and/or pairs (path, state).
         '''
         for item in items:
             if isinstance(item, str):
@@ -175,36 +175,30 @@ class FontSet(Gtk.ListStore):
 
 
 class SetStore(Gtk.ListStore):
-    '''Set store contains font sets.
+    '''Set store contains font sets.'''
 
-    Each entry holds number of currently active fonts in the set (to adjust
-    state of checkbox), set name and FontSet itself.
-    '''
-
-    COL_NACTIVE = 0
-    COL_NAME = 1
-    COL_FONTSET = 2
+    COL_NAME = 0
+    COL_FONTSET = 1
 
     def __init__(self):
         super().__init__(
-            int,
             str,
             object,
             )
 
-    def _notify_nactive(self, font_set, gproperty):
+    def _on_set_changed(self, font_set, gproperty):
         for row in self:
             if row[self.COL_FONTSET] == font_set:
-                row[self.COL_NACTIVE] = font_set.nactive
+                self.row_changed(row.path, row.iter)
                 break
 
     def add_set(self, name=_('New set'), insert_after=None):
         name = utils.unique_name(name, (row[self.COL_NAME] for row in self))
 
         font_set = FontSet()
-        font_set.connect('notify::nactive', self._notify_nactive)
+        font_set.connect('notify::nactive', self._on_set_changed)
 
-        tree_iter = self.insert_after(insert_after, (0, name, font_set))
+        tree_iter = self.insert_after(insert_after, (name, font_set))
         return tree_iter
 
     @property
@@ -345,7 +339,7 @@ class FontList(Gtk.Grid):
             button.set_sensitive(False)
 
     def _on_row_activated(self, font_list, path, column):
-        if column == font_list.get_column(SetStore.COL_NAME):
+        if column == font_list.get_column(1):
             font_set = font_list.get_model()
             Gtk.show_uri(
                 None,
@@ -404,8 +398,7 @@ class FontLib(Gtk.Paned):
 
         toggle = Gtk.CellRendererToggle()
         toggle.connect('toggled', self._on_toggled)
-        col_toggle = Gtk.TreeViewColumn(
-            '', toggle, active=SetStore.COL_NACTIVE)
+        col_toggle = Gtk.TreeViewColumn('', toggle)
         col_toggle.set_cell_data_func(toggle, self._toggle_cell_data_func)
         self._set_list.append_column(col_toggle)
 
