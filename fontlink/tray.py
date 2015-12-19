@@ -1,6 +1,8 @@
 
 from gettext import gettext as _
 
+import gi
+gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 
 from . import app_info
