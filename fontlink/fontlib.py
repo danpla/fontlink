@@ -279,7 +279,7 @@ class FontList(Gtk.Grid):
         btn_add = Gtk.ToolButton(
             label=_('Add…'),
             icon_name='list-add',
-            tooltip_text=_('Add fonts…'))
+            tooltip_text=_('Add fonts'))
         btn_add.connect('clicked', self._on_add)
         toolbar.add(btn_add)
 
@@ -294,7 +294,7 @@ class FontList(Gtk.Grid):
         toolbar.add(btn_remove)
 
         btn_clear = Gtk.ToolButton(
-            label=_('Remove all'),
+            label=_('Remove All'),
             icon_name='edit-clear',
             tooltip_text=_('Remove all fonts'),
             sensitive=False)
@@ -325,7 +325,10 @@ class FontList(Gtk.Grid):
         menu = Gtk.Menu()
         menu.attach_to_widget(widget)
 
-        mi_add = Gtk.MenuItem(label=_('Add fonts…'))
+        mi_add = Gtk.MenuItem(
+            label=_('Add…'),
+            tooltip_text=_('Add fonts')
+            )
         mi_add.connect('activate', self._on_add)
         menu.append(mi_add)
 
@@ -347,12 +350,19 @@ class FontList(Gtk.Grid):
 
         menu.append(Gtk.SeparatorMenuItem())
 
-        mi_remove = Gtk.MenuItem(label=_('Remove selected fonts'))
+        mi_remove = Gtk.MenuItem(
+            label=_('Remove'),
+            tooltip_text=_('Remove selected fonts')
+            )
         mi_remove.connect('activate', self._on_remove)
         menu.append(mi_remove)
 
-        mi_clear = Gtk.MenuItem(label=_('Remove all fonts'))
+        mi_clear = Gtk.MenuItem(
+            label=_('Remove All'),
+            tooltip_text=_('Remove all fonts')
+            )
         mi_clear.connect('activate', self._on_clear)
+        menu.append(mi_clear)
 
         num_selected = selection.count_selected_rows()
         if num_selected != 1:
@@ -363,7 +373,6 @@ class FontList(Gtk.Grid):
         font_set = self._font_list.get_model()
         if font_set is None or len(font_set) == 0:
             mi_clear.set_sensitive(False)
-        menu.append(mi_clear)
 
         menu.show_all()
         menu.popup(None, None, None, None, event.button, event.time)
@@ -508,16 +517,16 @@ class FontLib(Gtk.Paned):
         grid.add(toolbar)
 
         btn_new = Gtk.ToolButton(
-            label=_('Create'),
+            label=_('New'),
             icon_name='document-new',
-            tooltip_text=_('Create new set'))
+            tooltip_text=_('Create a new set'))
         btn_new.connect('clicked', self._on_new)
         toolbar.add(btn_new)
 
         btn_delete = Gtk.ToolButton(
             label=_('Delete'),
             icon_name='edit-delete',
-            tooltip_text=_('Delete set'))
+            tooltip_text=_('Delete this set'))
         btn_delete.connect('clicked', self._on_delete)
         toolbar.add(btn_delete)
 
@@ -539,13 +548,19 @@ class FontLib(Gtk.Paned):
         menu = Gtk.Menu()
         menu.attach_to_widget(widget)
 
-        mi_new = Gtk.MenuItem(label=_('Create'))
+        mi_new = Gtk.MenuItem(
+            label=_('New'),
+            tooltip_text=_('Create a new set')
+            )
         mi_new.connect('activate', self._on_new)
         menu.append(mi_new)
 
         menu.append(Gtk.SeparatorMenuItem())
 
-        mi_delete = Gtk.MenuItem(label=_('Delete'))
+        mi_delete = Gtk.MenuItem(
+            label=_('Delete'),
+            tooltip_text=_('Delete this set')
+            )
         mi_delete.connect('activate', self._on_delete)
         menu.append(mi_delete)
 
