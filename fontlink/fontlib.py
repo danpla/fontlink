@@ -240,8 +240,8 @@ class FontList(Gtk.Grid):
         self._font_list.connect('button-press-event', self._on_button_press)
         self._font_list.connect('row-activated', self._on_row_activated)
 
-        self._selection = self._font_list.get_selection()
-        self._selection.set_mode(Gtk.SelectionMode.MULTIPLE)
+        selection = self._font_list.get_selection()
+        selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
         scrolled = Gtk.ScrolledWindow(
             shadow_type=Gtk.ShadowType.IN,
@@ -288,7 +288,7 @@ class FontList(Gtk.Grid):
             icon_name='list-remove',
             tooltip_text=_('Remove selected fonts'))
         btn_remove.connect('clicked', self._on_remove)
-        self._selection.connect(
+        selection.connect(
             'changed',
             lambda s: btn_remove.set_sensitive(s.count_selected_rows() > 0))
         toolbar.add(btn_remove)
@@ -360,8 +360,9 @@ class FontList(Gtk.Grid):
         font_set.add_fonts(paths)
         self._btn_clear.set_sensitive(len(font_set) > 0)
 
-        font_set, tree_paths = self._selection.get_selected_rows()
     def _on_remove(self, widget):
+        selection = self._font_list.get_selection()
+        font_set, tree_paths = selection.get_selected_rows()
         if (font_set is not None and tree_paths and
                 dialogs.confirmation(
                     self.get_toplevel(),
@@ -431,9 +432,9 @@ class FontLib(Gtk.Paned):
         self._set_list.connect('button-press-event', self._on_button_press)
         self._set_list.connect('query-tooltip', self._on_query_tooltip)
 
-        self._selection = self._set_list.get_selection()
-        self._selection.set_mode(Gtk.SelectionMode.BROWSE)
-        self._selection.connect('changed', self._on_selection_changed)
+        selection = self._set_list.get_selection()
+        selection.set_mode(Gtk.SelectionMode.BROWSE)
+        selection.connect('changed', self._on_selection_changed)
 
         scrolled = Gtk.ScrolledWindow(
             shadow_type=Gtk.ShadowType.IN,
@@ -570,7 +571,8 @@ class FontLib(Gtk.Paned):
         self._set_store[path][SetStore.COL_NAME] = new_name
 
     def _on_new(self, widget):
-        set_store, tree_iter = self._selection.get_selected()
+        selection = self._set_list.get_selection()
+        set_store, tree_iter = selection.get_selected()
         tree_iter = set_store.add_set(insert_after=tree_iter)
 
         # Start edit name right now.
@@ -579,7 +581,8 @@ class FontLib(Gtk.Paned):
         self._set_list.set_cursor(path, column, True)
 
     def _on_delete(self, widget):
-        set_store, tree_iter = self._selection.get_selected()
+        selection = self._set_list.get_selection()
+        set_store, tree_iter = selection.get_selected()
         if tree_iter is None:
             return
 
