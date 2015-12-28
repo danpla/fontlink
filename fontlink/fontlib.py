@@ -237,6 +237,7 @@ class FontList(Gtk.Grid):
             headers_visible=False,
             rubber_banding=True,
             tooltip_column=FontSet.COL_TOOLTIP)
+        self._font_list.connect('button-press-event', self._on_button_press)
         self._font_list.connect('row-activated', self._on_row_activated)
 
         self._selection = self._font_list.get_selection()
@@ -301,7 +302,54 @@ class FontList(Gtk.Grid):
         self._btn_clear = btn_clear
         toolbar.add(btn_clear)
 
-    def _on_add(self, button):
+    def _on_button_press(self, widget, event):
+        if event.type != Gdk.EventType.BUTTON_PRESS:
+            return Gdk.EVENT_PROPAGATE
+
+        self._font_list.grab_focus()
+
+        selection = self._font_list.get_selection()
+
+        click_info = self._font_list.get_path_at_pos(
+            int(event.x), int(event.y))
+        if click_info is None:
+            selection.unselect_all()
+        elif event.button == Gdk.BUTTON_SECONDARY:
+            path, column, cell_x, cell_y = click_info
+            if not selection.path_is_selected(path):
+                self._font_list.set_cursor(path, column, False)
+
+        if event.button != Gdk.BUTTON_SECONDARY:
+            return Gdk.EVENT_PROPAGATE
+
+        menu = Gtk.Menu()
+        menu.attach_to_widget(widget)
+
+        mi_add = Gtk.MenuItem(label=_('Add fonts…'))
+        mi_add.connect('activate', self._on_add)
+        menu.append(mi_add)
+
+        menu.append(Gtk.SeparatorMenuItem())
+
+        mi_remove = Gtk.MenuItem(label=_('Remove selected fonts'))
+        mi_remove.connect('activate', self._on_remove)
+        if selection.count_selected_rows() == 0:
+            mi_remove.set_sensitive(False)
+        menu.append(mi_remove)
+
+        mi_clear = Gtk.MenuItem(label=_('Remove all fonts'))
+        mi_clear.connect('activate', self._on_clear)
+        font_set = self._font_list.get_model()
+        if font_set is None or len(font_set) == 0:
+            mi_clear.set_sensitive(False)
+        menu.append(mi_clear)
+
+        menu.show_all()
+        menu.popup(None, None, None, None, event.button, event.time)
+
+        return Gdk.EVENT_STOP
+
+    def _on_add(self, widget):
         font_set = self._font_list.get_model()
         if font_set is None:
             return
@@ -312,8 +360,8 @@ class FontList(Gtk.Grid):
         font_set.add_fonts(paths)
         self._btn_clear.set_sensitive(len(font_set) > 0)
 
-    def _on_remove(self, button):
         font_set, tree_paths = self._selection.get_selected_rows()
+    def _on_remove(self, widget):
         if (font_set is not None and tree_paths and
                 dialogs.confirmation(
                     self.get_toplevel(),
@@ -327,7 +375,7 @@ class FontList(Gtk.Grid):
         font_set = self._font_list.get_model()
         font_set.toggle_state(path)
 
-    def _on_clear(self, button):
+    def _on_clear(self, widget):
         font_set = self._font_list.get_model()
         if (font_set is not None and
                 dialogs.confirmation(
@@ -336,7 +384,7 @@ class FontList(Gtk.Grid):
                     _('_Remove')
                     )):
             font_set.remove_fonts()
-            button.set_sensitive(False)
+            self._btn_clear.set_sensitive(False)
 
     def _on_row_activated(self, font_list, path, column):
         if column == font_list.get_column(1):
@@ -380,6 +428,7 @@ class FontLib(Gtk.Paned):
             reorderable=True,
             search_column=SetStore.COL_NAME,
             has_tooltip=True)
+        self._set_list.connect('button-press-event', self._on_button_press)
         self._set_list.connect('query-tooltip', self._on_query_tooltip)
 
         self._selection = self._set_list.get_selection()
@@ -429,6 +478,36 @@ class FontLib(Gtk.Paned):
 
         self.pack1(grid, False, False)
         self.pack2(self._font_list, True, False)
+
+    def _on_button_press(self, widget, event):
+        if not (event.type == Gdk.EventType.BUTTON_PRESS and
+                event.button == Gdk.BUTTON_SECONDARY):
+            return Gdk.EVENT_PROPAGATE
+
+        self._set_list.grab_focus()
+
+        click_info = self._set_list.get_path_at_pos(int(event.x), int(event.y))
+        if click_info is not None:
+            path, column, cell_x, cell_y = click_info
+            self._set_list.set_cursor(path, column, False)
+
+        menu = Gtk.Menu()
+        menu.attach_to_widget(widget)
+
+        mi_new = Gtk.MenuItem(label=_('Create'))
+        mi_new.connect('activate', self._on_new)
+        menu.append(mi_new)
+
+        menu.append(Gtk.SeparatorMenuItem())
+
+        mi_delete = Gtk.MenuItem(label=_('Delete'))
+        mi_delete.connect('activate', self._on_delete)
+        menu.append(mi_delete)
+
+        menu.show_all()
+        menu.popup(None, None, None, None, event.button, event.time)
+
+        return Gdk.EVENT_STOP
 
     def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):
         if keyboard_tip:
@@ -490,7 +569,7 @@ class FontLib(Gtk.Paned):
         new_name = utils.unique_name(new_name, all_names)
         self._set_store[path][SetStore.COL_NAME] = new_name
 
-    def _on_new(self, button):
+    def _on_new(self, widget):
         set_store, tree_iter = self._selection.get_selected()
         tree_iter = set_store.add_set(insert_after=tree_iter)
 
@@ -499,7 +578,7 @@ class FontLib(Gtk.Paned):
         column = self._set_list.get_column(SetStore.COL_NAME)
         self._set_list.set_cursor(path, column, True)
 
-    def _on_delete(self, button):
+    def _on_delete(self, widget):
         set_store, tree_iter = self._selection.get_selected()
         if tree_iter is None:
             return
