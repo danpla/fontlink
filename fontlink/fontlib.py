@@ -625,4 +625,7 @@ class FontLib(Gtk.Paned):
 
         if len(self._set_store) == 0:
             self._set_store.add_set()
-        self._set_list.set_cursor(max(0, settings.get('selected_set', 1) - 1))
+
+        path = max(0, settings.get('selected_set', 1) - 1)
+        self._set_list.set_cursor(path)
+        self._set_list.scroll_to_cell(path, None, False, 0, 0)
