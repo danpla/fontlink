@@ -556,8 +556,8 @@ class FontLib(Gtk.Paned):
         font_set = self._set_store[path][SetStore.COL_FONTSET]
         font_set.set_state_all(font_set.nactive < len(font_set))
 
-    def _on_name_edited(self, cell_text, path, new_text):
-        new_name = new_text.strip()
+    def _on_name_edited(self, cell_text, path, new_name):
+        new_name = new_name.strip()
         if not new_name:
             return
 
@@ -575,9 +575,8 @@ class FontLib(Gtk.Paned):
         set_store, tree_iter = selection.get_selected()
         tree_iter = set_store.add_set(insert_after=tree_iter)
 
-        # Start edit name right now.
         path = set_store.get_path(tree_iter)
-        column = self._set_list.get_column(SetStore.COL_NAME)
+        column = self._set_list.get_column(1)
         self._set_list.set_cursor(path, column, True)
 
     def _on_delete(self, widget):
