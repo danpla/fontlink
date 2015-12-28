@@ -16,7 +16,7 @@ CONFIG_DIR = os.path.join(GLib.get_user_config_dir(), app_info.NAME)
 if not os.path.isdir(CONFIG_DIR):
     os.makedirs(CONFIG_DIR)
 
-FONTS_DIR = os.path.expanduser('~/.local/share/fonts')
+FONTS_DIR = os.path.join(GLib.get_user_data_dir(), 'fonts')
 if not os.path.isdir(FONTS_DIR):
     os.makedirs(FONTS_DIR)
 
