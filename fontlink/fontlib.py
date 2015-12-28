@@ -557,6 +557,15 @@ class FontLib(Gtk.Paned):
 
         menu.append(Gtk.SeparatorMenuItem())
 
+        mi_rename = Gtk.MenuItem(
+            label=_('Rename'),
+            tooltip_text=_('Rename this set')
+            )
+        mi_rename.connect('activate', self._on_rename)
+        menu.append(mi_rename)
+
+        menu.append(Gtk.SeparatorMenuItem())
+
         mi_delete = Gtk.MenuItem(
             label=_('Delete'),
             tooltip_text=_('Delete this set')
@@ -633,6 +642,16 @@ class FontLib(Gtk.Paned):
         selection = self._set_list.get_selection()
         set_store, tree_iter = selection.get_selected()
         tree_iter = set_store.add_set(insert_after=tree_iter)
+
+        path = set_store.get_path(tree_iter)
+        column = self._set_list.get_column(1)
+        self._set_list.set_cursor(path, column, True)
+
+    def _on_rename(self, widget):
+        selection = self._set_list.get_selection()
+        set_store, tree_iter = selection.get_selected()
+        if tree_iter is None:
+            return
 
         path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(1)
