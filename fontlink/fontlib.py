@@ -331,14 +331,35 @@ class FontList(Gtk.Grid):
 
         menu.append(Gtk.SeparatorMenuItem())
 
+        mi_open_dir = Gtk.MenuItem(
+            label=_('Open Folder'),
+            tooltip_text=_('Open font folder')
+            )
+        mi_open_dir.connect('activate', self._on_open_dir)
+        menu.append(mi_open_dir)
+
+        mi_copy_path = Gtk.MenuItem(
+            label=_('Copy Path'),
+            tooltip_text=_('Copy font path to clipboard')
+            )
+        mi_copy_path.connect('activate', self._on_copy_path)
+        menu.append(mi_copy_path)
+
+        menu.append(Gtk.SeparatorMenuItem())
+
         mi_remove = Gtk.MenuItem(label=_('Remove selected fonts'))
         mi_remove.connect('activate', self._on_remove)
-        if selection.count_selected_rows() == 0:
-            mi_remove.set_sensitive(False)
         menu.append(mi_remove)
 
         mi_clear = Gtk.MenuItem(label=_('Remove all fonts'))
         mi_clear.connect('activate', self._on_clear)
+
+        num_selected = selection.count_selected_rows()
+        if num_selected != 1:
+            mi_open_dir.set_sensitive(False)
+            mi_copy_path.set_sensitive(False)
+        if num_selected == 0:
+            mi_remove.set_sensitive(False)
         font_set = self._font_list.get_model()
         if font_set is None or len(font_set) == 0:
             mi_clear.set_sensitive(False)
@@ -359,6 +380,29 @@ class FontList(Gtk.Grid):
             return
         font_set.add_fonts(paths)
         self._btn_clear.set_sensitive(len(font_set) > 0)
+
+    def _on_open_dir(self, widget):
+        selection = self._font_list.get_selection()
+        font_set, tree_paths = selection.get_selected_rows()
+        if font_set is None or not tree_paths:
+            return
+
+        Gtk.show_uri(
+            None,
+            GLib.filename_to_uri(
+                os.path.dirname(
+                    font_set[tree_paths[0]][FontSet.COL_LINKS][0].source)),
+            Gdk.CURRENT_TIME)
+
+    def _on_copy_path(self, widget):
+        selection = self._font_list.get_selection()
+        font_set, tree_paths = selection.get_selected_rows()
+        if font_set is None or not tree_paths:
+            return
+
+        clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        clipboard.set_text(
+            font_set[tree_paths[0]][FontSet.COL_LINKS][0].source, -1)
 
     def _on_remove(self, widget):
         selection = self._font_list.get_selection()
