@@ -38,14 +38,12 @@ class FontSet(Gtk.ListStore):
     # in the system at the moment of FontLink launch.
     COL_LINKABLE = 2
     COL_NAME = 3
-    COL_TOOLTIP = 4
 
     def __init__(self):
         super().__init__(
             object,
             bool,
             bool,
-            str,
             str,
             )
 
@@ -88,13 +86,7 @@ class FontSet(Gtk.ListStore):
             installed = font_name in conf.INSTALLED_FONTS
             if installed:
                 enabled = True
-                tooltip = '{}\n<b>{}</b>\n{}'.format(
-                    path,
-                    _('Already installed in:'),
-                    conf.INSTALLED_FONTS[font_name])
             else:
-                tooltip = path
-
                 # Search for .afm .
                 if font_ext.lower() in common.FONT_EXTENSIONS_PS:
                     for file_name in next(os.walk(font_dir))[2]:
@@ -108,7 +100,7 @@ class FontSet(Gtk.ListStore):
 
             links = tuple(links)
 
-            self.append((links, enabled, not installed, font_name, tooltip))
+            self.append((links, enabled, not installed, font_name))
             self._fonts.add(font_name)
 
             if enabled:
@@ -236,8 +228,9 @@ class FontList(Gtk.Grid):
         self._font_list = Gtk.TreeView(
             headers_visible=False,
             rubber_banding=True,
-            tooltip_column=FontSet.COL_TOOLTIP)
+            has_tooltip=True)
         self._font_list.connect('button-press-event', self._on_button_press)
+        self._font_list.connect('query-tooltip', self._on_query_tooltip)
         self._font_list.connect('row-activated', self._on_row_activated)
 
         selection = self._font_list.get_selection()
@@ -378,6 +371,31 @@ class FontList(Gtk.Grid):
         menu.popup(None, None, None, None, event.button, event.time)
 
         return Gdk.EVENT_STOP
+
+    def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):
+        if keyboard_tip:
+            return False
+        points_to_row, *context = tree_view.get_tooltip_context(
+            x, y, keyboard_tip)
+        if not points_to_row:
+            return False
+
+        font_set, path, tree_iter = context[2:]
+        row = font_set[tree_iter]
+
+        font_path = row[FontSet.COL_LINKS][0].source
+        font_dir, font_name = os.path.split(font_path)
+        if font_name in conf.INSTALLED_FONTS:
+            text = '{}\n<b>{}</b>\n{}'.format(
+                font_path,
+                _('Already installed in:'),
+                conf.INSTALLED_FONTS[font_name])
+        else:
+            text = font_path
+
+        tooltip.set_markup(text)
+        tree_view.set_tooltip_row(tooltip, path)
+        return True
 
     def _on_add(self, widget):
         font_set = self._font_list.get_model()
