@@ -558,7 +558,7 @@ class FontLib(Gtk.Paned):
         menu.append(Gtk.SeparatorMenuItem())
 
         mi_rename = Gtk.MenuItem(
-            label=_('Rename'),
+            label=_('Rename…'),
             tooltip_text=_('Rename this set')
             )
         mi_rename.connect('activate', self._on_rename)
