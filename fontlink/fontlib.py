@@ -526,6 +526,7 @@ class FontLib(Gtk.Paned):
         name.connect('edited', self._on_name_edited)
         col_name = Gtk.TreeViewColumn(
             _('Font sets'), name, text=SetStore.COL_NAME)
+        col_name.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self._set_list.append_column(col_name)
 
         # Toolbar.
