@@ -308,9 +308,9 @@ class FontList(Gtk.Grid):
         if click_info is None:
             selection.unselect_all()
         elif event.button == Gdk.BUTTON_SECONDARY:
-            path, column, cell_x, cell_y = click_info
-            if not selection.path_is_selected(path):
-                self._font_list.set_cursor(path, column, False)
+            tree_path, column, cell_x, cell_y = click_info
+            if not selection.path_is_selected(tree_path):
+                self._font_list.set_cursor(tree_path, column, False)
 
         if event.button != Gdk.BUTTON_SECONDARY:
             return Gdk.EVENT_PROPAGATE
@@ -379,7 +379,7 @@ class FontList(Gtk.Grid):
         if not points_to_row:
             return False
 
-        font_set, path, tree_iter = context[2:]
+        font_set, tree_path, tree_iter = context[2:]
         row = font_set[tree_iter]
 
         font_path = row[FontSet.COL_LINKS][0].source
@@ -393,7 +393,7 @@ class FontList(Gtk.Grid):
             text = font_path
 
         tooltip.set_markup(text)
-        tree_view.set_tooltip_row(tooltip, path)
+        tree_view.set_tooltip_row(tooltip, tree_path)
         return True
 
     def _on_add(self, widget):
@@ -442,9 +442,9 @@ class FontList(Gtk.Grid):
             font_set.remove_fonts(tree_paths)
             self._btn_clear.set_sensitive(len(font_set) > 0)
 
-    def _on_toggled(self, cell_toggle, path):
+    def _on_toggled(self, cell_toggle, tree_path):
         font_set = self._font_list.get_model()
-        font_set.toggle_state(path)
+        font_set.toggle_state(tree_path)
 
     def _on_clear(self, widget):
         font_set = self._font_list.get_model()
@@ -457,13 +457,13 @@ class FontList(Gtk.Grid):
             font_set.remove_fonts()
             self._btn_clear.set_sensitive(False)
 
-    def _on_row_activated(self, font_list, path, column):
+    def _on_row_activated(self, font_list, tree_path, column):
         if column == font_list.get_column(1):
             font_set = font_list.get_model()
             Gtk.show_uri(
                 None,
                 GLib.filename_to_uri(
-                    font_set[path][FontSet.COL_LINKS][0].source),
+                    font_set[tree_path][FontSet.COL_LINKS][0].source),
                 Gdk.CURRENT_TIME)
 
     @property
@@ -560,8 +560,8 @@ class FontLib(Gtk.Paned):
 
         click_info = self._set_list.get_path_at_pos(int(event.x), int(event.y))
         if click_info is not None:
-            path, column, cell_x, cell_y = click_info
-            self._set_list.set_cursor(path, column, False)
+            tree_path, column, cell_x, cell_y = click_info
+            self._set_list.set_cursor(tree_path, column, False)
 
         menu = Gtk.Menu(attach_widget=widget)
 
@@ -603,7 +603,7 @@ class FontLib(Gtk.Paned):
         if not points_to_row:
             return False
 
-        set_store, path, tree_iter = context[2:]
+        set_store, tree_path, tree_iter = context[2:]
         font_set = set_store[tree_iter][SetStore.COL_FONTSET]
         num_fonts = len(font_set)
 
@@ -616,7 +616,7 @@ class FontLib(Gtk.Paned):
                          font_set.nactive) % font_set.nactive)
 
         tooltip.set_text(text)
-        tree_view.set_tooltip_row(tooltip, path)
+        tree_view.set_tooltip_row(tooltip, tree_path)
         return True
 
     def _toggle_cell_data_func(self, column, cell, set_store, tree_iter, data):
@@ -637,32 +637,32 @@ class FontLib(Gtk.Paned):
             return
         self._font_list.font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
-    def _on_toggled(self, cell_toggle, path):
-        font_set = self._set_store[path][SetStore.COL_FONTSET]
+    def _on_toggled(self, cell_toggle, tree_path):
+        font_set = self._set_store[tree_path][SetStore.COL_FONTSET]
         font_set.set_state_all(font_set.nactive < len(font_set))
 
-    def _on_name_edited(self, cell_text, path, new_name):
+    def _on_name_edited(self, cell_text, tree_path, new_name):
         new_name = new_name.strip()
         if not new_name:
             return
 
-        old_name = self._set_store[path][SetStore.COL_NAME]
+        old_name = self._set_store[tree_path][SetStore.COL_NAME]
         if new_name == old_name:
             return
 
         all_names = set(row[SetStore.COL_NAME] for row in self._set_store)
         all_names.discard(old_name)
         new_name = utils.unique_name(new_name, all_names)
-        self._set_store[path][SetStore.COL_NAME] = new_name
+        self._set_store[tree_path][SetStore.COL_NAME] = new_name
 
     def _on_new(self, widget):
         selection = self._set_list.get_selection()
         set_store, tree_iter = selection.get_selected()
         tree_iter = set_store.add_set(insert_after=tree_iter)
 
-        path = set_store.get_path(tree_iter)
+        tree_path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(1)
-        self._set_list.set_cursor(path, column, True)
+        self._set_list.set_cursor(tree_path, column, True)
 
     def _on_rename(self, widget):
         selection = self._set_list.get_selection()
@@ -670,9 +670,9 @@ class FontLib(Gtk.Paned):
         if tree_iter is None:
             return
 
-        path = set_store.get_path(tree_iter)
+        tree_path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(1)
-        self._set_list.set_cursor(path, column, True)
+        self._set_list.set_cursor(tree_path, column, True)
 
     def _on_delete(self, widget):
         selection = self._set_list.get_selection()
@@ -723,6 +723,6 @@ class FontLib(Gtk.Paned):
         if len(self._set_store) == 0:
             self._set_store.add_set()
 
-        path = max(0, settings.get('selected_set', 1) - 1)
-        self._set_list.set_cursor(path)
-        self._set_list.scroll_to_cell(path, None, False, 0, 0)
+        tree_path = max(0, settings.get('selected_set', 1) - 1)
+        self._set_list.set_cursor(tree_path)
+        self._set_list.scroll_to_cell(tree_path, None, False, 0, 0)
