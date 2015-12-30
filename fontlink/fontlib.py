@@ -315,8 +315,7 @@ class FontList(Gtk.Grid):
         if event.button != Gdk.BUTTON_SECONDARY:
             return Gdk.EVENT_PROPAGATE
 
-        menu = Gtk.Menu()
-        menu.attach_to_widget(widget)
+        menu = Gtk.Menu(attach_widget=widget)
 
         mi_add = Gtk.MenuItem(
             label=_('Add…'),
@@ -563,8 +562,7 @@ class FontLib(Gtk.Paned):
             path, column, cell_x, cell_y = click_info
             self._set_list.set_cursor(path, column, False)
 
-        menu = Gtk.Menu()
-        menu.attach_to_widget(widget)
+        menu = Gtk.Menu(attach_widget=widget)
 
         mi_new = Gtk.MenuItem(
             label=_('New'),

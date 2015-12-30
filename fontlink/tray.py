@@ -13,8 +13,7 @@ class Tray:
     def __init__(self, window):
         self._window = window
 
-        menu = Gtk.Menu()
-        menu.attach_to_widget(self._window)
+        menu = Gtk.Menu(attach_widget=self._window)
 
         mi_visible = Gtk.CheckMenuItem(
             label=_('Show FontLink'),
