@@ -52,7 +52,7 @@ def open_fonts(parent):
         )
     dialog.add_buttons(
         _('_Cancel'), Gtk.ResponseType.CANCEL,
-         _('_Open'), Gtk.ResponseType.OK,
+        _('_Open'), Gtk.ResponseType.OK,
         )
 
     font_filter = Gtk.FileFilter()
