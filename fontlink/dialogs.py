@@ -11,7 +11,7 @@ from .settings import settings
 
 def confirmation(parent, message, ok_text):
     dialog = Gtk.MessageDialog(
-        parent=parent,
+        transient_for=parent,
         message_type=Gtk.MessageType.QUESTION,
         text=message,
         )
@@ -35,7 +35,6 @@ def about(parent):
         copyright=app_info.COPYRIGHT,
         license=app_info.LICENSE,
 
-        parent=parent,
         transient_for=parent,
         destroy_with_parent=True
         )
@@ -45,19 +44,21 @@ def about(parent):
 
 
 def open_fonts(parent):
+    dialog = Gtk.FileChooserDialog(
+        title=_('Choose fonts'),
+        transient_for=parent,
+        action=Gtk.FileChooserAction.OPEN,
+        select_multiple=True,
+        )
+    dialog.add_buttons(
+        _('_Cancel'), Gtk.ResponseType.CANCEL,
+         _('_Open'), Gtk.ResponseType.OK,
+        )
+
     font_filter = Gtk.FileFilter()
     font_filter.set_name(_('Fonts'))
     for pattern in common.FONT_SEARCH_PATTERNS:
         font_filter.add_pattern(pattern)
-
-    dialog = Gtk.FileChooserDialog(
-        _('Choose fonts'),
-        parent,
-        Gtk.FileChooserAction.OPEN,
-        (_('_Cancel'), Gtk.ResponseType.CANCEL,
-         _('_Open'), Gtk.ResponseType.OK),
-        select_multiple=True,
-        )
     dialog.add_filter(font_filter)
 
     path = settings.get('last_dir')
