@@ -54,7 +54,7 @@ class FontSet(Gtk.ListStore):
 
         self.set_sort_column_id(self.COL_NAME, Gtk.SortType.ASCENDING)
 
-    @GObject.property
+    @GObject.Property
     def nactive(self):
         '''Number of currently active (linked) fonts.'''
         return self._nactive
