@@ -231,6 +231,7 @@ class FontList(Gtk.Grid):
 
     def _create_ui(self):
         self._font_list = Gtk.TreeView(
+            fixed_height_mode=True,
             headers_visible=False,
             rubber_banding=True,
             has_tooltip=True)
@@ -258,6 +259,7 @@ class FontList(Gtk.Grid):
             active=FontSet.COL_ENABLED,
             activatable=FontSet.COL_LINKABLE
             )
+        col_toggle.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self._font_list.append_column(col_toggle)
 
         name = Gtk.CellRendererText()
@@ -266,6 +268,7 @@ class FontList(Gtk.Grid):
             text=FontSet.COL_NAME,
             sensitive=FontSet.COL_LINKABLE
             )
+        col_name.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         col_name.set_sort_column_id(FontSet.COL_NAME)
         self._font_list.append_column(col_name)
 
