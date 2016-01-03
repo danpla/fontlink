@@ -272,6 +272,7 @@ class FontList(Gtk.Grid):
         # Toolbar.
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
+        toolbar.get_style_context().add_class('bottom-toolbar')
         self.add(toolbar)
 
         btn_add = Gtk.ToolButton(
@@ -437,7 +438,6 @@ class FontList(Gtk.Grid):
         else:
             if action == self._PathAction.OPEN_DIR:
                 path = os.path.dirname(path)
-
             Gtk.show_uri(None, GLib.filename_to_uri(path), Gdk.CURRENT_TIME)
 
     def _on_remove(self, widget):
@@ -542,6 +542,7 @@ class FontLib(Gtk.Paned):
         # Toolbar.
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
+        toolbar.get_style_context().add_class('bottom-toolbar')
         grid.add(toolbar)
 
         btn_new = Gtk.ToolButton(
