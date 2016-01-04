@@ -30,7 +30,7 @@ class FontSet(Gtk.ListStore):
 
     # COL_LINKS is a tuple of linker.Link.
     # The first pair is always present and describes the main font file.
-    # Others (if any) are additional files (.afm, etc).
+    # Others (if any) are additional files (.afm, etc.).
     COL_LINKS = 0
     COL_ENABLED = 1
 
@@ -115,7 +115,7 @@ class FontSet(Gtk.ListStore):
 
             if row[font_set.COL_ENABLED]:
                 self._nactive += 1
-                if row[self.COL_LINKABLE]:
+                if row[font_set.COL_LINKABLE]:
                     linker.create_links(row[font_set.COL_LINKS])
 
     @_watch_nactive
@@ -216,13 +216,13 @@ class SetStore(Gtk.ListStore):
         json_sets = []
         for set_row in self:
             fonts = []
-            for font_set in set_row[SetStore.COL_FONTSET]:
+            for font_set in set_row[self.COL_FONTSET]:
                 fonts.append({
                     'enabled': font_set[FontSet.COL_ENABLED],
                     'path': font_set[FontSet.COL_LINKS][0].source
                     })
             json_sets.append(OrderedDict((
-                ('name', set_row[SetStore.COL_NAME]),
+                ('name', set_row[self.COL_NAME]),
                 ('fonts', fonts))))
         return json_sets
 
@@ -231,7 +231,7 @@ class SetStore(Gtk.ListStore):
         tree_iter = None
         for json_set in json_sets:
             tree_iter = self.add_set(json_set['name'], tree_iter)
-            self[tree_iter][SetStore.COL_FONTSET].add_fonts(
+            self[tree_iter][self.COL_FONTSET].add_fonts(
                 ((f['path'], f['enabled']) for f in json_set['fonts']))
 
 
