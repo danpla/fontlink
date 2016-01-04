@@ -36,8 +36,7 @@ class FontLink(Gtk.Application):
 
         self._window = None
         self._tray = None
-        self._minimized = False
-        self._first_activation = True
+        self._activate_minimized = False
 
         GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.quit)
         GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self.quit)
@@ -59,7 +58,7 @@ class FontLink(Gtk.Application):
         if options.contains('version'):
             print(app_info.TITLE, app_info.VERSION)
             return 0
-        self._minimized = options.contains('minimized')
+        self._activate_minimized = options.contains('minimized')
 
         return -1
 
@@ -75,15 +74,14 @@ class FontLink(Gtk.Application):
         Gtk.Window.set_default_icon_name(app_info.ICON)
         self._window = window.MainWindow(self)
         self._window.load_state()
-        if not self._minimized:
-            self._window.show()
 
         self._tray = tray.Tray(self._window)
 
     def do_activate(self):
-        if not self._first_activation and self._window is not None:
+        if self._activate_minimized:
+            self._activate_minimized = False
+        else:
             self._window.present()
-        self._first_activation = False
 
     def quit(self):
         self._window.save_state()
