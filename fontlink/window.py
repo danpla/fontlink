@@ -14,7 +14,12 @@ class MainWindow(Gtk.ApplicationWindow):
     _DND_LIST = [Gtk.TargetEntry.new('text/uri-list', 0, _DND_URI)]
 
     def __init__(self, app):
-        super().__init__(title=app_info.TITLE, application=app)
+        super().__init__(
+            application=app,
+            title=app_info.TITLE,
+            default_width=500,
+            default_height=250
+            )
 
         self._app = app
         self.connect('window-state-event', self._on_window_state_event)

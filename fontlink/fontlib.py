@@ -514,8 +514,6 @@ class FontLib(Gtk.Paned):
 
     def __init__(self):
         super().__init__()
-        self.set_size_request(500, 250)
-
         self._set_store = SetStore()
         self._font_list = FontList()
         self._create_ui()
