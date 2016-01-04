@@ -29,8 +29,8 @@ def _watch_nactive(method):
 class FontSet(Gtk.ListStore):
 
     # COL_LINKS is a tuple of linker.Link.
-    # First pair is always present and describes the main font file.
-    # Others (if any) are additional files, like .afm or etc.
+    # The first pair is always present and describes the main font file.
+    # Others (if any) are additional files (.afm, etc).
     COL_LINKS = 0
     COL_ENABLED = 1
 
@@ -143,7 +143,6 @@ class FontSet(Gtk.ListStore):
             self.remove(self.get_iter(tree_path))
 
     def toggle_state(self, tree_path):
-        '''Toggle the state of certain font.'''
         row = self[tree_path]
         if not row[self.COL_LINKABLE]:
             return
@@ -177,7 +176,6 @@ class FontSet(Gtk.ListStore):
 
 
 class SetStore(Gtk.ListStore):
-    '''Set store contains font sets.'''
 
     COL_NAME = 0
     COL_FONTSET = 1
@@ -238,7 +236,6 @@ class SetStore(Gtk.ListStore):
 
 
 class FontList(Gtk.Grid):
-    '''FontList shows and manages fonts of the selected FontSet.'''
 
     class _PathAction:
         OPEN = 0
@@ -270,7 +267,7 @@ class FontList(Gtk.Grid):
         scrolled.add(self._font_list)
         self.add(scrolled)
 
-        # Columns.
+        # Columns
 
         toggle = Gtk.CellRendererToggle()
         toggle.connect('toggled', self._on_toggled)
@@ -292,7 +289,7 @@ class FontList(Gtk.Grid):
         col_name.set_sort_column_id(FontSet.COL_NAME)
         self._font_list.append_column(col_name)
 
-        # Toolbar.
+        # Toolbar
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
         toolbar.get_style_context().add_class('bottom-toolbar')
@@ -547,7 +544,7 @@ class FontLib(Gtk.Paned):
         scrolled.add(self._set_list)
         grid.add(scrolled)
 
-        # Columns.
+        # Columns
 
         toggle = Gtk.CellRendererToggle()
         toggle.connect('toggled', self._on_toggled)
@@ -562,7 +559,7 @@ class FontLib(Gtk.Paned):
         col_name.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self._set_list.append_column(col_name)
 
-        # Toolbar.
+        # Toolbar
 
         toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
         toolbar.get_style_context().add_class('bottom-toolbar')
