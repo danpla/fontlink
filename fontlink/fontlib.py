@@ -109,6 +109,16 @@ class FontSet(Gtk.ListStore):
                     linker.create_links(links)
 
     @_watch_nactive
+    def add_fonts_from(self, font_set):
+        for row in font_set:
+            self.append(row[:])
+
+            if row[font_set.COL_ENABLED]:
+                self._nactive += 1
+                if row[self.COL_LINKABLE]:
+                    linker.create_links(row[font_set.COL_LINKS])
+
+    @_watch_nactive
     def remove_fonts(self, tree_paths=None):
         '''Remove fonts from the set.
 
@@ -190,8 +200,18 @@ class SetStore(Gtk.ListStore):
         font_set = FontSet()
         font_set.connect('notify::nactive', self._on_set_changed)
 
-        tree_iter = self.insert_after(insert_after, (name, font_set))
-        return tree_iter
+        return self.insert_after(insert_after, (name, font_set))
+
+    def duplicate_set(self, tree_iter):
+        name = utils.unique_name(
+            self[tree_iter][self.COL_NAME],
+            (row[self.COL_NAME] for row in self))
+
+        font_set = FontSet()
+        font_set.add_fonts_from(self[tree_iter][self.COL_FONTSET])
+        font_set.connect('notify::nactive', self._on_set_changed)
+
+        return self.insert_after(tree_iter, (name, font_set))
 
     @property
     def as_json(self):
@@ -588,6 +608,13 @@ class FontLib(Gtk.Paned):
 
         menu.append(Gtk.SeparatorMenuItem())
 
+        mi_duplicate = Gtk.MenuItem(
+            label=_('Duplicate'),
+            tooltip_text=_('Duplicate the set')
+            )
+        mi_duplicate.connect('activate', self._on_duplicate)
+        menu.append(mi_duplicate)
+
         mi_rename = Gtk.MenuItem(
             label=_('Rename…'),
             tooltip_text=_('Rename this set')
@@ -672,11 +699,23 @@ class FontLib(Gtk.Paned):
     def _on_new(self, widget):
         selection = self._set_list.get_selection()
         set_store, tree_iter = selection.get_selected()
+
         tree_iter = set_store.add_set(insert_after=tree_iter)
 
         tree_path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(1)
         self._set_list.set_cursor(tree_path, column, True)
+
+    def _on_duplicate(self, widget):
+        selection = self._set_list.get_selection()
+        set_store, tree_iter = selection.get_selected()
+        if tree_iter is None:
+            return
+
+        tree_iter = set_store.duplicate_set(tree_iter)
+
+        tree_path = set_store.get_path(tree_iter)
+        self._set_list.set_cursor(tree_path, None, False)
 
     def _on_rename(self, widget):
         selection = self._set_list.get_selection()
