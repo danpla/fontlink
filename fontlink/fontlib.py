@@ -261,9 +261,9 @@ class FontList(Gtk.Grid):
 
         scrolled = Gtk.ScrolledWindow(
             shadow_type=Gtk.ShadowType.IN,
+            width_request=200,
             expand=True
             )
-        scrolled.set_size_request(250, -1)
         scrolled.add(self._font_list)
         self.add(scrolled)
 
@@ -536,9 +536,9 @@ class FontLib(Gtk.Paned):
 
         scrolled = Gtk.ScrolledWindow(
             shadow_type=Gtk.ShadowType.IN,
+            width_request=150,
             expand=True
             )
-        scrolled.set_size_request(150, -1)
         scrolled.add(self._set_list)
         grid.add(scrolled)
 
