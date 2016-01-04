@@ -617,7 +617,7 @@ class FontLib(Gtk.Paned):
 
         mi_rename = Gtk.MenuItem(
             label=_('Rename…'),
-            tooltip_text=_('Rename this set')
+            tooltip_text=_('Rename the set')
             )
         mi_rename.connect('activate', self._on_rename)
         menu.append(mi_rename)
@@ -626,7 +626,7 @@ class FontLib(Gtk.Paned):
 
         mi_delete = Gtk.MenuItem(
             label=_('Delete'),
-            tooltip_text=_('Delete this set')
+            tooltip_text=_('Delete the set')
             )
         mi_delete.connect('activate', self._on_delete)
         menu.append(mi_delete)
