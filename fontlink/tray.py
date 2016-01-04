@@ -6,7 +6,7 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 
 from . import app_info
-from . import conf
+from . import config
 
 
 class Tray:
@@ -43,8 +43,8 @@ class Tray:
             app_info.NAME, app_info.ICON,
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 
-        if conf.ICON_DIR:
-            self._indicator.set_icon_theme_path(conf.ICON_DIR)
+        if config.ICON_DIR:
+            self._indicator.set_icon_theme_path(config.ICON_DIR)
         self._indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self._indicator.set_menu(menu)
         self._indicator.set_secondary_activate_target(mi_visible)

@@ -2,12 +2,12 @@
 import json
 import os
 
-from . import conf
+from . import config
 
 
 class _Settings(dict):
 
-    _FILE = os.path.join(conf.CONFIG_DIR, 'settings.json')
+    _FILE = os.path.join(config.CONFIG_DIR, 'settings.json')
 
     def load(self):
         try:

@@ -7,7 +7,7 @@ import os
 
 from gi.repository import Gtk, Gdk, GObject, GLib
 
-from . import conf
+from . import config
 from . import common
 from .settings import settings
 from . import dialogs
@@ -76,14 +76,14 @@ class FontSet(Gtk.ListStore):
             font_root_name, font_ext = os.path.splitext(font_name)
             if (font_ext.lower() not in common.FONT_EXTENSIONS or
                     font_name in self._fonts or
-                    font_dir.startswith(conf.FONTS_DIR) or
+                    font_dir.startswith(config.FONTS_DIR) or
                     not os.path.isfile(path)):
                 continue
 
             links = [
-                linker.Link(path, os.path.join(conf.FONTS_DIR, font_name))]
+                linker.Link(path, os.path.join(config.FONTS_DIR, font_name))]
 
-            installed = font_name in conf.INSTALLED_FONTS
+            installed = font_name in config.INSTALLED_FONTS
             if installed:
                 enabled = True
             else:
@@ -96,7 +96,7 @@ class FontSet(Gtk.ListStore):
                             links.append(
                                 linker.Link(
                                     os.path.join(font_dir, file_name),
-                                    os.path.join(conf.FONTS_DIR, file_name)))
+                                    os.path.join(config.FONTS_DIR, file_name)))
 
             links = tuple(links)
 
@@ -404,11 +404,11 @@ class FontList(Gtk.Grid):
 
         font_path = row[FontSet.COL_LINKS][0].source
         font_dir, font_name = os.path.split(font_path)
-        if font_name in conf.INSTALLED_FONTS:
+        if font_name in config.INSTALLED_FONTS:
             text = '{}\n<b>{}</b>\n{}'.format(
                 font_path,
                 _('Already installed in:'),
-                conf.INSTALLED_FONTS[font_name])
+                config.INSTALLED_FONTS[font_name])
         else:
             text = font_path
 
@@ -493,7 +493,7 @@ class FontList(Gtk.Grid):
 
 class FontLib(Gtk.Paned):
 
-    _FILE = os.path.join(conf.CONFIG_DIR, 'sets.json')
+    _FILE = os.path.join(config.CONFIG_DIR, 'sets.json')
 
     def __init__(self):
         super().__init__()
