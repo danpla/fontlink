@@ -653,13 +653,14 @@ class FontLib(Gtk.Paned):
         font_set = set_store[tree_iter][SetStore.COL_FONTSET]
         num_fonts = len(font_set)
 
-        text = ngettext('%d font', '%d fonts', num_fonts) % num_fonts
+        text = ngettext('{num} font', '{num} fonts', num_fonts).format(
+            num=num_fonts)
         if num_fonts > 0:
             text = '{} ({})'.format(
                 text,
                 # Translators: Number of active fonts
-                ngettext('%d active', '%d active',
-                         font_set.nactive) % font_set.nactive)
+                ngettext('{num} active', '{num} active',
+                         font_set.nactive).format(num=font_set.nactive))
 
         tooltip.set_text(text)
         tree_view.set_tooltip_row(tooltip, tree_path)
@@ -741,7 +742,8 @@ class FontLib(Gtk.Paned):
         row = set_store[tree_iter]
         if not dialogs.confirmation(
                 self.get_toplevel(),
-                _('Delete “{}”?').format(row[SetStore.COL_NAME]),
+                _('Delete “{set_name}”?').format(
+                    set_name=row[SetStore.COL_NAME]),
                 _('_Delete')):
             return
 
