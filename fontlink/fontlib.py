@@ -590,7 +590,7 @@ class FontLib(Gtk.Paned):
         btn_delete = Gtk.ToolButton(
             label=_('Delete'),
             icon_name='edit-delete',
-            tooltip_text=_('Delete this set'))
+            tooltip_text=_('Delete the set'))
         btn_delete.connect('clicked', self._on_delete)
         toolbar.add(btn_delete)
 
