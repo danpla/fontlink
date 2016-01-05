@@ -469,12 +469,23 @@ class FontList(Gtk.Grid):
     def _on_remove(self, widget):
         selection = self._font_list.get_selection()
         font_set, tree_paths = selection.get_selected_rows()
-        if (font_set is not None and tree_paths and
-                dialogs.confirmation(
-                    self.get_toplevel(),
-                    _('Remove selected fonts from the set?'),
-                    _('_Remove')
-                    )):
+        if font_set is None or not tree_paths:
+            return
+
+        num_selected = len(tree_paths)
+        if num_selected == 1:
+            message = _('Remove “{font_name}” from the set?').format(
+                font_name=font_set[tree_paths[0]][FontSet.COL_NAME])
+        else:
+            message = ngettext(
+                'Remove {num} selected font from the set?',
+                'Remove {num} selected fonts from the set?',
+                num_selected).format(num=num_selected)
+
+        if dialogs.confirmation(
+                self.get_toplevel(),
+                message,
+                _('_Remove')):
             font_set.remove_fonts(tree_paths)
             self._btn_clear.set_sensitive(len(font_set) > 0)
 
