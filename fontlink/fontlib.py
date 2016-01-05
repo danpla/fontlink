@@ -344,7 +344,8 @@ class FontList(Gtk.Grid):
         menu = Gtk.Menu(attach_widget=widget)
 
         mi_add = Gtk.MenuItem(
-            label=_('Add…'),
+            label=_('_Add…'),
+            use_underline=True,
             tooltip_text=_('Add fonts')
             )
         mi_add.connect('activate', self._on_add)
@@ -353,7 +354,8 @@ class FontList(Gtk.Grid):
         menu.append(Gtk.SeparatorMenuItem())
 
         mi_open = Gtk.MenuItem(
-            label=_('Open'),
+            label=_('_Open'),
+            use_underline=True,
             tooltip_text=_('Open font')
             )
         mi_open.connect(
@@ -361,7 +363,8 @@ class FontList(Gtk.Grid):
         menu.append(mi_open)
 
         mi_open_dir = Gtk.MenuItem(
-            label=_('Open Folder'),
+            label=_('Open _Folder'),
+            use_underline=True,
             tooltip_text=_('Open font folder')
             )
         mi_open_dir.connect(
@@ -369,7 +372,8 @@ class FontList(Gtk.Grid):
         menu.append(mi_open_dir)
 
         mi_copy_path = Gtk.MenuItem(
-            label=_('Copy Path'),
+            label=_('Copy _Path'),
+            use_underline=True,
             tooltip_text=_('Copy font path to clipboard')
             )
         mi_copy_path.connect(
@@ -379,14 +383,16 @@ class FontList(Gtk.Grid):
         menu.append(Gtk.SeparatorMenuItem())
 
         mi_remove = Gtk.MenuItem(
-            label=_('Remove'),
+            label=_('_Remove'),
+            use_underline=True,
             tooltip_text=_('Remove selected fonts')
             )
         mi_remove.connect('activate', self._on_remove)
         menu.append(mi_remove)
 
         mi_clear = Gtk.MenuItem(
-            label=_('Remove All'),
+            label=_('R_emove All'),
+            use_underline=True,
             tooltip_text=_('Remove all fonts')
             )
         mi_clear.connect('activate', self._on_clear)
@@ -595,7 +601,8 @@ class FontLib(Gtk.Paned):
         menu = Gtk.Menu(attach_widget=widget)
 
         mi_new = Gtk.MenuItem(
-            label=_('New'),
+            label=_('_New'),
+            use_underline=True,
             tooltip_text=_('Create a new set')
             )
         mi_new.connect('activate', self._on_new)
@@ -604,14 +611,16 @@ class FontLib(Gtk.Paned):
         menu.append(Gtk.SeparatorMenuItem())
 
         mi_duplicate = Gtk.MenuItem(
-            label=_('Duplicate'),
+            label=_('D_uplicate'),
+            use_underline=True,
             tooltip_text=_('Duplicate the set')
             )
         mi_duplicate.connect('activate', self._on_duplicate)
         menu.append(mi_duplicate)
 
         mi_rename = Gtk.MenuItem(
-            label=_('Rename…'),
+            label=_('_Rename…'),
+            use_underline=True,
             tooltip_text=_('Rename the set')
             )
         mi_rename.connect('activate', self._on_rename)
@@ -620,7 +629,8 @@ class FontLib(Gtk.Paned):
         menu.append(Gtk.SeparatorMenuItem())
 
         mi_delete = Gtk.MenuItem(
-            label=_('Delete'),
+            label=_('_Delete'),
+            use_underline=True,
             tooltip_text=_('Delete the set')
             )
         mi_delete.connect('activate', self._on_delete)
