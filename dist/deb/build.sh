@@ -11,7 +11,7 @@ cp -r $DATA_DIR/bin $BUILD_DIR
 INSTALL_DIR=$BUILD_DIR/usr/share
 
 mkdir -p $INSTALL_DIR
-rsync -a --exclude=**__pycache__* $DATA_DIR/$APPNAME $INSTALL_DIR
+rsync -a --exclude=*__pycache__* $DATA_DIR/$APPNAME $INSTALL_DIR
 
 
 # Compile mo
