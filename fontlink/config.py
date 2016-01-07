@@ -2,7 +2,6 @@
 import gettext
 import os
 import sys
-import subprocess
 
 from gi.repository import GLib
 
@@ -19,23 +18,6 @@ if not os.path.isdir(CONFIG_DIR):
 FONTS_DIR = os.path.join(GLib.get_user_data_dir(), 'fonts')
 if not os.path.isdir(FONTS_DIR):
     os.makedirs(FONTS_DIR)
-
-
-def _get_installed_fonts():
-    '''Create mapping of installed fonts {font_name: font_dir}.'''
-    fonts = {}
-    try:
-        for path in subprocess.check_output(
-                ['fc-list', ':', 'file'],
-                universal_newlines=True).split():
-            font_dir, font_name = os.path.split(path.rstrip(':'))
-            fonts[font_name] = font_dir
-    except FileNotFoundError:
-        pass
-    return fonts
-
-INSTALLED_FONTS = _get_installed_fonts()
-
 
 LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
 

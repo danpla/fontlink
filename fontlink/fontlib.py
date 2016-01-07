@@ -8,10 +8,10 @@ import os
 from gi.repository import Gtk, Gdk, GObject, GLib
 
 from . import config
-from . import common
 from .settings import settings
 from . import dialogs
 from . import linker
+from . import font_utils
 from . import utils
 
 
@@ -74,7 +74,7 @@ class FontSet(Gtk.ListStore):
 
             font_dir, font_name = os.path.split(path)
             font_root_name, font_ext = os.path.splitext(font_name)
-            if (font_ext.lower() not in common.FONT_EXTENSIONS or
+            if (font_ext.lower() not in font_utils.FONT_EXTENSIONS or
                     font_name in self._fonts or
                     font_dir.startswith(config.FONTS_DIR) or
                     not os.path.isfile(path)):
@@ -83,12 +83,12 @@ class FontSet(Gtk.ListStore):
             links = [
                 linker.Link(path, os.path.join(config.FONTS_DIR, font_name))]
 
-            installed = font_name in config.INSTALLED_FONTS
+            installed = font_name in font_utils.INSTALLED_FONTS
             if installed:
                 enabled = True
             else:
                 # Search for .afm .
-                if font_ext.lower() in common.FONT_EXTENSIONS_PS:
+                if font_ext.lower() in font_utils.FONT_EXTENSIONS_PS:
                     for file_name in next(os.walk(font_dir))[2]:
                         file_root_name, file_ext = os.path.splitext(file_name)
                         if (file_root_name == font_root_name and
@@ -427,11 +427,11 @@ class FontList(Gtk.Grid):
 
         font_path = row[FontSet.COL_LINKS][0].source
         font_dir, font_name = os.path.split(font_path)
-        if font_name in config.INSTALLED_FONTS:
+        if font_name in font_utils.INSTALLED_FONTS:
             text = '{}\n<b>{}</b>\n{}'.format(
                 font_path,
                 _('Already installed in:'),
-                config.INSTALLED_FONTS[font_name])
+                font_utils.INSTALLED_FONTS[font_name])
         else:
             text = font_path
 

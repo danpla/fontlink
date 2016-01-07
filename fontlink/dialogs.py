@@ -4,9 +4,9 @@ import os
 
 from gi.repository import Gtk
 
-from . import common
 from . import app_info
 from .settings import settings
+from . import font_utils
 
 
 def confirmation(parent, message, ok_text):
@@ -57,7 +57,7 @@ def open_fonts(parent):
 
     font_filter = Gtk.FileFilter()
     font_filter.set_name(_('Fonts'))
-    for pattern in common.FONT_SEARCH_PATTERNS:
+    for pattern in font_utils.FONT_SEARCH_PATTERNS:
         font_filter.add_pattern(pattern)
     dialog.add_filter(font_filter)
 
