@@ -415,8 +415,6 @@ class FontList(Gtk.Grid):
         return Gdk.EVENT_STOP
 
     def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):
-        if keyboard_tip:
-            return False
         points_to_row, *context = tree_view.get_tooltip_context(
             x, y, keyboard_tip)
         if not points_to_row:
@@ -653,8 +651,6 @@ class FontLib(Gtk.Paned):
         return Gdk.EVENT_STOP
 
     def _on_query_tooltip(self, tree_view, x, y, keyboard_tip, tooltip):
-        if keyboard_tip:
-            return False
         points_to_row, *context = tree_view.get_tooltip_context(
             x, y, keyboard_tip)
         if not points_to_row:
