@@ -25,7 +25,7 @@ VERSION = '0.9.3'
 TITLE = 'FontLink'
 ICON = NAME
 
-COPYRIGHT = 'Copyright © 2015 Daniel Plachotich'
+COPYRIGHT = 'Copyright © 2015, 2016 Daniel Plachotich'
 LICENSE = __doc__
 
 WEBSITE = 'https://danpla.github.io/fontlink/'
