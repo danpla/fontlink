@@ -41,3 +41,34 @@ def _get_installed_fonts():
 
 
 INSTALLED_FONTS = _get_installed_fonts()
+
+
+_AFM_EXTENSIONS = ('.afm', '.AFM', '.Afm')
+_PFM_EXTENSIONS = ('.pfm', '.PFM', '.Pfm')
+
+
+def find_metrics(font_dir, font_name):
+    '''Find PS metrics (AFM or PFM).
+
+    font_dir -- directory to search in.
+    font_name -- font name without extension.
+
+    Returns an empty string if nothing found.
+    '''
+    for ext in (_AFM_EXTENSIONS + _PFM_EXTENSIONS):
+        path = os.path.join(font_dir, font_name + ext)
+        if os.path.isfile(path):
+            return path
+
+    for extensions in (_AFM_EXTENSIONS, _PFM_EXTENSIONS):
+        for subdir in (ext[1:] for ext in extensions):
+            subpath = os.path.join(font_dir, subdir)
+            if not os.path.isdir(subpath):
+                continue
+
+            for ext in extensions:
+                path = os.path.join(subpath, font_name + ext)
+                if os.path.isfile(path):
+                    return path
+
+    return ''

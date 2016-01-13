@@ -86,17 +86,16 @@ class FontSet(Gtk.ListStore):
             installed = font_name in font_utils.INSTALLED_FONTS
             if installed:
                 enabled = True
-            else:
-                # Search for .afm .
-                if font_ext.lower() in font_utils.FONT_EXTENSIONS_PS:
-                    for file_name in next(os.walk(font_dir))[2]:
-                        file_root_name, file_ext = os.path.splitext(file_name)
-                        if (file_root_name == font_root_name and
-                                file_ext.lower() == '.afm'):
-                            links.append(
-                                linker.Link(
-                                    os.path.join(font_dir, file_name),
-                                    os.path.join(config.FONTS_DIR, file_name)))
+            elif font_ext.lower() in font_utils.FONT_EXTENSIONS_PS:
+                metrics_path = font_utils.find_metrics(
+                    font_dir, font_root_name)
+                if metrics_path:
+                    links.append(
+                        linker.Link(
+                            metrics_path,
+                            os.path.join(
+                                config.FONTS_DIR,
+                                os.path.basename(metrics_path))))
 
             links = tuple(links)
 
