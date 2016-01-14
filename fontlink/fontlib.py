@@ -110,7 +110,12 @@ class FontSet(Gtk.ListStore):
     @_watch_nactive
     def add_fonts_from(self, font_set):
         for row in font_set:
+            font_name = row[font_set.COL_NAME]
+            if font_name in self._fonts:
+                continue
+
             self.append(row[:])
+            self._fonts.add(font_name)
 
             if row[font_set.COL_ENABLED]:
                 self._nactive += 1
