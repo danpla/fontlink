@@ -138,7 +138,7 @@ class FontSet(Gtk.ListStore):
                 self._nactive -= 1
                 if row[self.COL_LINKABLE]:
                     linker.remove_links(row[self.COL_LINKS])
-            self._fonts.remove(row[self.COL_NAME])
+            self._fonts.discard(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
 
     def toggle_state(self, tree_path):
