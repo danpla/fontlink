@@ -662,7 +662,7 @@ class FontLib(Gtk.Paned):
         text = ngettext('{num} font', '{num} fonts', num_fonts).format(
             num=num_fonts)
         if num_fonts > 0:
-            text = '{} ({})'.format(
+            text = '{}\n{}'.format(
                 text,
                 # Translators: Number of active fonts
                 ngettext('{num} active', '{num} active',
