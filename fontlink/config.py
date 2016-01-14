@@ -18,8 +18,3 @@ if not os.path.isdir(CONFIG_DIR):
 FONTS_DIR = os.path.join(GLib.get_user_data_dir(), 'fonts')
 if not os.path.isdir(FONTS_DIR):
     os.makedirs(FONTS_DIR)
-
-LOCALE_DIR = os.path.join(sys.prefix, 'share', 'locale')
-
-gettext.bindtextdomain(app_info.NAME, LOCALE_DIR)
-gettext.textdomain(app_info.NAME)
