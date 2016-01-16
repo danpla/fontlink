@@ -38,8 +38,8 @@ class FontLink(Gtk.Application):
         self._tray = None
         self._activate_minimized = False
 
-        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.quit)
-        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self.quit)
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self._on_quit)
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self._on_quit)
 
     def _make_option(self, long_name, short_name, description, flags=0,
                      arg=GLib.OptionArg.NONE, arg_data=None,
@@ -83,15 +83,19 @@ class FontLink(Gtk.Application):
         else:
             self._window.present()
 
-    def quit(self):
-        self._window.save_state()
+    def do_shutdown(self):
         settings.save()
-        super().quit()
+        Gtk.Application.do_shutdown(self)
 
-    # Action callbacks.
+    def _on_quit(self):
+        if self._window is None:
+            return
+
+        self._window.save_state()
+        self._window.destroy()
 
     def _about_cb(self, action, parameter):
         dialogs.about(self._window)
 
     def _quit_cb(self, action, parameter):
-        self.quit()
+        self._on_quit()

@@ -21,8 +21,6 @@ class MainWindow(Gtk.ApplicationWindow):
             default_height=250
             )
 
-        self._app = app
-
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
 
@@ -92,7 +90,8 @@ class MainWindow(Gtk.ApplicationWindow):
         return Gtk.ApplicationWindow.do_window_state_event(self, event)
 
     def do_delete_event(self, event):
-        self._app.quit()
+        self.save_state()
+        return Gdk.EVENT_PROPAGATE
 
     def save_state(self):
         self._library.save_state()
