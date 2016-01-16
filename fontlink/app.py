@@ -38,8 +38,6 @@ class FontLink(Gtk.Application):
         self._tray = None
         self._activate_minimized = False
 
-        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self._on_quit)
-        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self._on_quit)
 
     def _make_option(self, long_name, short_name, description, flags=0,
                      arg=GLib.OptionArg.NONE, arg_data=None,
@@ -64,6 +62,10 @@ class FontLink(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self._on_quit)
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self._on_quit)
+
         settings.load()
 
         for name in self.__actions:
@@ -88,9 +90,6 @@ class FontLink(Gtk.Application):
         Gtk.Application.do_shutdown(self)
 
     def _on_quit(self):
-        if self._window is None:
-            return
-
         self._window.save_state()
         self._window.destroy()
 
