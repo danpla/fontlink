@@ -86,8 +86,9 @@ class MainWindow(Gtk.ApplicationWindow):
         context.finish(True, False, time)
 
     def do_window_state_event(self, event):
-        settings['window_maximized'] = bool(
-            event.new_window_state & Gdk.WindowState.MAXIMIZED)
+        if event.changed_mask & Gdk.WindowState.MAXIMIZED:
+            settings['window_maximized'] = bool(
+                event.new_window_state & Gdk.WindowState.MAXIMIZED)
         return Gtk.ApplicationWindow.do_window_state_event(self, event)
 
     def do_delete_event(self, event):
