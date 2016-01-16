@@ -22,12 +22,9 @@ class MainWindow(Gtk.ApplicationWindow):
             )
 
         self._app = app
-        self.connect('window-state-event', self._on_window_state_event)
-        self.connect('delete-event', self._on_delete_event)
 
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
-        self.connect('drag-data-received', self._on_drag_data_received)
 
         grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
         self.add(grid)
@@ -81,19 +78,19 @@ class MainWindow(Gtk.ApplicationWindow):
 
         return menubar
 
-    def _on_drag_data_received(self, window, context, x, y, selection,
-                               target, time):
+    def do_drag_data_received(window, context, x, y, selection, target, time):
         if target == self._DND_URI:
             self._library.add_fonts(
                 (GLib.filename_from_uri(uri)[0] for uri in
                  selection.get_uris() if uri.startswith('file://')))
         context.finish(True, False, time)
 
-    def _on_window_state_event(self, window, event):
+    def do_window_state_event(self, event):
         settings['window_maximized'] = bool(
             event.new_window_state & Gdk.WindowState.MAXIMIZED)
+        return Gtk.ApplicationWindow.do_window_state_event(self, event)
 
-    def _on_delete_event(self, window, event):
+    def do_delete_event(self, event):
         self._app.quit()
 
     def save_state(self):
