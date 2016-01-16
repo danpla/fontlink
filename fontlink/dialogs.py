@@ -14,6 +14,7 @@ def confirmation(parent, message, ok_text):
         transient_for=parent,
         message_type=Gtk.MessageType.QUESTION,
         text=message,
+        destroy_with_parent=True
         )
     dialog.add_buttons(
         _('_Cancel'), Gtk.ResponseType.CANCEL,
@@ -49,6 +50,7 @@ def open_fonts(parent):
         transient_for=parent,
         action=Gtk.FileChooserAction.OPEN,
         select_multiple=True,
+        destroy_with_parent=True
         )
     dialog.add_buttons(
         _('_Cancel'), Gtk.ResponseType.CANCEL,
