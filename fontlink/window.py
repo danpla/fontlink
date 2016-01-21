@@ -76,7 +76,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         return menubar
 
-    def do_drag_data_received(window, context, x, y, selection, target, time):
+    def do_drag_data_received(self, context, x, y, selection, target, time):
         if target == self._DND_URI:
             self._library.add_fonts(
                 (GLib.filename_from_uri(uri)[0] for uri in
