@@ -13,7 +13,7 @@ from .settings import settings
 
 class FontLink(Gtk.Application):
 
-    __actions = (
+    _ACTIONS = (
         'about',
         'quit',
     )
@@ -65,7 +65,7 @@ class FontLink(Gtk.Application):
 
         settings.load()
 
-        for name in self.__actions:
+        for name in self._ACTIONS:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', getattr(self, '_{}_cb'.format(name)))
             self.add_action(action)

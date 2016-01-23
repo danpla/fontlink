@@ -27,8 +27,7 @@ class MainWindow(Gtk.ApplicationWindow):
         grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL)
         self.add(grid)
 
-        main_menu = self._create_menubar()
-        grid.add(main_menu)
+        grid.add(self._create_menubar())
 
         self._library = fontlib.FontLib()
         grid.add(self._library)
@@ -36,12 +35,10 @@ class MainWindow(Gtk.ApplicationWindow):
         grid.show_all()
 
     def _create_menubar(self):
-        ag = Gtk.AccelGroup()
-        self.add_accel_group(ag)
+        accel_group = Gtk.AccelGroup()
+        self.add_accel_group(accel_group)
 
         menubar = Gtk.MenuBar()
-
-        # File.
 
         file_menu = Gtk.Menu()
         mi_file = Gtk.MenuItem(
@@ -56,10 +53,8 @@ class MainWindow(Gtk.ApplicationWindow):
             action_name='app.quit')
         key, mod = Gtk.accelerator_parse('<Control>Q')
         mi_quit.add_accelerator(
-            'activate', ag, key, mod, Gtk.AccelFlags.VISIBLE)
+            'activate', accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         file_menu.append(mi_quit)
-
-        # Help.
 
         help_menu = Gtk.Menu()
         mi_help = Gtk.MenuItem(

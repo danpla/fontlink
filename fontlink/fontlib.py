@@ -218,15 +218,15 @@ class SetStore(Gtk.ListStore):
     @property
     def as_json(self):
         json_sets = []
-        for set_row in self:
+        for row in self:
             fonts = []
-            for font_set in set_row[self.COL_FONTSET]:
+            for font_set in row[self.COL_FONTSET]:
                 fonts.append({
                     'enabled': font_set[FontSet.COL_ENABLED],
                     'path': font_set[FontSet.COL_LINKS][0].source
                     })
             json_sets.append(OrderedDict((
-                ('name', set_row[self.COL_NAME]),
+                ('name', row[self.COL_NAME]),
                 ('fonts', fonts))))
         return json_sets
 
@@ -452,7 +452,7 @@ class FontList(Gtk.Grid):
         font_set.add_fonts(paths)
         self._btn_clear.set_sensitive(len(font_set) > 0)
 
-    def _on_path_action(self, widget, action):
+    def _on_path_action(self, widget, path_action):
         selection = self._font_list.get_selection()
         font_set, tree_paths = selection.get_selected_rows()
         if font_set is None or not tree_paths:
@@ -460,11 +460,11 @@ class FontList(Gtk.Grid):
 
         path = font_set[tree_paths[0]][FontSet.COL_LINKS][0].source
 
-        if action == self._PathAction.COPY:
+        if path_action == self._PathAction.COPY:
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.set_text(path, -1)
         else:
-            if action == self._PathAction.OPEN_DIR:
+            if path_action == self._PathAction.OPEN_DIR:
                 path = os.path.dirname(path)
             Gtk.show_uri(None, GLib.filename_to_uri(path), Gdk.CURRENT_TIME)
 

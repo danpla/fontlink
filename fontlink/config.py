@@ -7,8 +7,8 @@ from gi.repository import GLib
 
 from . import app_info
 
-# ICON_DIR will be initialized from the main script in case if FontLink will be
-# launched uninstalled.
+# ICON_DIR will be set from the main script if FontLink will be launched
+# uninstalled.
 ICON_DIR = ''
 
 CONFIG_DIR = os.path.join(GLib.get_user_config_dir(), app_info.NAME)
