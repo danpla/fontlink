@@ -428,7 +428,7 @@ class FontList(Gtk.Grid):
         row = font_set[tree_iter]
 
         font_path = row[FontSet.COL_LINKS][0].source
-        font_dir, font_name = os.path.split(font_path)
+        font_name = row[FontSet.COL_NAME]
         if font_name in font_utils.INSTALLED_FONTS:
             text = '{}\n<b>{}</b>\n{}'.format(
                 font_path,
