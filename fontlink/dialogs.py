@@ -11,9 +11,9 @@ from . import font_utils
 
 def confirmation(parent, message, ok_text):
     dialog = Gtk.MessageDialog(
-        transient_for=parent,
         message_type=Gtk.MessageType.QUESTION,
         text=message,
+        transient_for=parent,
         destroy_with_parent=True
         )
     dialog.add_buttons(
@@ -47,9 +47,9 @@ def about(parent):
 def open_fonts(parent):
     dialog = Gtk.FileChooserDialog(
         title=_('Choose fonts'),
-        transient_for=parent,
         action=Gtk.FileChooserAction.OPEN,
         select_multiple=True,
+        transient_for=parent,
         destroy_with_parent=True
         )
     dialog.add_buttons(
