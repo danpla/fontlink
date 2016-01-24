@@ -1,3 +1,9 @@
+fontlink (1.0.0) stable; urgency=low
+
+  * New upstream release
+
+ -- Daniel Plachotich <daniel.plachotich@yandex.ru>  Sun, 24 Jan 2016 22:10:40 +0200
+
 fontlink (0.9.3) experimental; urgency=low
 
   * Upstream release

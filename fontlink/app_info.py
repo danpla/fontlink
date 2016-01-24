@@ -20,7 +20,7 @@ freely, subject to the following restrictions:
 '''
 
 NAME = 'fontlink'
-VERSION = '0.9.3'
+VERSION = '1.0.0'
 
 TITLE = 'FontLink'
 ICON = NAME
