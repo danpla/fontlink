@@ -1,7 +1,5 @@
 #!/bin/sh
 
-rm -f fontlink.desktop.in.h
-rm -f fontlink.desktop.in
 cp ../data/fontlink.desktop fontlink.desktop.in
 sed -e '/Comment\[/ d' \
     -e 's/Comment/_Comment/' \
