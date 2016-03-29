@@ -55,7 +55,7 @@ def find_metrics(font_dir, font_name):
 
     Returns an empty string if nothing found.
     '''
-    for ext in (_AFM_EXTENSIONS + _PFM_EXTENSIONS):
+    for ext in _AFM_EXTENSIONS + _PFM_EXTENSIONS:
         path = os.path.join(font_dir, font_name + ext)
         if os.path.isfile(path):
             return path
