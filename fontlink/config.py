@@ -1,7 +1,5 @@
 
-import gettext
 import os
-import sys
 
 from gi.repository import GLib
 
