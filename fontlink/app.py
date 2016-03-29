@@ -38,7 +38,6 @@ class FontLink(Gtk.Application):
         self._tray = None
         self._activate_minimized = False
 
-
     def _make_option(self, long_name, short_name, description, flags=0,
                      arg=GLib.OptionArg.NONE, arg_data=None,
                      arg_description=None):
