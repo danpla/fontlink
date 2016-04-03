@@ -22,26 +22,23 @@
       </p>
     </nav>
 
-    <p>FontLink is a small GTK+ utility to install fonts temporarily on Unix-like systems.</p>
-    <p>It allows you to quickly install fonts only when you really need them, without copying files or creating symlinks by hand.</p>
-    <p>FontLink has a very simple interface with which you can group fonts into sets (for example, one set per project) and quickly enable or disable certain fonts as well as entire sets in a single click.</p>
-    <p>As you might guess from the name, it uses mechanism of symbolic links for fast “fake” installation without actual copying and deleting font files.</p>
+    <p>FontLink is a small program for Unix-like systems that allows you to use fonts without having to install them.</p>
 
     <div class="screenshot">
       <img src="img/screenshot.png" title="FontLink screenshot" alt="FontLink screenshot">
     </div>
 
-    <h2 id="usage">Usage tips and tricks</h2>
+    <h2 id="usage">Usage</h2>
 
-    <ul>
-      <li><p>To rename a set, click twice on it. To change its position in the list, drag it with <kbd>Shift</kbd> pressed.</p></li>
-      <li><p>You can use drag-and-drop to add fonts.</p></li>
-      <li><p>Double click on a font will open it in an associated application (probably, a font viewer).</p></li>
-      <li><p>The same font can be added to multiple sets. In this case, disabling such font in certain set does not unlink it if it still enabled in other sets.</p></li>
-      <li><p>Fonts added to FontLink will be linked only while it’s running.</p></li>
-      <li><p>It may be useful to add FontLink to autostart. In this case, add <code>--minimized</code> or <code>-m</code> argument to start FontLink minimized to the notification area.</p></li>
-      <li><p>Not all programs can update font list on the fly, so it’s better to set up your fonts <em>before</em> running a program that will use them. For example, GIMP and LibreOffice can rescan fonts, but Inkscape and Scribus are not.</p></li>
-    </ul>
+    <p>FontLink has a simple interface that mainly consists of two lists. The left one contains font sets; the right one shows fonts of the selected set. Each has a context menu and a toolbar for quick access for most frequently used actions.</p>
+    <p>You can create new sets or just use the default one. To quickly rename a set, click twice on it. To change its position in the list, drag it with the <kbd>Shift</kbd> key pressed.</p>
+    <p>In addition to using the context menu or the toolbar button, you can add fonts by dropping them from your file manager anywhere on the FontLink's window.</p>
+    <p>The same font can be in multiple sets. In this case, disabling or removing such a font from one set does not unlink it if it is still enabled in others.</p>
+    <p>If you add a font that is already installed somewhere on your system, it will appear as “inactive” and its checkbox will always be enabled. Check its pop-up tooltip to see where it is installed.</p>
+    <p>FontLink has an icon in the notification area, which you can click with the middle mouse button to quickly hide/show the main window. If you want to add FontLink to autostart, don't forget to add <code>--minimized</code> or <code>-m</code> argument to start the program with the hidden window.</p>
+    <p>It is recommended to set up your fonts <em>before</em> running a program that will use them, because not all programs can update a list of fonts at runtime. For example, GIMP and LibreOffice can do this, but Inkscape and Scribus cannot.</p>
+    <p>Remember that fonts added to FontLink are linked only while it is running.</p>
+
 
     <h2 id="downloads">Downloads</h2>
 
@@ -56,7 +53,7 @@
       </li>
     </ul>
 
-    <p>Using a package is the recommended way to install FontLink. On non-DEB systems, you can use <code>alien</code> to install the DEB package.</p>
+    <p>Using a package is the recommended way to install FontLink. You can use <code>alien</code> to install the DEB package on non-DEB systems.</p>
     <p>Another way is to install from the sources using <code>make</code>. Read <code>INSTALL.md</code> for detailed instructions.
     <p>Also, you can just execute <code>bin/fontlink</code> to use FontLink without installation or to try it before installing.</p>
 
