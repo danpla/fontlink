@@ -15,14 +15,14 @@ from . import font_utils
 from . import utils
 
 
-def _watch_nactive(method):
-    '''Automatically notify if FontSet.nactive was changed by method.'''
+def _watch_num_active(method):
+    '''Automatically notify if FontSet.num_active was changed by method.'''
     @wraps(method)
     def wrapper(font_set, *args, **kwargs):
-        nactive_before = font_set.nactive
+        num_active_before = font_set.num_active
         method(font_set, *args, **kwargs)
-        if font_set.nactive != nactive_before:
-            font_set.notify('nactive')
+        if font_set.num_active != num_active_before:
+            font_set.notify('num-active')
     return wrapper
 
 
@@ -30,7 +30,7 @@ class FontSet(Gtk.ListStore):
 
     # COL_LINKS is a tuple of linker.Link.
     # The first pair is always present and describes the main font file.
-    # Others (if any) are additional files (.afm, etc.).
+    # Others (if any) are additional files (.afm, .pfm, etc.).
     COL_LINKS = 0
     COL_ENABLED = 1
 
@@ -48,18 +48,18 @@ class FontSet(Gtk.ListStore):
             )
 
         # Number of currently active fonts.
-        self._nactive = 0
+        self._num_active = 0
         # Cached font names for faster filtering of existing fonts.
         self._fonts = set()
 
         self.set_sort_column_id(self.COL_NAME, Gtk.SortType.ASCENDING)
 
     @GObject.Property
-    def nactive(self):
+    def num_active(self):
         '''Number of currently active (linked) fonts.'''
-        return self._nactive
+        return self._num_active
 
-    @_watch_nactive
+    @_watch_num_active
     def add_fonts(self, items):
         '''Add fonts to the set.
 
@@ -103,11 +103,11 @@ class FontSet(Gtk.ListStore):
             self._fonts.add(font_name)
 
             if enabled:
-                self._nactive += 1
+                self._num_active += 1
                 if not installed:
                     linker.create_links(links)
 
-    @_watch_nactive
+    @_watch_num_active
     def add_fonts_from(self, font_set):
         for row in font_set:
             font_name = row[font_set.COL_NAME]
@@ -118,11 +118,11 @@ class FontSet(Gtk.ListStore):
             self._fonts.add(font_name)
 
             if row[font_set.COL_ENABLED]:
-                self._nactive += 1
+                self._num_active += 1
                 if row[font_set.COL_LINKABLE]:
                     linker.create_links(row[font_set.COL_LINKS])
 
-    @_watch_nactive
+    @_watch_num_active
     def remove_fonts(self, tree_paths=None):
         '''Remove fonts from the set.
 
@@ -134,13 +134,13 @@ class FontSet(Gtk.ListStore):
                     linker.remove_links(row[self.COL_LINKS])
             self._fonts.clear()
             self.clear()
-            self._nactive = 0
+            self._num_active = 0
             return
 
         for tree_path in reversed(tree_paths):
             row = self[tree_path]
             if row[self.COL_ENABLED]:
-                self._nactive -= 1
+                self._num_active -= 1
                 if row[self.COL_LINKABLE]:
                     linker.remove_links(row[self.COL_LINKS])
             self._fonts.discard(row[self.COL_NAME])
@@ -155,14 +155,14 @@ class FontSet(Gtk.ListStore):
         row[self.COL_ENABLED] = new_state
         if new_state:
             linker.create_links(row[self.COL_LINKS])
-            self._nactive += 1
+            self._num_active += 1
         else:
             linker.remove_links(row[self.COL_LINKS])
-            self._nactive -= 1
+            self._num_active -= 1
 
-        self.notify('nactive')
+        self.notify('num-active')
 
-    @_watch_nactive
+    @_watch_num_active
     def set_state_all(self, state):
         '''Set the state for all fonts in the set.'''
         for row in self:
@@ -172,10 +172,10 @@ class FontSet(Gtk.ListStore):
             if row[self.COL_ENABLED] != state:
                 if state:
                     linker.create_links(row[self.COL_LINKS])
-                    self._nactive += 1
+                    self._num_active += 1
                 else:
                     linker.remove_links(row[self.COL_LINKS])
-                    self._nactive -= 1
+                    self._num_active -= 1
                 row[self.COL_ENABLED] = state
 
 
@@ -200,7 +200,7 @@ class SetStore(Gtk.ListStore):
         name = utils.unique_name(name, (row[self.COL_NAME] for row in self))
 
         font_set = FontSet()
-        font_set.connect('notify::nactive', self._on_set_changed)
+        font_set.connect('notify::num-active', self._on_set_changed)
 
         return self.insert_after(insert_after, (name, font_set))
 
@@ -211,7 +211,7 @@ class SetStore(Gtk.ListStore):
 
         font_set = FontSet()
         font_set.add_fonts_from(self[tree_iter][self.COL_FONTSET])
-        font_set.connect('notify::nactive', self._on_set_changed)
+        font_set.connect('notify::num-active', self._on_set_changed)
 
         return self.insert_after(tree_iter, (name, font_set))
 
@@ -671,7 +671,7 @@ class FontLib(Gtk.Paned):
                 text,
                 # Translators: Number of active fonts
                 ngettext('{num} active', '{num} active',
-                         font_set.nactive).format(num=font_set.nactive))
+                         font_set.num_active).format(num=font_set.num_active))
 
         tooltip.set_text(text)
         tree_view.set_tooltip_row(tooltip, tree_path)
@@ -680,10 +680,10 @@ class FontLib(Gtk.Paned):
     def _toggle_cell_data_func(self, column, cell, set_store, tree_iter, data):
         font_set = set_store[tree_iter][SetStore.COL_FONTSET]
 
-        if font_set.nactive == 0:
+        if font_set.num_active == 0:
             cell.props.inconsistent = False
             cell.props.active = False
-        elif font_set.nactive == len(font_set):
+        elif font_set.num_active == len(font_set):
             cell.props.inconsistent = False
             cell.props.active = True
         else:
@@ -697,7 +697,7 @@ class FontLib(Gtk.Paned):
 
     def _on_toggled(self, cell_toggle, tree_path):
         font_set = self._set_store[tree_path][SetStore.COL_FONTSET]
-        font_set.set_state_all(font_set.nactive < len(font_set))
+        font_set.set_state_all(font_set.num_active < len(font_set))
 
     def _on_name_edited(self, cell_text, tree_path, new_name):
         new_name = new_name.strip()
