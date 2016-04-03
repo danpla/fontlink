@@ -1,38 +1,38 @@
 # FontLink
 
-FontLink is a small GTK+ utility to install fonts temporarily on Unix-like
-systems.
-
-It allows you to quickly install fonts only when you really need them,
-without copying files or creating symlinks by hand.
-
-FontLink has a very simple interface with which you can group fonts into sets
-(for example, one set per project) and quickly enable or disable certain fonts
-as well as entire sets in a single click.
-
-As you might guess from the name, it uses mechanism of symbolic links
-for fast “fake” installation without actual copying and deleting font files.
+FontLink is a small program for Unix-like systems that allows you to use
+fonts without having to install them.
 
 
-## Usage tips and tricks
+## Usage
 
-* To rename a set, click twice on it. To change its position in the list,
-  drag it with `Shift` pressed.
+FontLink has a simple interface that mainly consists of two lists. The left
+one contains font sets; the right one shows fonts of the selected set.
+Each has a context menu and a toolbar for quick access for most frequently
+used actions.
 
-* You can use drag-and-drop to add fonts.
+You can create new sets or just use the default one. To quickly rename a set,
+click twice on it. To change its position in the list, drag it with the `Shift`
+key pressed.
 
-* Double click on a font will open it in an associated application (probably,
-  a font viewer).
+In addition to using the context menu or the toolbar button, you can add fonts
+by dropping them from your file manager anywhere on the FontLink's window.
 
-* The same font can be added to multiple sets. In this case, disabling such
-  font in certain set does not unlink it if it still enabled in other sets.
+The same font can be in multiple sets. In this case, disabling or removing
+such a font from one set does not unlink it if it is still enabled in others.
 
-* Fonts added to FontLink will be linked only while it's running.
+If you add a font that is already installed somewhere on your system, it will
+appear as “inactive” and its checkbox will always be enabled. Check its pop-up
+tooltip to see where it is installed.
 
-* It may be useful to add FontLink to autostart. In this case, add
-  `--minimized` or `-m` argument to start FontLink minimized to the
-  notification area.
+FontLink has an icon in the notification area, which you can click with the
+middle mouse button to quickly hide/show the main window. If you want to add
+FontLink to autostart, don't forget to add `--minimized` or `-m` argument
+to start the program with the hidden window.
 
-* Not all programs can update font list on the fly, so it's better to set up
-  your fonts *before* running a program that will use them. For example,
-  GIMP and LibreOffice can rescan fonts, but Inkscape and Scribus are not.
+It is recommended to set up your fonts *before* running a program that will
+use them, because not all programs can update a list of fonts at runtime.
+For example, GIMP and LibreOffice can do this, but Inkscape and Scribus
+cannot.
+
+Remember that fonts added to FontLink are linked only while it is running.
