@@ -8,7 +8,7 @@ fonts without having to install them.
 
 FontLink has a simple interface that mainly consists of two lists. The left
 one contains font sets; the right one shows fonts of the selected set.
-Each has a context menu and a toolbar for quick access for most frequently
+Each has a context menu and a toolbar for quick access to the most frequently
 used actions.
 
 You can create new sets or just use the default one. To quickly rename a set,
