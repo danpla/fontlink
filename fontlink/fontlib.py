@@ -378,7 +378,7 @@ class FontList(Gtk.Grid):
         mi_copy_path = Gtk.MenuItem(
             label=_('Copy _Path'),
             use_underline=True,
-            tooltip_text=_('Copy font path to clipboard')
+            tooltip_text=_('Copy paths of the selected fonts to clipboard')
             )
         mi_copy_path.connect(
             'activate', self._on_path_action, self._PathAction.COPY)
@@ -406,9 +406,9 @@ class FontList(Gtk.Grid):
         if num_selected != 1:
             mi_open.set_sensitive(False)
             mi_open_dir.set_sensitive(False)
-            mi_copy_path.set_sensitive(False)
         if num_selected == 0:
             mi_remove.set_sensitive(False)
+            mi_copy_path.set_sensitive(False)
         font_set = self._font_list.get_model()
         if font_set is None or len(font_set) == 0:
             mi_clear.set_sensitive(False)
@@ -458,12 +458,16 @@ class FontList(Gtk.Grid):
         if font_set is None or not tree_paths:
             return
 
-        path = font_set[tree_paths[0]][FontSet.COL_LINKS][0].source
-
         if path_action == self._PathAction.COPY:
+            paths = []
+            for tree_path in tree_paths:
+                paths.append(font_set[tree_path][FontSet.COL_LINKS][0].source)
+
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-            clipboard.set_text(path, -1)
+            clipboard.set_text('\n'.join(paths), -1)
         else:
+            path = font_set[tree_paths[0]][FontSet.COL_LINKS][0].source
+
             if path_action == self._PathAction.OPEN_DIR:
                 path = os.path.dirname(path)
             Gtk.show_uri(None, GLib.filename_to_uri(path), Gdk.CURRENT_TIME)
