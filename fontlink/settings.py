@@ -13,7 +13,7 @@ class _Settings(dict):
         try:
             with open(self._FILE, 'r', encoding='utf-8') as f:
                 self.update(json.load(f))
-        except OSError:
+        except (ValueError, OSError):
             pass
 
     def save(self):
