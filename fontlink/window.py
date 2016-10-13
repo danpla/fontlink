@@ -96,7 +96,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def load_state(self):
         try:
-            if settings['window_maximized']:
+            if settings.get('window_maximized', False):
                 self.maximize()
             else:
                 self.move(settings['window_x'], settings['window_y'])
