@@ -1,7 +1,7 @@
 Package: fontlink
 Version: @VERSION@-1
 Architecture: all
-Maintainer: Daniel Plachotich <daniel.plachotich@yandex.ru>
+Maintainer: Daniel Plakhotich <daniel.plakhotich@gmail.com>
 Installed-Size: @SIZE@
 Depends: python3, python3-gi, gir1.2-appindicator3-0.1
 Section: utils
