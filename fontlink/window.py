@@ -5,7 +5,7 @@ from gi.repository import Gtk, Gdk, GLib
 
 from .settings import settings
 from . import app_info
-from . import fontlib
+from . import font_lib
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -31,7 +31,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         grid.add(self._create_menubar())
 
-        self._library = fontlib.FontLib()
+        self._library = font_lib.FontLib()
         grid.add(self._library)
 
         grid.show_all()
