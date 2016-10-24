@@ -21,6 +21,8 @@ class MainWindow(Gtk.ApplicationWindow):
             default_height=250
             )
 
+        self._maximized = False
+
         self.drag_dest_set(
             Gtk.DestDefaults.ALL, self._DND_LIST, Gdk.DragAction.COPY)
 
@@ -80,7 +82,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def do_window_state_event(self, event):
         if event.changed_mask & Gdk.WindowState.MAXIMIZED:
-            settings['window_maximized'] = bool(
+            self._maximized = bool(
                 event.new_window_state & Gdk.WindowState.MAXIMIZED)
         return Gtk.ApplicationWindow.do_window_state_event(self, event)
 
@@ -91,12 +93,13 @@ class MainWindow(Gtk.ApplicationWindow):
     def save_state(self):
         self._library.save_state()
 
+        settings['window_maximized'] = self._maximized
         settings['window_x'], settings['window_y'] = self.get_position()
         settings['window_width'], settings['window_height'] = self.get_size()
 
     def load_state(self):
         try:
-            if settings.get('window_maximized', False):
+            if settings['window_maximized']:
                 self.maximize()
             else:
                 self.move(settings['window_x'], settings['window_y'])
