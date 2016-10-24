@@ -196,7 +196,7 @@ class SetStore(Gtk.ListStore):
                 self.row_changed(row.path, row.iter)
                 break
 
-    def add_set(self, name=_('New set'), insert_after=None):
+    def add_set(self, name, insert_after=None):
         name = utils.unique_name(name, (row[self.COL_NAME] for row in self))
 
         font_set = FontSet()
@@ -534,6 +534,7 @@ class FontList(Gtk.Grid):
 class FontLib(Gtk.Paned):
 
     _FILE = os.path.join(config.CONFIG_DIR, 'sets.json')
+    _DEFAULT_SET_NAME = _('New set')
 
     def __init__(self):
         super().__init__()
@@ -735,7 +736,7 @@ class FontLib(Gtk.Paned):
         selection = self._set_list.get_selection()
         set_store, tree_iter = selection.get_selected()
 
-        tree_iter = set_store.add_set(insert_after=tree_iter)
+        tree_iter = set_store.add_set(self._DEFAULT_SET_NAME, tree_iter)
 
         tree_path = set_store.get_path(tree_iter)
         column = self._set_list.get_column(1)
@@ -779,7 +780,7 @@ class FontLib(Gtk.Paned):
         row[SetStore.COL_FONTSET].remove_fonts()
         set_store.remove(tree_iter)
         if len(set_store) == 0:
-            set_store.add_set()
+            set_store.add_set(self._DEFAULT_SET_NAME)
             self._set_list.set_cursor(0)
 
     def add_fonts(self, paths):
@@ -810,7 +811,7 @@ class FontLib(Gtk.Paned):
             pass
 
         if len(self._set_store) == 0:
-            self._set_store.add_set()
+            self._set_store.add_set(self._DEFAULT_SET_NAME)
 
         tree_path = max(0, settings.get('selected_set', 1) - 1)
         self._set_list.set_cursor(tree_path)
