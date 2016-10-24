@@ -5,7 +5,7 @@ from collections import OrderedDict
 import json
 import os
 
-from gi.repository import Gtk, Gdk, GObject, GLib
+from gi.repository import Gtk, Gdk, GObject, GLib, Pango
 
 from . import config
 from .settings import settings
@@ -573,12 +573,22 @@ class FontLib(Gtk.Paned):
         col_toggle.set_cell_data_func(toggle, self._toggle_cell_data_func)
         self._set_list.append_column(col_toggle)
 
-        name = Gtk.CellRendererText(editable=True)
+        name = Gtk.CellRendererText(
+            editable=True,
+            ellipsize=Pango.EllipsizeMode.END
+            )
         name.connect('edited', self._on_name_edited)
         col_name = Gtk.TreeViewColumn(
             _('Font sets'), name, text=SetStore.COL_NAME)
         col_name.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        col_name.set_expand(True)
         self._set_list.append_column(col_name)
+
+        stats = Gtk.CellRendererText(xalign=1.0)
+        col_stats = Gtk.TreeViewColumn('', stats);
+        col_stats.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        col_stats.set_cell_data_func(stats, self._stats_cell_data_func)
+        self._set_list.append_column(col_stats)
 
         # Toolbar
 
@@ -692,6 +702,10 @@ class FontLib(Gtk.Paned):
             cell.props.active = True
         else:
             cell.props.inconsistent = True
+
+    def _stats_cell_data_func(self, column, cell, set_store, tree_iter, data):
+        font_set = set_store[tree_iter][SetStore.COL_FONTSET]
+        cell.props.text = '{}/{}'.format(font_set.num_active, len(font_set))
 
     def _on_selection_changed(self, selection):
         set_store, tree_iter = selection.get_selected()
