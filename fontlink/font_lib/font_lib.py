@@ -18,6 +18,11 @@ class FontLib(Gtk.Paned):
     _FILE = os.path.join(config.CONFIG_DIR, 'sets.json')
     _DEFAULT_SET_NAME = _('New set')
 
+    class _ViewColumn:
+        TOGGLE = 0
+        NAME = 1
+        STATS = 2
+
     def __init__(self):
         super().__init__()
         self._set_store = SetStore()
@@ -221,7 +226,7 @@ class FontLib(Gtk.Paned):
         tree_iter = set_store.add_set(self._DEFAULT_SET_NAME, tree_iter)
 
         tree_path = set_store.get_path(tree_iter)
-        column = self._set_list.get_column(1)
+        column = self._set_list.get_column(self._ViewColumn.NAME)
         self._set_list.set_cursor(tree_path, column, True)
 
     def _on_duplicate(self, widget):
@@ -242,7 +247,7 @@ class FontLib(Gtk.Paned):
             return
 
         tree_path = set_store.get_path(tree_iter)
-        column = self._set_list.get_column(1)
+        column = self._set_list.get_column(self._ViewColumn.NAME)
         self._set_list.set_cursor(tree_path, column, True)
 
     def _on_delete(self, widget):

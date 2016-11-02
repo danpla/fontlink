@@ -11,6 +11,10 @@ from .models import FontSet
 
 class FontList(Gtk.Grid):
 
+    class _ViewColumn:
+        TOGGLE = 0
+        NAME = 1
+
     class _PathAction:
         OPEN = 0
         OPEN_DIR = 1
@@ -281,7 +285,7 @@ class FontList(Gtk.Grid):
             self._btn_clear.set_sensitive(False)
 
     def _on_row_activated(self, font_list, tree_path, column):
-        if column == font_list.get_column(1):
+        if column == font_list.get_column(self._ViewColumn.NAME):
             font_set = font_list.get_model()
             Gtk.show_uri(
                 None,
