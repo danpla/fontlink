@@ -7,13 +7,6 @@ Depends: python3, python3-gi, gir1.2-appindicator3-0.1
 Section: utils
 Priority: optional
 Homepage: @URL@
-Description: Small utility to install fonts temporarily
- FontLink is a small GTK+ utility to install fonts temporarily on Unix-like
- systems.
- .
- It allows you to quickly install fonts only when you really need them,
- without copying files or creating symlinks by hand.
- .
- FontLink has a very simple interface with which you can group fonts into
- sets (for example, one set per project) and quickly enable or disable
- certain fonts as well as entire sets in a single click.
+Description: Small GTK+ program to install fonts temporarily
+ FontLink is a small GTK+ program that allows you to use fonts
+ without having to install them.
