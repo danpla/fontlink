@@ -24,4 +24,5 @@ class _Settings(dict):
         except OSError:
             pass
 
+
 settings = _Settings()
