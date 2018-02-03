@@ -9,6 +9,13 @@ from .. import font_utils
 from .models import FontSet
 
 
+def _show_uri(uri, window):
+    if (Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION) >= (3, 22):
+        Gtk.show_uri_on_window(window, uri, Gdk.CURRENT_TIME)
+    else:
+        Gtk.show_uri(window.get_screen(), uri, Gdk.CURRENT_TIME)
+
+
 class FontList(Gtk.Grid):
 
     class _ViewColumn:
@@ -244,7 +251,7 @@ class FontList(Gtk.Grid):
 
             if path_action == self._PathAction.OPEN_DIR:
                 path = os.path.dirname(path)
-            Gtk.show_uri(None, GLib.filename_to_uri(path), Gdk.CURRENT_TIME)
+            _show_uri(GLib.filename_to_uri(path), self.get_toplevel())
 
     def _on_remove(self, widget):
         selection = self._font_list.get_selection()
@@ -287,11 +294,10 @@ class FontList(Gtk.Grid):
     def _on_row_activated(self, font_list, tree_path, column):
         if column == font_list.get_column(self._ViewColumn.NAME):
             font_set = font_list.get_model()
-            Gtk.show_uri(
-                None,
+            _show_uri(
                 GLib.filename_to_uri(
                     font_set[tree_path][FontSet.COL_LINKS][0].source),
-                Gdk.CURRENT_TIME)
+                self.get_toplevel())
 
     @property
     def font_set(self):
