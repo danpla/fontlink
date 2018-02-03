@@ -38,6 +38,11 @@ cp $DATA_DIR/LICENSE $DOC_DIR/copyright
 cp changelog $DOC_DIR/changelog.Debian
 gzip -9 $DOC_DIR/changelog.Debian
 
+cp $DATA_DIR/CHANGELOG.md $DOC_DIR/changelog
+gzip -9 $DOC_DIR/changelog
+
+cp $DATA_DIR/README.md $DOC_DIR/README
+
 
 # DEBIAN
 DEB_DIR=$BUILD_DIR/DEBIAN
