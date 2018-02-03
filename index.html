@@ -22,7 +22,7 @@
       </p>
     </nav>
 
-    <p>FontLink is a small program for Unix-like systems that allows you to use fonts without having to install them.</p>
+    <p>FontLink is a program for Unix-like systems that allows you to use fonts without having to install them.</p>
 
     <div class="screenshot">
       <img src="img/screenshot.png" title="FontLink screenshot" alt="FontLink screenshot">
@@ -30,15 +30,11 @@
 
     <h2 id="usage">Usage</h2>
 
-    <p>FontLink has a simple interface that mainly consists of two lists. The left one contains font sets; the right one shows fonts of the selected set. Each has a context menu and a toolbar for quick access to the most frequently used actions.</p>
-    <p>You can create new sets or just use the default one. To quickly rename a set, click twice on it. To change its position in the list, drag it with the <kbd>Shift</kbd> key pressed.</p>
-    <p>In addition to using the context menu or the toolbar button, you can add fonts by dropping them from your file manager anywhere on the FontLink's window.</p>
-    <p>The same font can be in multiple sets. In this case, disabling or removing such a font from one set does not unlink it if it is still enabled in others.</p>
-    <p>If you add a font that is already installed somewhere on your system, it will appear as “inactive” and its checkbox will always be enabled. Check its pop-up tooltip to see where it is installed.</p>
-    <p>FontLink has an icon in the notification area, which you can click with the middle mouse button to quickly hide/show the main window. If you want to add FontLink to autostart, don't forget to add <code>--minimized</code> or <code>-m</code> argument to start the program with the hidden window.</p>
-    <p>It is recommended to set up your fonts <em>before</em> running a program that will use them, because not all programs can update a list of fonts at runtime. For example, GIMP and LibreOffice can do this, but Inkscape and Scribus cannot.</p>
-    <p>Remember that fonts added to FontLink are linked only while it is running.</p>
-
+    <p>The FontLink's interface consists of two lists. The left one contains font sets; the right one shows fonts of the selected set.</p>
+    <p>To add fonts to a set, use the button below the font list, the context menu, or drop them from your file manager anywhere on the FontLink's window. You can add the same font in several sets. Disabling or removing such a font from one set will not unlink it if it's still enabled in others.</p>
+    <p>If a font that is already installed somewhere on your system, it will appear as “inactive” and its checkbox will always be enabled. Check its pop-up tooltip to see where it is installed.</p>
+    <p>It's recommended to set up your fonts <em>before</em> running a program that will use them, because not all programs can update the list of fonts at runtime.</p>
+    <p>If you want to add FontLink to autostart, don't forget to add <code>--minimized</code> or <code>-m</code> argument to start the program with the hidden window.</p>
 
     <h2 id="downloads">Downloads</h2>
 
@@ -53,9 +49,9 @@
       </li>
     </ul>
 
-    <p>Using a package is the recommended way to install FontLink. You can use <code><a href="https://en.wikipedia.org/wiki/Alien_(software)">alien</a></code> to install the DEB package on non-DEB systems.</p>
+    <p>You can use <code><a href="https://en.wikipedia.org/wiki/Alien_(software)">alien</a></code> to install the DEB package on non-DEB systems.</p>
     <p>Another way is to install from the sources using <code>make</code>. Read <code><a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md">INSTALL.md</a></code> for detailed instructions.</p>
-    <p>Also, you can just execute <code>bin/fontlink</code> to use FontLink without installation. Still, you should ensure you have all <a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md#dependencies">the dependencies</a> installed.</p>
+    <p>It's possible to use FontLink without installation: unpack the source code tarball anywhere and execute <code>bin/fontlink</code>. Still, you should ensure you have all <a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md#dependencies">the dependencies</a> installed.</p>
 
     <h2 id="development">Development</h2>
 
