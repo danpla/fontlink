@@ -12,7 +12,7 @@ from .. import utils
 
 
 def _watch_num_active(method):
-    '''Automatically notify if FontSet.num_active was changed by method.'''
+    """Automatically notify if FontSet.num_active was changed by method."""
     @wraps(method)
     def wrapper(font_set, *args, **kwargs):
         num_active_before = font_set.num_active
@@ -52,15 +52,15 @@ class FontSet(Gtk.ListStore):
 
     @GObject.Property
     def num_active(self):
-        '''Number of currently active (linked) fonts.'''
+        """Number of currently active (linked) fonts."""
         return self._num_active
 
     @_watch_num_active
     def add_fonts(self, items):
-        '''Add fonts to the set.
+        """Add fonts to the set.
 
         items -- iterable of paths and/or pairs (path, state).
-        '''
+        """
         for item in items:
             if isinstance(item, str):
                 path = item
@@ -120,10 +120,10 @@ class FontSet(Gtk.ListStore):
 
     @_watch_num_active
     def remove_fonts(self, tree_paths=None):
-        '''Remove fonts from the set.
+        """Remove fonts from the set.
 
         If tree_paths is None, all fonts will be removed.
-        '''
+        """
         if tree_paths is None:
             for row in self:
                 if row[self.COL_LINKABLE] and row[self.COL_ENABLED]:
@@ -160,7 +160,7 @@ class FontSet(Gtk.ListStore):
 
     @_watch_num_active
     def set_state_all(self, state):
-        '''Set the state for all fonts in the set.'''
+        """Set the state for all fonts in the set."""
         for row in self:
             if not row[self.COL_LINKABLE]:
                 continue

@@ -271,7 +271,7 @@ class FontLib(Gtk.Paned):
             self._set_list.set_cursor(0)
 
     def add_fonts(self, paths):
-        '''Add fonts to the currently selected set.'''
+        """Add fonts to the currently selected set."""
         font_set = self._font_list.font_set
         if font_set is not None:
             font_set.add_fonts(paths)

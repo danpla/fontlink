@@ -11,10 +11,10 @@ _refcounter = Counter()
 
 
 def create_links(link_group):
-    '''Create (link) group of linker.Link.
+    """Create (link) group of linker.Link.
 
     link_group -- tuple of linker.Link
-    '''
+    """
     if _refcounter[link_group] == 0:
         for link in link_group:
             try:
@@ -25,7 +25,7 @@ def create_links(link_group):
 
 
 def remove_links(link_group):
-    '''Remove (unlink) link group previously linked by create_links.'''
+    """Remove (unlink) link group previously linked by create_links."""
     if _refcounter[link_group] == 0:
         return
 

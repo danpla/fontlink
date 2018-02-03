@@ -27,7 +27,7 @@ FONT_SEARCH_PATTERNS = [
 
 
 def _get_installed_fonts():
-    '''Create a mapping of installed fonts {font_name: font_dir}.'''
+    """Create a mapping of installed fonts {font_name: font_dir}."""
     fonts = {}
     try:
         for path in subprocess.check_output(
@@ -48,13 +48,13 @@ _PFM_EXTENSIONS = ('.pfm', '.PFM', '.Pfm')
 
 
 def find_metrics(font_dir, font_name):
-    '''Find PS metrics (AFM or PFM).
+    """Find PS metrics (AFM or PFM).
 
     font_dir -- directory to search in.
     font_name -- font name without extension.
 
     Returns an empty string if nothing found.
-    '''
+    """
     for ext in _AFM_EXTENSIONS + _PFM_EXTENSIONS:
         path = os.path.join(font_dir, font_name + ext)
         if os.path.isfile(path):

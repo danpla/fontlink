@@ -1,17 +1,17 @@
 
 def string_to_glob(string):
-    '''Create case-insensetive search pattern from the string.
+    """Create case-insensetive search pattern from the string.
 
     For example:
         '.otf' => '.[oO][tT][fF]'
-    '''
+    """
     return ''.join(
         '[{}{}]'.format(c.lower(), c.upper()) if c.isalpha() else c
         for c in string)
 
 
 def unique_name(name, all_names):
-    '''Make the name unique by appending "#n" at the end.'''
+    """Make the name unique by appending "#n" at the end."""
 
     if not isinstance(all_names, set):
         all_names = set(all_names)
