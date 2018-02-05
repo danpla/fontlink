@@ -162,17 +162,17 @@ class FontSet(Gtk.ListStore):
     def set_state_all(self, state):
         """Set the state for all fonts in the set."""
         for row in self:
-            if not row[self.COL_LINKABLE]:
+            if (not row[self.COL_LINKABLE]
+                    or row[self.COL_ENABLED] == state):
                 continue
 
-            if row[self.COL_ENABLED] != state:
-                if state:
-                    linker.create_links(row[self.COL_LINKS])
-                    self._num_active += 1
-                else:
-                    linker.remove_links(row[self.COL_LINKS])
-                    self._num_active -= 1
-                row[self.COL_ENABLED] = state
+            if state:
+                linker.create_links(row[self.COL_LINKS])
+                self._num_active += 1
+            else:
+                linker.remove_links(row[self.COL_LINKS])
+                self._num_active -= 1
+            row[self.COL_ENABLED] = state
 
 
 class SetStore(Gtk.ListStore):
