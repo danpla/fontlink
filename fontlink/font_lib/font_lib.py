@@ -264,7 +264,7 @@ class FontLib(Gtk.Paned):
                 _('_Delete')):
             return
 
-        row[SetStore.COL_FONTSET].remove_fonts()
+        row[SetStore.COL_FONTSET].remove_all_fonts()
         set_store.remove(tree_iter)
         if len(set_store) == 0:
             set_store.add_set(self._DEFAULT_SET_NAME)

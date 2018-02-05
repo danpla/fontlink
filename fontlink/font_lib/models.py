@@ -119,20 +119,7 @@ class FontSet(Gtk.ListStore):
                     linker.create_links(row[font_set.COL_LINKS])
 
     @_watch_num_active
-    def remove_fonts(self, tree_paths=None):
-        """Remove fonts from the set.
-
-        If tree_paths is None, all fonts will be removed.
-        """
-        if tree_paths is None:
-            for row in self:
-                if row[self.COL_LINKABLE] and row[self.COL_ENABLED]:
-                    linker.remove_links(row[self.COL_LINKS])
-            self._fonts.clear()
-            self.clear()
-            self._num_active = 0
-            return
-
+    def remove_fonts(self, tree_paths):
         for tree_path in reversed(tree_paths):
             row = self[tree_path]
             if row[self.COL_ENABLED]:
@@ -141,6 +128,15 @@ class FontSet(Gtk.ListStore):
                     linker.remove_links(row[self.COL_LINKS])
             self._fonts.discard(row[self.COL_NAME])
             self.remove(self.get_iter(tree_path))
+
+    @_watch_num_active
+    def remove_all_fonts(self):
+        for row in self:
+            if row[self.COL_LINKABLE] and row[self.COL_ENABLED]:
+                linker.remove_links(row[self.COL_LINKS])
+        self._fonts.clear()
+        self.clear()
+        self._num_active = 0
 
     def toggle_state(self, tree_path):
         row = self[tree_path]

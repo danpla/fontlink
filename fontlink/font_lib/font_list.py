@@ -288,7 +288,7 @@ class FontList(Gtk.Grid):
                     _('Remove all fonts from the set?'),
                     _('_Remove')
                     )):
-            font_set.remove_fonts()
+            font_set.remove_all_fonts()
             self._btn_clear.set_sensitive(False)
 
     def _on_row_activated(self, font_list, tree_path, column):
