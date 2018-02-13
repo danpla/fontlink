@@ -80,7 +80,7 @@ class FontLib(Gtk.Paned):
 
         # Toolbar
 
-        toolbar = Gtk.Toolbar(icon_size=Gtk.IconSize.SMALL_TOOLBAR)
+        toolbar = Gtk.Toolbar()
         toolbar.get_style_context().add_class('bottom-toolbar')
         grid.add(toolbar)
 
