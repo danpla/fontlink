@@ -14,9 +14,9 @@ or drop them from your file manager anywhere on the FontLink's window. You can
 add the same font in several sets. Disabling or removing such a font from one
 set will not unlink it if it's still enabled in others.
 
-If a font that is already installed somewhere on your system, it will appear
-as “inactive” and its checkbox will always be enabled. Check its pop-up
-tooltip to see where it is installed.
+If a font is already installed on your system, it will appear as “inactive”
+and its checkbox will always be enabled. Check its pop-up tooltip to see
+where it is installed.
 
 It's recommended to set up your fonts *before* running a program that will
 use them, because not all programs can update the list of fonts at runtime.
