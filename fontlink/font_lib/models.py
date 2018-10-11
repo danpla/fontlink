@@ -30,8 +30,9 @@ class FontSet(Gtk.ListStore):
     COL_LINKS = 0
     COL_ENABLED = 1
 
-    # COL_LINKABLE is True if font can be linked, i.e. it wasn't installed
-    # in the system at the moment of FontLink launch.
+    # COL_LINKABLE is True if the file exists and the font with the
+    # same filename wasn't installed in the system at the moment of
+    # FontLink launch.
     COL_LINKABLE = 2
     COL_NAME = 3
 
@@ -72,16 +73,18 @@ class FontSet(Gtk.ListStore):
             font_root_name, font_ext = os.path.splitext(font_name)
             if (font_ext.lower() not in font_utils.FONT_EXTENSIONS or
                     font_name in self._fonts or
-                    font_dir.startswith(config.FONTS_DIR) or
-                    not os.path.isfile(path)):
+                    font_dir.startswith(config.FONTS_DIR)):
                 continue
 
             links = [
                 linker.Link(path, os.path.join(config.FONTS_DIR, font_name))]
 
             installed = font_name in font_utils.INSTALLED_FONTS
+            file_exists = os.path.isfile(path)
             if installed:
                 enabled = True
+            elif not file_exists:
+                enabled = False
             elif font_ext.lower() in font_utils.FONT_EXTENSIONS_PS:
                 metrics_path = font_utils.find_metrics(
                     font_dir, font_root_name)
@@ -95,7 +98,12 @@ class FontSet(Gtk.ListStore):
 
             links = tuple(links)
 
-            self.append((links, enabled, not installed, font_name))
+            self.append(
+                (
+                    links,
+                    enabled,
+                    file_exists and not installed,
+                    font_name))
             self._fonts.add(font_name)
 
             if enabled:

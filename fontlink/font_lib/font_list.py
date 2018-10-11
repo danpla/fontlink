@@ -183,14 +183,24 @@ class FontList(Gtk.Grid):
         mi_clear.connect('activate', self._on_clear)
         menu.append(mi_clear)
 
-        num_selected = selection.count_selected_rows()
+        font_set, tree_paths = selection.get_selected_rows()
+        num_selected = len(tree_paths)
+
         if num_selected != 1:
             mi_open.set_sensitive(False)
             mi_open_dir.set_sensitive(False)
-        if num_selected == 0:
-            mi_remove.set_sensitive(False)
-            mi_copy_path.set_sensitive(False)
-        font_set = self._font_list.get_model()
+
+            if num_selected == 0:
+                mi_remove.set_sensitive(False)
+                mi_copy_path.set_sensitive(False)
+        else:
+            path = font_set[tree_paths[0]][FontSet.COL_LINKS][0].source
+            if not os.path.isfile(path):
+                mi_open.set_sensitive(False)
+
+                if not os.path.isdir(os.path.dirname(path)):
+                    mi_open_dir.set_sensitive(False)
+
         if font_set is None or len(font_set) == 0:
             mi_clear.set_sensitive(False)
 
@@ -210,15 +220,20 @@ class FontList(Gtk.Grid):
 
         font_path = row[FontSet.COL_LINKS][0].source
         font_name = row[FontSet.COL_NAME]
-        if font_name in font_utils.INSTALLED_FONTS:
-            text = '{}\n<b>{}</b>\n{}'.format(
-                font_path,
-                _('Already installed in:'),
-                font_utils.INSTALLED_FONTS[font_name])
-        else:
-            text = font_path
+        lines = [font_path]
 
-        tooltip.set_markup(text)
+        if not os.path.isfile(font_path):
+            lines.append(_('• File does not exist'))
+
+        if font_name in font_utils.INSTALLED_FONTS:
+            lines.append(
+                _('• Already installed in {directory}').format(
+                    directory=font_utils.INSTALLED_FONTS[font_name]))
+
+        if len(lines) > 1:
+            lines.insert(1, '')
+
+        tooltip.set_markup('\n'.join(lines))
         tree_view.set_tooltip_row(tooltip, tree_path)
         return True
 
@@ -251,6 +266,11 @@ class FontList(Gtk.Grid):
 
             if path_action == self._PathAction.OPEN_DIR:
                 path = os.path.dirname(path)
+                if not os.path.isdir(path):
+                    return
+            elif not os.path.isfile(path):
+                return
+
             _show_uri(GLib.filename_to_uri(path), self.get_toplevel())
 
     def _on_remove(self, widget):
@@ -294,10 +314,11 @@ class FontList(Gtk.Grid):
     def _on_row_activated(self, font_list, tree_path, column):
         if column == font_list.get_column(self._ViewColumn.NAME):
             font_set = font_list.get_model()
-            _show_uri(
-                GLib.filename_to_uri(
-                    font_set[tree_path][FontSet.COL_LINKS][0].source),
-                self.get_toplevel())
+            path = font_set[tree_path][FontSet.COL_LINKS][0].source
+            if not os.path.isfile(path):
+                return
+
+            _show_uri(GLib.filename_to_uri(path), self.get_toplevel())
 
     @property
     def font_set(self):

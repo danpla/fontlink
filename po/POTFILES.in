@@ -1,5 +1,6 @@
 fontlink/app.py
 fontlink/dialogs.py
-fontlink/fontlib.py
+fontlink/font_lib/font_lib.py
+fontlink/font_lib/font_list.py
 fontlink/tray.py
 fontlink/window.py

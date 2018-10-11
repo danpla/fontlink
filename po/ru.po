@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FontLink\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-12 14:46+0300\n"
-"PO-Revision-Date: 2016-01-05 19:23+0300\n"
+"POT-Creation-Date: 2018-10-11 20:49+0300\n"
+"PO-Revision-Date: 2018-10-11 20:50+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -39,140 +39,63 @@ msgstr "Устанавливайте шрифты временно"
 msgid "Choose fonts"
 msgstr "Выберите шрифты"
 
-#: fontlink/dialogs.py:57 fontlink/fontlib.py:361
+#: fontlink/dialogs.py:57 fontlink/font_lib/font_list.py:142
 msgid "_Open"
 msgstr "_Открыть"
 
-#: fontlink/dialogs.py:61 fontlink/fontlib.py:288
+#: fontlink/dialogs.py:61 fontlink/font_lib/font_list.py:69
 msgid "Fonts"
 msgstr "Шрифты"
 
-#: fontlink/fontlib.py:199
+#: fontlink/font_lib/font_lib.py:19
 msgid "New set"
 msgstr "Новый набор"
 
-#: fontlink/fontlib.py:303
-msgid "Add…"
-msgstr "Добавить…"
-
-#: fontlink/fontlib.py:305 fontlink/fontlib.py:353
-msgid "Add fonts"
-msgstr "Добавить шрифты"
-
-#: fontlink/fontlib.py:310
-msgid "Remove"
-msgstr "Изъять"
-
-#: fontlink/fontlib.py:312 fontlink/fontlib.py:392
-msgid "Remove selected fonts"
-msgstr "Изъять выбранные шрифты"
-
-#: fontlink/fontlib.py:320
-msgid "Remove All"
-msgstr "Изъять все"
-
-#: fontlink/fontlib.py:322 fontlink/fontlib.py:400
-msgid "Remove all fonts"
-msgstr "Изъять все шрифты"
-
-#: fontlink/fontlib.py:351
-msgid "_Add…"
-msgstr "_Добавить…"
-
-#: fontlink/fontlib.py:363
-msgid "Open font"
-msgstr "Открыть шрифт"
-
-#: fontlink/fontlib.py:370
-msgid "Open _Folder"
-msgstr "Открыть _каталог"
-
-#: fontlink/fontlib.py:372
-msgid "Open font folder"
-msgstr "Открыть каталог шрифта"
-
-#: fontlink/fontlib.py:379
-msgid "Copy _Path"
-msgstr "Копировать _путь"
-
-#: fontlink/fontlib.py:381
-msgid "Copy paths of the selected fonts to clipboard"
-msgstr "Копировать пути выбранных шрифтов в буфер обмена"
-
-#: fontlink/fontlib.py:390 fontlink/fontlib.py:494 fontlink/fontlib.py:508
-msgid "_Remove"
-msgstr "_Изъять"
-
-#: fontlink/fontlib.py:398
-msgid "R_emove All"
-msgstr "И_зъять все"
-
-#: fontlink/fontlib.py:435
-msgid "Already installed in:"
-msgstr "Уже установлен в:"
-
-#: fontlink/fontlib.py:483
-#, python-brace-format
-msgid "Remove “{font_name}” from the set?"
-msgstr "Изъять «{font_name}» из набора?"
-
-#: fontlink/fontlib.py:487
-#, python-brace-format
-msgid "Remove {num} selected font from the set?"
-msgid_plural "Remove {num} selected fonts from the set?"
-msgstr[0] "Изъять {num} выбранный шрифт из набора?"
-msgstr[1] "Изъять {num} выбранных шрифта из набора?"
-msgstr[2] "Изъять {num} выбранных шрифтов из набора?"
-
-#: fontlink/fontlib.py:507
-msgid "Remove all fonts from the set?"
-msgstr "Изъять все шрифты из набора?"
-
-#: fontlink/fontlib.py:579
+#: fontlink/font_lib/font_lib.py:70
 msgid "Font sets"
 msgstr "Наборы шрифтов"
 
-#: fontlink/fontlib.py:590
+#: fontlink/font_lib/font_lib.py:88
 msgid "New"
 msgstr "Новый"
 
-#: fontlink/fontlib.py:592 fontlink/fontlib.py:623
+#: fontlink/font_lib/font_lib.py:90 fontlink/font_lib/font_lib.py:121
 msgid "Create a new set"
 msgstr "Создать новый набор"
 
-#: fontlink/fontlib.py:597
+#: fontlink/font_lib/font_lib.py:95
 msgid "Delete"
 msgstr "Удалить"
 
-#: fontlink/fontlib.py:599 fontlink/fontlib.py:651
+#: fontlink/font_lib/font_lib.py:97 fontlink/font_lib/font_lib.py:149
 msgid "Delete the set"
 msgstr "Удалить набор"
 
-#: fontlink/fontlib.py:621
+#: fontlink/font_lib/font_lib.py:119
 msgid "_New"
 msgstr "_Новый"
 
-#: fontlink/fontlib.py:631
+#: fontlink/font_lib/font_lib.py:129
 msgid "D_uplicate"
 msgstr "Создать _копию"
 
-#: fontlink/fontlib.py:633
+#: fontlink/font_lib/font_lib.py:131
 msgid "Duplicate the set"
 msgstr "Создать копию набора"
 
-#: fontlink/fontlib.py:639
+#: fontlink/font_lib/font_lib.py:137
 msgid "_Rename…"
 msgstr "_Переименовать…"
 
-#: fontlink/fontlib.py:641
+#: fontlink/font_lib/font_lib.py:139
 msgid "Rename the set"
 msgstr "Переименовать набор"
 
-#: fontlink/fontlib.py:649 fontlink/fontlib.py:762
+#: fontlink/font_lib/font_lib.py:147 fontlink/font_lib/font_lib.py:264
 msgid "_Delete"
 msgstr "_Удалить"
 
-#: fontlink/fontlib.py:671
+#: fontlink/font_lib/font_lib.py:169
 #, python-brace-format
 msgid "{num} font"
 msgid_plural "{num} fonts"
@@ -181,7 +104,7 @@ msgstr[1] "{num} шрифта"
 msgstr[2] "{num} шрифтов"
 
 #. Translators: Number of active fonts
-#: fontlink/fontlib.py:677
+#: fontlink/font_lib/font_lib.py:175
 #, python-brace-format
 msgid "{num} active"
 msgid_plural "{num} active"
@@ -189,27 +112,110 @@ msgstr[0] "{num} активный"
 msgstr[1] "{num} активных"
 msgstr[2] "{num} активных"
 
-#: fontlink/fontlib.py:760
+#: fontlink/font_lib/font_lib.py:262
 #, python-brace-format
 msgid "Delete “{set_name}”?"
 msgstr "Удалить «{set_name}»?"
+
+#: fontlink/font_lib/font_list.py:84
+msgid "Add…"
+msgstr "Добавить…"
+
+#: fontlink/font_lib/font_list.py:86 fontlink/font_lib/font_list.py:134
+msgid "Add fonts"
+msgstr "Добавить шрифты"
+
+#: fontlink/font_lib/font_list.py:91
+msgid "Remove"
+msgstr "Изъять"
+
+#: fontlink/font_lib/font_list.py:93 fontlink/font_lib/font_list.py:173
+msgid "Remove selected fonts"
+msgstr "Изъять выбранные шрифты"
+
+#: fontlink/font_lib/font_list.py:101
+msgid "Remove All"
+msgstr "Изъять все"
+
+#: fontlink/font_lib/font_list.py:103 fontlink/font_lib/font_list.py:181
+msgid "Remove all fonts"
+msgstr "Изъять все шрифты"
+
+#: fontlink/font_lib/font_list.py:132
+msgid "_Add…"
+msgstr "_Добавить…"
+
+#: fontlink/font_lib/font_list.py:144
+msgid "Open font"
+msgstr "Открыть шрифт"
+
+#: fontlink/font_lib/font_list.py:151
+msgid "Open _Folder"
+msgstr "Открыть _каталог"
+
+#: fontlink/font_lib/font_list.py:153
+msgid "Open font folder"
+msgstr "Открыть каталог шрифта"
+
+#: fontlink/font_lib/font_list.py:160
+msgid "Copy _Path"
+msgstr "Копировать _путь"
+
+#: fontlink/font_lib/font_list.py:162
+msgid "Copy paths of the selected fonts to clipboard"
+msgstr "Копировать пути выбранных шрифтов в буфер обмена"
+
+#: fontlink/font_lib/font_list.py:171 fontlink/font_lib/font_list.py:295
+#: fontlink/font_lib/font_list.py:309
+msgid "_Remove"
+msgstr "_Изъять"
+
+#: fontlink/font_lib/font_list.py:179
+msgid "R_emove All"
+msgstr "И_зъять все"
+
+#: fontlink/font_lib/font_list.py:226
+msgid "• File does not exist"
+msgstr "• Файл не существует"
+
+#: fontlink/font_lib/font_list.py:230
+#, python-brace-format
+msgid "• Already installed in {directory}"
+msgstr "• Уже установлен в {directory}"
+
+#: fontlink/font_lib/font_list.py:284
+#, python-brace-format
+msgid "Remove “{font_name}” from the set?"
+msgstr "Изъять «{font_name}» из набора?"
+
+#: fontlink/font_lib/font_list.py:288
+#, python-brace-format
+msgid "Remove {num} selected font from the set?"
+msgid_plural "Remove {num} selected fonts from the set?"
+msgstr[0] "Изъять {num} выбранный шрифт из набора?"
+msgstr[1] "Изъять {num} выбранных шрифта из набора?"
+msgstr[2] "Изъять {num} выбранных шрифтов из набора?"
+
+#: fontlink/font_lib/font_list.py:308
+msgid "Remove all fonts from the set?"
+msgstr "Изъять все шрифты из набора?"
 
 #: fontlink/tray.py:19
 msgid "Show FontLink"
 msgstr "Показать FontLink"
 
-#: fontlink/tray.py:31 fontlink/window.py:68
+#: fontlink/tray.py:31 fontlink/window.py:70
 msgid "About"
 msgstr "О программе"
 
-#: fontlink/tray.py:36 fontlink/window.py:52
+#: fontlink/tray.py:36 fontlink/window.py:54
 msgid "Quit"
 msgstr "Выйти"
 
-#: fontlink/window.py:45
+#: fontlink/window.py:47
 msgid "_File"
 msgstr "_Файл"
 
-#: fontlink/window.py:61
+#: fontlink/window.py:63
 msgid "_Help"
 msgstr "_Справка"
