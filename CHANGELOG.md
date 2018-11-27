@@ -1,3 +1,10 @@
+## 1.0.3 2018-11-27
+
+* Nonexistent fonts are no longer removed from sets on program
+  startup
+* DEB package now puts the binary in /usr/bin instead of /bin
+
+
 ## 1.0.2 2018-06-11
 
 * Fixed "open with" functionality for GTK >= 3.22
@@ -21,9 +28,9 @@
       iterating over all files in a font's directory
     * Searches for PFM if AFM is not found
     * If a metrics file is not found in a font's directory, searches in
-  subdirectories with the same names as metrics extensions
+      subdirectories with the same names as metrics extensions
 * Fonts added from the user's font directory (`$XDG_DATA_HOME/fonts`,
-    which is usually `$HOME/.local/share/fonts`) are now ignored
+  which is usually `$HOME/.local/share/fonts`) are now ignored
 * UI fixes and improvements
     * Added pop-up menus for the lists
     * Better appearance of the toolbars with Graybird, Elementary, and
