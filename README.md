@@ -20,7 +20,7 @@ font with the same name is already installed on your system, or the
 file doesn't exist, e.g. it has been moved since the last time you
 used the program. Check the pop-up tooltip for more information.
 
-It's recommended to set up your fonts *before* running a program that
+It's recommended to set up your fonts before running a program that
 will use them, because not all programs can update the list of fonts
 at runtime.
 
