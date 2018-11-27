@@ -6,7 +6,8 @@ DATA_DIR='../..'
 BUILD_DIR=build
 mkdir -p $BUILD_DIR
 
-cp -r $DATA_DIR/bin $BUILD_DIR
+mkdir -p $BUILD_DIR/usr
+cp -r $DATA_DIR/bin $BUILD_DIR/usr
 
 INSTALL_DIR=$BUILD_DIR/usr/share
 
@@ -66,7 +67,7 @@ sed \
 
 
 chmod -R u+rwX,go+rX,go-w $BUILD_DIR
-chmod +x $DEB_DIR/postinst $DEB_DIR/prerm $BUILD_DIR/bin/$APPNAME
+chmod +x $DEB_DIR/postinst $DEB_DIR/prerm $BUILD_DIR/usr/bin/$APPNAME
 
 
 fakeroot dpkg-deb --build $BUILD_DIR .
