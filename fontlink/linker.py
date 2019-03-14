@@ -1,7 +1,6 @@
 
 from collections import namedtuple, Counter
 import os
-import atexit
 
 
 Link = namedtuple('Link', 'source target')
@@ -39,8 +38,7 @@ def remove_links(link_group):
                     pass
 
 
-@atexit.register
-def _remove_all_links():
+def remove_all_links():
     for link_group, refcount in _refcounter.items():
         if refcount == 0:
             continue

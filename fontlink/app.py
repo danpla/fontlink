@@ -9,6 +9,7 @@ from . import dialogs
 from . import window
 from . import tray
 from .settings import settings
+from . import linker
 
 
 class FontLink(Gtk.Application):
@@ -86,6 +87,7 @@ class FontLink(Gtk.Application):
 
     def do_shutdown(self):
         settings.save()
+        linker.remove_all_links()
         Gtk.Application.do_shutdown(self)
 
     def _on_quit(self):
