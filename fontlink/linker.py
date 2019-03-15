@@ -23,6 +23,15 @@ def create_links(link_group):
     _refcounter[link_group] += 1
 
 
+def _unlink_group(link_group):
+    for link in link_group:
+        if os.path.islink(link.target):
+            try:
+                os.unlink(link.target)
+            except OSError:
+                pass
+
+
 def remove_links(link_group):
     """Remove (unlink) link group previously linked by create_links."""
     if _refcounter[link_group] == 0:
@@ -30,21 +39,11 @@ def remove_links(link_group):
 
     _refcounter[link_group] -= 1
     if _refcounter[link_group] == 0:
-        for link in link_group:
-            if os.path.islink(link.target):
-                try:
-                    os.unlink(link.target)
-                except OSError:
-                    pass
+        _unlink_group(link_group)
 
 
 def remove_all_links():
     for link_group, refcount in _refcounter.items():
         if refcount == 0:
             continue
-        for link in link_group:
-            if os.path.islink(link.target):
-                try:
-                    os.unlink(link.target)
-                except OSError:
-                    pass
+        _unlink_group(link_group)
