@@ -1,6 +1,8 @@
 
+.PHONY: all
 all: build
 
+.PHONY: build
 build:
 	python3 -m compileall fontlink
 	for l in `grep -v '^#' po/LINGUAS`; \
@@ -10,10 +12,12 @@ build:
 		msgfmt po/$$l.po --output-file $$modir/fontlink.mo; \
 	done
 
+.PHONY: clean
 clean:
 	find fontlink -type d -name '__pycache__' -exec rm -rf {} +
 	rm -rf mo
 
+.PHONY: install
 install:
 	install bin/fontlink /usr/bin
 	cp -r fontlink /usr/share
@@ -25,6 +29,7 @@ install:
 
 	cp data/fontlink.desktop /usr/share/applications
 
+.PHONY: uninstall
 uninstall:
 	rm -f /usr/bin/fontlink
 	rm -rf /usr/share/fontlink
