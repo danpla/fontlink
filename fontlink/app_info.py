@@ -1,6 +1,6 @@
 
 """
-Copyright © 2015-2018 Daniel Plakhotich
+Copyright © 2015-2019 Daniel Plakhotich
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -25,7 +25,7 @@ VERSION = '1.0.3'
 TITLE = 'FontLink'
 ICON = NAME
 
-COPYRIGHT = 'Copyright © 2015-2018 Daniel Plakhotich'
+COPYRIGHT = 'Copyright © 2015-2019 Daniel Plakhotich'
 LICENSE = __doc__
 
 WEBSITE = 'https://danpla.github.io/fontlink/'
