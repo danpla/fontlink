@@ -1,3 +1,8 @@
+##
+
+* Interface is now translated when the program is not installed
+
+
 ## 1.0.3 2018-11-27
 
 * Nonexistent fonts are no longer removed from sets on program
