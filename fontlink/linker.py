@@ -33,7 +33,7 @@ def _unlink_group(link_group):
 
 
 def remove_links(link_group):
-    """Remove (unlink) link group previously linked by create_links."""
+    """Remove (unlink) link group linked by create_links()."""
     if _refcounter[link_group] == 0:
         return
 
@@ -43,6 +43,7 @@ def remove_links(link_group):
 
 
 def remove_all_links():
+    """Remove (unlink) all link groups liked by create_links()."""
     for link_group, refcount in _refcounter.items():
         if refcount == 0:
             continue
