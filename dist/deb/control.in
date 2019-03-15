@@ -7,6 +7,6 @@ Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-appindicator3-0.1
 Section: utils
 Priority: optional
 Homepage: @URL@
-Description: GTK+ program to install fonts temporarily
- FontLink is a small GTK+ program that allows you to use fonts
- without having to install them.
+Description: Program to install fonts temporarily
+ FontLink is a small program that allows you to use fonts without
+ having to install them.
