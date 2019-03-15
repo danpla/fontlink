@@ -9,8 +9,6 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
-PREFIX = os.path.join(os.sep, 'usr', 'share')
-
 # Support running uninstalled.
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 uninstalled = os.path.isdir(os.path.join(path, 'fontlink'))
@@ -21,13 +19,17 @@ if uninstalled:
     from fontlink import config
     config.ICON_DIR = os.path.join(path, 'data', 'icons')
     Gtk.IconTheme.get_default().prepend_search_path(config.ICON_DIR)
+
+    locale_path = os.path.join(path, 'mo')
 else:
+    PREFIX = os.path.join(os.sep, 'usr', 'share')
     sys.path.insert(1, PREFIX)
+    locale_path = os.path.join(PREFIX, 'locale')
 
 
 from fontlink import app_info
 
-gettext.bindtextdomain(app_info.NAME, os.path.join(PREFIX, 'locale'))
+gettext.bindtextdomain(app_info.NAME, locale_path)
 gettext.textdomain(app_info.NAME)
 
 
