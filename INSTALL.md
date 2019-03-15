@@ -19,6 +19,7 @@ On non-DEB systems, you can install it using `alien`.
 
 * Python 3.X
 * PyGObject
+* gir1.2-gtk-3.0
 * gir1.2-appindicator3
 
 apt (Debian, Ubuntu etc.):
