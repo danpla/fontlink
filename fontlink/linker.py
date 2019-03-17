@@ -48,3 +48,5 @@ def remove_all_links():
         if refcount == 0:
             continue
         _unlink_group(link_group)
+
+    _refcounter.clear()
