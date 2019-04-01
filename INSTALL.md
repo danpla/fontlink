@@ -18,7 +18,7 @@ interface if you want to use the program without installation.
 
 apt (Debian, Ubuntu, and derivatives):
 
-    sudo apt-get install make python3 python3-gi gir1.2-appindicator3-0.1
+    sudo apt-get install make python3 python3-gi gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
 
 
 ## Using without installation
