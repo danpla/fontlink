@@ -1,75 +1,76 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <title>FontLink</title>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-    <meta name="author" content="Daniel Plakhotich">
-    <meta name="description" content="Program to install fonts temporarily on Unix-like systems">
-  </head>
-  <body>
-    <header>
-      <img src="img/fontlink.svg" alt="FontLink logo">
-      <h1>FontLink</h1>
-    </header>
+<head>
+  <title>FontLink</title>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <meta name="author" content="Daniel Plakhotich">
+  <meta name="description" content="Program to install fonts temporarily on Unix-like systems">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <header>
+    <img src="img/fontlink.svg" alt="FontLink logo">
+    <h1>FontLink</h1>
+  </header>
 
-    <nav>
-      <p>
-        <a href="#usage">Usage</a>
-        •
-        <a href="#downloads">Downloads</a>
-        •
-        <a href="#development">Development</a>
-      </p>
-    </nav>
+  <nav>
+    <p>
+      <a href="#usage">Usage</a>
+      •
+      <a href="#downloads">Downloads</a>
+      •
+      <a href="#development">Development</a>
+    </p>
+  </nav>
 
-    <p>FontLink is a program for Unix-like systems that allows you to use fonts without having to install them.</p>
+  <p>FontLink is a program for Unix-like systems that allows you to use fonts without having to install them.</p>
 
-    <div class="screenshot">
-      <img src="img/screenshot.png" title="FontLink screenshot" alt="FontLink screenshot">
-    </div>
+  <div class="screenshot">
+    <img src="img/screenshot.png" title="FontLink screenshot" alt="FontLink screenshot">
+  </div>
 
-    <h2 id="usage">Usage</h2>
+  <h2 id="usage">Usage</h2>
 
-    <p>The FontLink’s interface consists of two lists. The left one contains font sets; the right one shows fonts of the selected set.</p>
-    <p>To add fonts to the selected set, use the button below the font list, the context menu, or drop them from your file manager anywhere on the FontLink’s window. You can add the same font in several sets. Disabling or removing such a font from one set will not unlink it if it’s still enabled in others.</p>
-    <p>A font appearing as “inactive” (grayed out) means that either the font with the same name is already installed on your system, or the file doesn’t exist, e.g. it has been moved since the last time you used the program. Check the pop-up tooltip for more information.</p>
-    <p>It’s recommended to set up your fonts before running a program that will use them, because not all programs can update the list of fonts at runtime.</p>
-    <p>If you want to add FontLink to autostart, add <code>--minimized</code> or <code>-m</code> argument to start the program with the hidden window.</p>
+  <p>The FontLink’s interface consists of two lists. The left one contains font sets; the right one shows fonts of the selected set.</p>
+  <p>To add fonts to the selected set, use the button below the font list, the context menu, or drop them from your file manager anywhere on the FontLink’s window. You can add the same font in several sets. Disabling or removing such a font from one set will not unlink it if it’s still enabled in others.</p>
+  <p>A font appearing as “inactive” (grayed out) means that either the font with the same name is already installed on your system, or the file doesn’t exist, e.g. it has been moved since the last time you used the program. Check the pop-up tooltip for more information.</p>
+  <p>It’s recommended to set up your fonts before running a program that will use them, because not all programs can update the list of fonts at runtime.</p>
+  <p>If you want to add FontLink to autostart, add <code>--minimized</code> or <code>-m</code> argument to start the program with the hidden window.</p>
 
-    <h2 id="downloads">Downloads</h2>
+  <h2 id="downloads">Downloads</h2>
 
-    <p>The most recent version of FontLink is 1.0.3 (<a href="https://raw.githubusercontent.com/danpla/fontlink/v1.0.3/CHANGELOG.md">changelog</a>).</p>
+  <p>The most recent version of FontLink is 1.0.3 (<a href="https://raw.githubusercontent.com/danpla/fontlink/v1.0.3/CHANGELOG.md">changelog</a>).</p>
 
-    <ul id="dllist">
-      <li>
-        <p><a href="https://github.com/danpla/fontlink/releases/download/v1.0.3/fontlink_1.0.3-1_all.deb">Debian/Ubuntu package (.deb)</a></p>
-      </li>
-      <li>
-        <p><a href="https://github.com/danpla/fontlink/archive/v1.0.3.tar.gz">Source code (.tar.gz)</a></p>
-      </li>
-    </ul>
+  <ul id="dllist">
+    <li>
+      <a href="https://github.com/danpla/fontlink/releases/download/v1.0.3/fontlink_1.0.3-1_all.deb">Debian/Ubuntu package (.deb)</a>
+    </li>
+    <li>
+      <a href="https://github.com/danpla/fontlink/archive/v1.0.3.tar.gz">Source code (.tar.gz)</a>
+    </li>
+  </ul>
 
-    <p>If your system uses a package format different from DEB, you can:</p>
-    <ul>
-      <li>
-        <p>Use FontLink without installation: ensure you have all <a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md#dependencies">the dependencies</a> installed, unpack the source code tarball anywhere, and execute <code>bin/fontlink</code>.</p>
-      </li>
-      <li>
-        <p>Install from the sources using <code>make</code>. Read <code><a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md">INSTALL.md</a></code> for detailed instructions.</p>
-      </li>
-      <li>
-        <p>Use <code><a href="https://en.wikipedia.org/wiki/Alien_(file_converter)">alien</a></code> to convert the DEB package to your system's native package format.</p>
-      </li>
-    </ul>
+  <p>If your system uses a package format different from DEB, you can:</p>
+  <ul>
+    <li>
+      <p>Use FontLink without installation: install <a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md#dependencies">dependencies</a>, unpack the source code tarball anywhere, and execute <code>bin/fontlink</code>.</p>
+    </li>
+    <li>
+      <p>Install from the sources using <code>make</code>. Read <code><a href="https://github.com/danpla/fontlink/blob/master/INSTALL.md">INSTALL.md</a></code> for detailed instructions.</p>
+    </li>
+    <li>
+      <p>Use <code><a href="https://en.wikipedia.org/wiki/Alien_(file_converter)">alien</a></code> to convert the DEB package to your system's native package format.</p>
+    </li>
+  </ul>
 
-    <h2 id="development">Development</h2>
+  <h2 id="development">Development</h2>
 
-    <p>The source code repository and the issue tracker are hosted <a href="https://github.com/danpla/fontlink">on GitHub</a>.</p>
+  <p>The source code repository and the issue tracker are hosted <a href="https://github.com/danpla/fontlink">on GitHub</a>.</p>
 
-    <footer>
-      Copyright © 2015-2019 <a href="mailto:daniel.plakhotich@gmail.com?subject=FontLink">Daniel Plakhotich</a>
-    </footer>
-  </body>
+  <footer>
+    Copyright © 2015-2019 <a href="mailto:daniel.plakhotich@gmail.com?subject=FontLink">Daniel Plakhotich</a>
+  </footer>
+</body>
 </html>
